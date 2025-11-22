@@ -20,6 +20,7 @@ PLACEHOLDERS = {
     'HERO': PARTIALS / 'hero.html',
     'ABOUT': PARTIALS / 'about.html',
     'EDUCATION': PARTIALS / 'education.html',
+    'EXPERIENCE': PARTIALS / 'experience.html',
     'RESEARCH': PARTIALS / 'research.html',
     'SKILLS': PARTIALS / 'skills.html',
     'CONTACT': PARTIALS / 'contact.html',
