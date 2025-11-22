@@ -30,6 +30,14 @@ body {
     line-height: 1.6;
 }
 
+/* Global text justification: most textual content (paragraphs, lists) will be justified.
+   Elements with explicit alignment (e.g., header h1 with text-align:center) will keep their rules. */
+body {
+    text-align: justify;
+    -webkit-text-size-adjust: 100%;
+    text-justify: inter-word;
+}
+
 /* Navigation */
 nav {
     background: white;
