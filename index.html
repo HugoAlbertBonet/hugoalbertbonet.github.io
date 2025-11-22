@@ -5,394 +5,412 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hugo Albert Bonet | AI Researcher & Software Engineer</title>
     <meta name="description" content="Personal website of Hugo Albert Bonet, MSCS student at USC, Fulbright Scholar, and AI Researcher specialized in NLP and Reinforcement Learning.">
+    <!-- CSS will be inlined by the build script -->
     <style>
-        :root {
-            --primary-color: #990000; /* USC Cardinal */
-            --secondary-color: #FFCC00; /* USC Goldish */
-            --text-color: #333;
-            --bg-color: #f9f9f9;
-            --card-bg: #ffffff;
-            --section-spacing: 60px;
-        }
+/* Styles extracted for modular source. The build script will inline this into final index.html */
+:root {
+    --primary-color: #990000; /* USC Cardinal */
+    --secondary-color: #FFCC00; /* USC Goldish */
+    --text-color: #333;
+    --bg-color: #f9f9f9;
+    --card-bg: #ffffff;
+    --section-spacing: 60px;
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
 
-        /* Navigation */
-        nav {
-            background: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            padding: 1rem 5%;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+/* Navigation */
+nav {
+    background: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 1rem 5%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        nav .logo {
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+nav .logo {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-        }
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
 
-        nav a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            transition: color 0.3s;
-        }
+nav a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
 
-        nav a:hover {
-            color: var(--primary-color);
-        }
+nav a:hover {
+    color: var(--primary-color);
+}
 
-        /* Hero Section */
-        header {
-            background: linear-gradient(135deg, #2c3e50 0%, #000000 100%);
-            color: white;
-            padding: 100px 20px;
-            text-align: center;
-        }
+/* Hero Section */
+header {
+    background: linear-gradient(135deg, #2c3e50 0%, #000000 100%);
+    color: white;
+    padding: 100px 20px;
+    text-align: center;
+}
 
-        header h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-        }
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
 
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto 20px auto;
-        }
+header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto 20px auto;
+}
 
-        .tagline {
-            font-weight: 300;
-            color: var(--secondary-color);
-            margin-bottom: 30px;
-            display: block;
-            font-size: 1.1rem;
-        }
+.tagline {
+    font-weight: 300;
+    color: var(--secondary-color);
+    margin-bottom: 30px;
+    display: block;
+    font-size: 1.1rem;
+}
 
-        .btn {
-            display: inline-block;
-            background: var(--primary-color);
-            color: white;
-            padding: 10px 25px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
+.btn {
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    padding: 10px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
 
-        .btn:hover {
-            background: #7a0000;
-        }
+.btn:hover {
+    background: #7a0000;
+}
 
-        /* Sections */
-        section {
-            padding: var(--section-spacing) 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+/* Sections */
+section {
+    padding: var(--section-spacing) 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
 
-        h2 {
-            text-align: center;
-            margin-bottom: 40px;
-            color: #2c3e50;
-            font-size: 2rem;
-            position: relative;
-        }
+h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #2c3e50;
+    font-size: 2rem;
+    position: relative;
+}
 
-        h2::after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 3px;
-            background: var(--primary-color);
-            margin: 10px auto 0;
-        }
+h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: var(--primary-color);
+    margin: 10px auto 0;
+}
 
-        /* About */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-        }
+/* About */
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
         
-        @media(min-width: 768px) {
-            .about-grid {
-                grid-template-columns: 1fr 2fr;
-            }
-        }
+@media(min-width: 768px) {
+    .about-grid {
+        grid-template-columns: 1fr 2fr;
+    }
+}
 
-        .profile-img {
-            width: 100%;
-            max-width: 250px;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            display: block;
-            margin: 0 auto;
-            background-color: #ddd; /* Placeholder color */
-            min-height: 250px;
-            object-fit: cover;
-        }
+.profile-img {
+    width: 100%;
+    max-width: 250px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    display: block;
+    margin: 0 auto;
+    background-color: #ddd; /* Placeholder color */
+    min-height: 250px;
+    object-fit: cover;
+}
 
-        /* Resume Items */
-        .timeline-item {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            border-left: 4px solid var(--primary-color);
-        }
+/* Resume Items */
+.timeline-item {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    border-left: 4px solid var(--primary-color);
+}
 
-        .timeline-header {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
 
-        .timeline-title {
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
+.timeline-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
 
-        .timeline-date {
-            color: #777;
-            font-size: 0.9rem;
-        }
+.timeline-date {
+    color: #777;
+    font-size: 0.9rem;
+}
 
-        .timeline-subtitle {
-            color: #555;
-            font-style: italic;
-            margin-bottom: 10px;
-        }
+.timeline-subtitle {
+    color: #555;
+    font-style: italic;
+    margin-bottom: 10px;
+}
 
-        /* Publications & Projects */
-        .project-card {
-            background: white;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-        }
+/* Publications & Projects */
+.project-card {
+    background: white;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
 
-        .project-card:hover {
-            transform: translateY(-3px);
-        }
+.project-card:hover {
+    transform: translateY(-3px);
+}
 
-        .project-title {
-            color: var(--primary-color);
-            font-weight: 700;
-            margin-bottom: 10px;
-            text-decoration: none;
-            display: inline-block;
-        }
+.project-title {
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-decoration: none;
+    display: inline-block;
+}
 
-        .tags {
-            margin-top: 15px;
-        }
+.tags {
+    margin-top: 15px;
+}
 
-        .tag {
-            background: #eee;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            margin-right: 5px;
-            color: #555;
-        }
+.tag {
+    background: #eee;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    margin-right: 5px;
+    color: #555;
+}
 
-        /* Skills */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            text-align: center;
-        }
+/* Skills */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    text-align: center;
+}
 
-        .skill-box {
-            background: white;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            font-weight: 600;
-        }
+.skill-box {
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    font-weight: 600;
+}
 
-        /* Footer */
-        footer {
-            background: #333;
-            color: white;
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 60px;
-        }
+/* Footer */
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 60px;
+}
 
-        .social-links {
-            margin-bottom: 15px;
-        }
+.social-links {
+    margin-bottom: 15px;
+}
 
-        .social-links a {
-            color: white;
-            margin: 0 10px;
-            text-decoration: none;
-            font-size: 1.2rem;
-        }
+.social-links a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
 
-        /* Responsive */
-        @media (max-width: 600px) {
-            header h1 { font-size: 2rem; }
-            nav ul { display: none; } /* Simple mobile hide for now */
-        }
-    </style>
+/* Responsive */
+@media (max-width: 600px) {
+    header h1 { font-size: 2rem; }
+    nav ul { display: none; } /* Simple mobile hide for now */
+}
+
+</style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">Hugo Albert Bonet</div>
-        <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#education">Education</a></li>
-            <li><a href="#research">Research</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
+    <div class="logo">Hugo Albert Bonet</div>
+    <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
+
 
     <header>
-        <h1>Hugo Albert Bonet</h1>
-        <span class="tagline">Fulbright Scholar | MSCS @ USC | AI & Machine Learning Researcher</span>
-        <p>Exploring the intersection of Deep Learning, Natural Language Processing, and Embedded Control Systems.</p>
-        <br>
-        <a href="#contact" class="btn">Get in Touch</a>
-        <a href="https://www.linkedin.com/in/hugoalbert" target="_blank" class="btn" style="background-color: #0077b5; margin-left: 10px;">LinkedIn</a>
-    </header>
+    <h1>Hugo Albert Bonet</h1>
+    <span class="tagline">Fulbright Scholar | MSCS @ USC | AI & Machine Learning Researcher</span>
+    <p>Exploring the intersection of Deep Learning, Natural Language Processing, and Embedded Control Systems.</p>
+    <br>
+    <a href="#contact" class="btn">Get in Touch</a>
+    <a href="https://www.linkedin.com/in/hugoalbert" target="_blank" class="btn" style="background-color: #0077b5; margin-left: 10px;">LinkedIn</a>
+</header>
+
 
     <section id="about">
-        <h2>About Me</h2>
-        <div class="about-grid">
-            <div>
-                <img src="https://via.placeholder.com/300x300?text=Hugo+Albert+Bonet" alt="Hugo Albert Bonet" class="profile-img">
-            </div>
-            <div>
-                <p>
-                    I am currently pursuing my <strong>Master of Science in Computer Science (MSCS)</strong> at the <strong>University of Southern California (USC)</strong> in Los Angeles.
-                </p>
-                <br>
-                <p>
-                    My academic journey began at the <strong>Universitat Politècnica de València (UPV)</strong>, where I developed a strong foundation in computer engineering. In 2024, I was honored to be selected as a <strong>Fulbright Scholar</strong>, a distinction that supported my transition to the U.S. to further my research in Artificial Intelligence.
-                </p>
-                <br>
-                <p>
-                    Beyond the lab and lecture hall, I am a competitive athlete. I play <strong>FIBA 3x3 Basketball</strong>, having competed nationally in Spain. This experience has taught me the value of quick decision-making, teamwork, and resilience—skills I apply daily to my engineering challenges.
-                </p>
-            </div>
+    <h2>About Me</h2>
+    <div class="about-grid">
+        <div>
+            <img src="https://via.placeholder.com/300x300?text=Hugo+Albert+Bonet" alt="Hugo Albert Bonet" class="profile-img">
         </div>
-    </section>
+        <div>
+            <p>
+                I am currently pursuing my <strong>Master of Science in Computer Science (MSCS)</strong> at the <strong>University of Southern California (USC)</strong> in Los Angeles.
+            </p>
+            <br>
+            <p>
+                My academic journey began at the <strong>Universitat Politècnica de València (UPV)</strong>, where I developed a strong foundation in computer engineering. In 2024, I was honored to be selected as a <strong>Fulbright Scholar</strong>, a distinction that supported my transition to the U.S. to further my research in Artificial Intelligence.
+            </p>
+            <br>
+            <p>
+                Beyond the lab and lecture hall, I am a competitive athlete. I play <strong>FIBA 3x3 Basketball</strong>, having competed nationally in Spain. This experience has taught me the value of quick decision-making, teamwork, and resilience—skills I apply daily to my engineering challenges.
+            </p>
+        </div>
+    </div>
+</section>
+
 
     <section id="education">
-        <h2>Education</h2>
-        
-        <div class="timeline-item">
-            <div class="timeline-header">
-                <span class="timeline-title">University of Southern California (USC)</span>
-                <span class="timeline-date">2024 - Present</span>
-            </div>
-            <div class="timeline-subtitle">Master of Science in Computer Science</div>
-            <p>Selected as a <strong>Fulbright Scholar</strong>. Focusing on Machine Learning, Deep Learning, and Artificial Intelligence systems.</p>
+    <h2>Education</h2>
+    
+    <div class="timeline-item">
+        <div class="timeline-header">
+            <span class="timeline-title">University of Southern California (USC)</span>
+            <span class="timeline-date">Expected Graduation: May 2027</span>
         </div>
+        <div class="timeline-subtitle">Master of Science in Computer Science</div>
+        <p>Fulbright and Viterbi School of Engineering scholarship.</p>
+    </div>
 
-        <div class="timeline-item">
-            <div class="timeline-header">
-                <span class="timeline-title">Universitat Politècnica de València (UPV)</span>
-                <span class="timeline-date">Graduated 2024</span>
-            </div>
-            <div class="timeline-subtitle">B.S. in Computer Engineering / ETSINF</div>
-            <p>Member of the <strong>Hyperloop UPV</strong> team. Developed embedded control systems for levitation vehicles.</p>
+    <div class="timeline-item">
+        <div class="timeline-header">
+            <span class="timeline-title">Universitat Politècnica de València (UPV)</span>
+            <span class="timeline-date">Graduated July 2025</span>
         </div>
-    </section>
+        <div class="timeline-subtitle">M.S. in Artificial Intelligence, Pattern Recognition, and Digital Imaging</div>
+    </div>
+
+    <div class="timeline-item">
+        <div class="timeline-header">
+            <span class="timeline-title">Universitat Politècnica de València (UPV)</span>
+            <span class="timeline-date">Graduated June 2024</span>
+        </div>
+        <div class="timeline-subtitle">B.S. in Computer Science</div>
+    </div>
+</section>
+
 
     <section id="research">
-        <h2>Research & Projects</h2>
+    <h2>Research & Projects</h2>
 
-        <div class="project-card">
-            <a href="#" class="project-title">HUrtful HUmor (HUHU) Detection on Twitter</a>
-            <p>
-                Authored the paper <em>"Detection, Classification and Quantification of HUrtful HUmor (HUHU) on Twitter Using Classical Models, Ensemble Models, and Transformers"</em> (IberLEF @ SEPLN, 2023).
-                Developed NLP pipelines to distinguish between benign jokes and prejudiced humor using Transformer architectures.
-            </p>
-            <div class="tags">
-                <span class="tag">NLP</span>
-                <span class="tag">Transformers</span>
-                <span class="tag">Python</span>
-                <span class="tag">Research</span>
-            </div>
+    <div class="project-card">
+        <a href="#" class="project-title">HUrtful HUmor (HUHU) Detection on Twitter</a>
+        <p>
+            Authored the paper <em>"Detection, Classification and Quantification of HUrtful HUmor (HUHU) on Twitter Using Classical Models, Ensemble Models, and Transformers"</em> (IberLEF @ SEPLN, 2023).
+            Developed NLP pipelines to distinguish between benign jokes and prejudiced humor using Transformer architectures.
+        </p>
+        <div class="tags">
+            <span class="tag">NLP</span>
+            <span class="tag">Transformers</span>
+            <span class="tag">Python</span>
+            <span class="tag">Research</span>
         </div>
+    </div>
 
-        <div class="project-card">
-            <a href="#" class="project-title">Hyperloop Levitation Control System</a>
-            <p>
-                Designed and tested an embedded control system for the levitation of a Hyperloop vehicle. Utilized <strong>Reinforcement Learning (RL)</strong> algorithms to optimize magnetic levitation stability dynamically. This work was part of the Hyperloop UPV team competition entry.
-            </p>
-            <div class="tags">
-                <span class="tag">Reinforcement Learning</span>
-                <span class="tag">Embedded Systems</span>
-                <span class="tag">Control Theory</span>
-                <span class="tag">C++</span>
-            </div>
+    <div class="project-card">
+        <a href="#" class="project-title">Hyperloop Levitation Control System</a>
+        <p>
+            Designed and tested an embedded control system for the levitation of a Hyperloop vehicle. Utilized <strong>Reinforcement Learning (RL)</strong> algorithms to optimize magnetic levitation stability dynamically. This work was part of the Hyperloop UPV team competition entry.
+        </p>
+        <div class="tags">
+            <span class="tag">Reinforcement Learning</span>
+            <span class="tag">Embedded Systems</span>
+            <span class="tag">Control Theory</span>
+            <span class="tag">C++</span>
         </div>
-    </section>
+    </div>
+</section>
+
 
     <section id="skills">
-        <h2>Technical Skills</h2>
-        <div class="skills-grid">
-            <div class="skill-box">Python & C++</div>
-            <div class="skill-box">PyTorch / TensorFlow</div>
-            <div class="skill-box">Reinforcement Learning</div>
-            <div class="skill-box">Natural Language Processing</div>
-            <div class="skill-box">Embedded Systems</div>
-            <div class="skill-box">Git & Version Control</div>
-        </div>
-    </section>
+    <h2>Technical Skills</h2>
+    <div class="skills-grid">
+        <div class="skill-box">Python & C++</div>
+        <div class="skill-box">PyTorch / TensorFlow</div>
+        <div class="skill-box">Reinforcement Learning</div>
+        <div class="skill-box">Natural Language Processing</div>
+        <div class="skill-box">Embedded Systems</div>
+        <div class="skill-box">Git & Version Control</div>
+    </div>
+</section>
+
 
     <section id="contact">
-        <h2>Contact</h2>
-        <div style="text-align: center;">
-            <p>I am always open to discussing new opportunities in AI research and Software Engineering.</p>
-            <br>
-            <a href="mailto:bonet@usc.edu" class="btn">Email Me</a>
-        </div>
-    </section>
+    <h2>Contact</h2>
+    <div style="text-align: center;">
+        <p>I am always open to discussing new opportunities in AI research and Software Engineering.</p>
+        <br>
+        <a href="mailto:bonet@usc.edu" class="btn">Email Me</a>
+    </div>
+</section>
+
 
     <footer>
-        <div class="social-links">
-            <a href="https://www.linkedin.com/in/hugoalbert" target="_blank">LinkedIn</a>
-            <a href="https://scholar.google.com/citations?user=EhPcpxwAAAAJ" target="_blank">Google Scholar</a>
-        </div>
-        <p>&copy; 2025 Hugo Albert Bonet. All rights reserved.</p>
-    </footer>
+    <div class="social-links">
+        <a href="https://www.linkedin.com/in/hugoalbert" target="_blank">LinkedIn</a>
+        <a href="https://scholar.google.com/citations?user=EhPcpxwAAAAJ" target="_blank">Google Scholar</a>
+    </div>
+    <p>&copy; 2025 Hugo Albert Bonet. All rights reserved.</p>
+</footer>
+
 
 </body>
 </html>
