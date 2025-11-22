@@ -270,16 +270,15 @@ footer {
     nav ul { display: none; } /* Simple mobile hide for now */
 }
 
-/* Adjust left offset for Experience timeline items */
-section#experience .timeline-item {
-    margin-left: 2rem; /* change to desired offset */
+/* Bullet padding inside Experience timeline items (affects only the list content) */
+section#experience .timeline-item ul {
+    padding-left: 1.25rem; /* space inside the box before bullets */
+    margin-top: 0.5rem;
 }
 
-@media (min-width: 768px) {
-    section#experience .timeline-item {
-        margin-left: 3rem;
-    }
-}
+/* If you prefer the bullet to sit inside the padding (aligned with text), uncomment:
+section#experience .timeline-item ul { list-style-position: inside; }
+*/
 
 </style>
 </head>
