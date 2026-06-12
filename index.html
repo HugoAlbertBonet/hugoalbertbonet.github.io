@@ -1,473 +1,483 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hugo Albert Bonet | AI Researcher & Software Engineer</title>
-    <meta name="description" content="Personal website of Hugo Albert Bonet, MSCS student at USC, Fulbright Scholar, and AI Researcher specialized in NLP and Reinforcement Learning.">
-    <!-- CSS will be inlined by the build script -->
-    <style>
-/* Styles extracted for modular source. The build script will inline this into final index.html */
-:root {
-    --primary-color: #990000; /* USC Cardinal */
-    --secondary-color: #FFCC00; /* USC Goldish */
-    --text-color: #333;
-    --bg-color: #f9f9f9;
-    --card-bg: #ffffff;
-    --section-spacing: 60px;
-}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hugo — Machine Learning × Communication</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg: oklch(0.16 0.012 72);
+    --bg-2: oklch(0.205 0.014 70);
+    --ink: oklch(0.955 0.006 84);
+    --ink-dim: oklch(0.74 0.01 80);
+    --ink-faint: oklch(0.52 0.012 78);
+    --ml: #3D7BFF;
+    --comm: #E2A24A;
+    --m: 1;
+  }
+  *{ box-sizing: border-box; margin: 0; padding: 0; }
+  html, body{ height: 100%; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  #root{ height: 100%; }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    line-height: 1.6;
-}
-
-/* Global text justification: most textual content (paragraphs, lists) will be justified.
-   Elements with explicit alignment (e.g., header h1 with text-align:center) will keep their rules. */
-body {
-    text-align: justify;
-    -webkit-text-size-adjust: 100%;
-    text-justify: inter-word;
-}
-
-/* Navigation */
-nav {
-    background: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    padding: 1rem 5%;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-nav .logo {
-    font-weight: 700;
-    font-size: 1.2rem;
-    color: var(--primary-color);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-nav a {
-    text-decoration: none;
-    color: var(--text-color);
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
-nav a:hover {
-    color: var(--primary-color);
-}
-
-/* Hero Section */
-header {
-    background: linear-gradient(135deg, #2c3e50 0%, #000000 100%);
-    color: white;
-    padding: 100px 20px;
-    text-align: center;
-}
-
-header h1 {
-    font-size: 3rem;
-    margin-bottom: 10px;
-}
-
-header p {
-    font-size: 1.2rem;
-    opacity: 0.9;
-    max-width: 600px;
-    margin: 0 auto 20px auto;
-}
-
-.tagline {
-    font-weight: 300;
-    color: var(--secondary-color);
-    margin-bottom: 30px;
-    display: block;
-    font-size: 1.1rem;
-}
-
-.btn {
-    display: inline-block;
-    background: var(--primary-color);
-    color: white;
-    padding: 10px 25px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: 600;
-    transition: background 0.3s;
-}
-
-.btn:hover {
-    background: #7a0000;
-}
-
-/* Sections */
-section {
-    padding: var(--section-spacing) 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-h2 {
-    text-align: center;
-    margin-bottom: 40px;
-    color: #2c3e50;
-    font-size: 2rem;
+  .world{
     position: relative;
-}
+    height: 100vh; width: 100vw;
+    overflow: hidden;
+    isolation: isolate;
+  }
 
-h2::after {
-    content: '';
-    display: block;
-    width: 50px;
-    height: 3px;
-    background: var(--primary-color);
-    margin: 10px auto 0;
-}
+  /* ---------- ambient color fields ---------- */
+  .field{ position: absolute; inset: 0; pointer-events: none; transition: opacity .9s ease; will-change: opacity; }
+  .field.base{
+    opacity: 1;
+    background:
+      radial-gradient(60% 70% at 50% 40%, oklch(0.235 0.015 70), transparent 70%),
+      radial-gradient(140% 120% at 50% 124%, oklch(0.115 0.012 70), transparent 72%);
+  }
+  .field.ml{
+    opacity: 0;
+    background:
+      radial-gradient(85% 120% at 6% 50%, color-mix(in oklab, var(--ml) 34%, transparent), transparent 60%),
+      radial-gradient(60% 90% at 14% 64%, color-mix(in oklab, var(--ml) 16%, transparent), transparent 72%);
+  }
+  .field.comm{
+    opacity: 0;
+    background:
+      radial-gradient(85% 120% at 94% 48%, color-mix(in oklab, var(--comm) 36%, transparent), transparent 60%),
+      radial-gradient(70% 80% at 86% 74%, color-mix(in oklab, var(--comm) 18%, transparent), transparent 74%);
+  }
+  .field.grid{
+    opacity: 0;
+    background-image:
+      linear-gradient(color-mix(in oklab, var(--ml) 13%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in oklab, var(--ml) 13%, transparent) 1px, transparent 1px);
+    background-size: 48px 48px, 48px 48px;
+    -webkit-mask-image: radial-gradient(72% 90% at 12% 50%, #000 0%, transparent 64%);
+            mask-image: radial-gradient(72% 90% at 12% 50%, #000 0%, transparent 64%);
+  }
+  .field.spot{
+    opacity: 0;
+    background: radial-gradient(40% 90% at 88% 26%, color-mix(in oklab, var(--comm) 42%, transparent), transparent 62%);
+    -webkit-mask-image: radial-gradient(72% 110% at 88% 40%, #000 0%, transparent 72%);
+            mask-image: radial-gradient(72% 110% at 88% 40%, #000 0%, transparent 72%);
+    mix-blend-mode: screen;
+  }
+  .world[data-side="ml"]   .field.ml,
+  .world[data-side="ml"]   .field.grid{ opacity: 1; }
+  .world[data-side="comm"] .field.comm,
+  .world[data-side="comm"] .field.spot{ opacity: 1; }
+  .world[data-side="ml"]   .field.base,
+  .world[data-side="comm"] .field.base{ opacity: .5; }
 
-/* About */
-.about-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 30px;
-}
-        
-@media(min-width: 768px) {
-    .about-grid {
-        grid-template-columns: 1fr 2fr;
-    }
-}
+  /* ---------- figures ---------- */
+  .figures{ position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+  .fig{
+    position: absolute;
+    background-repeat: no-repeat;
+    will-change: transform, opacity, width;
+    transition: opacity .9s ease, transform 1s cubic-bezier(.19,.76,.22,1),
+                width 1s cubic-bezier(.19,.76,.22,1), filter .9s ease;
+  }
 
-.profile-img {
-    width: 100%;
-    max-width: 250px;
-    border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    display: block;
-    margin: 0 auto;
-    background-color: #ddd; /* Placeholder color */
-    min-height: 250px;
-    object-fit: cover;
-}
+  /* centre — Hugo cut-out */
+  .fig.center{
+    left: 50%; bottom: -2vh;
+    width: 72vh; height: 96vh;
+    transform: translateX(-50%);
+    background-image: url('assets/portrait-final.png');
+    background-size: contain;
+    background-position: center bottom;
+    filter: drop-shadow(0 26px 50px rgba(0,0,0,.55));
+    opacity: 1;
+  }
+  .world[data-side="ml"]   .fig.center,
+  .world[data-side="comm"] .fig.center{ opacity: 0; transform: translateX(-50%) scale(1.05); filter: blur(9px); }
 
-/* Resume Items */
-.timeline-item {
-    background: var(--card-bg);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
-    border-left: 4px solid var(--primary-color);
-}
+  /* ML photo — lives on the LEFT */
+  .fig.ml{
+    left: 0; top: 0; height: 100%;
+    width: 15vw;
+    background-image: url('assets/ml-soft.png');
+    background-size: cover; background-position: 60% 36%;
+    opacity: .42;
+    filter: grayscale(.3) brightness(.72) saturate(.85);
+    -webkit-mask-image: linear-gradient(to right, #000 46%, transparent 95%);
+            mask-image: linear-gradient(to right, #000 46%, transparent 95%);
+  }
+  .world[data-side="ml"]   .fig.ml{ width: 50vw; opacity: 1; filter: saturate(1) brightness(1.02); }
+  .world[data-side="comm"] .fig.ml{ width: 11vw; opacity: 0; }
 
-.timeline-header {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
-}
+  /* Communication photo — lives on the RIGHT */
+  .fig.comm{
+    right: 0; top: 0; height: 100%;
+    width: 15vw;
+    background-image: url('assets/comm-soft.png');
+    background-size: cover; background-position: 42% 32%;
+    opacity: .42;
+    filter: brightness(.78) saturate(.9);
+    -webkit-mask-image: linear-gradient(to left, #000 46%, transparent 95%);
+            mask-image: linear-gradient(to left, #000 46%, transparent 95%);
+  }
+  .world[data-side="comm"] .fig.comm{ width: 50vw; opacity: 1; filter: saturate(1.02) brightness(.94); }
+  .world[data-side="ml"]   .fig.comm{ width: 11vw; opacity: 0; }
 
-.timeline-title {
-    font-weight: 700;
-    font-size: 1.1rem;
-}
+  /* colour wash over the active side photo to keep its world identity */
+  .fig.ml::after, .fig.comm::after{
+    content: ""; position: absolute; inset: 0; opacity: 0; transition: opacity .9s ease;
+  }
+  .fig.ml::after{ background: linear-gradient(120deg, color-mix(in oklab, var(--ml) 42%, transparent), transparent 64%); }
+  .fig.comm::after{ background: linear-gradient(240deg, color-mix(in oklab, var(--comm) 42%, transparent), transparent 64%); }
+  .world[data-side="ml"] .fig.ml::after,
+  .world[data-side="comm"] .fig.comm::after{ opacity: 1; }
 
-.timeline-date {
-    color: #777;
-    font-size: 0.9rem;
-}
+  /* ---------- greeting ---------- */
+  .greeting{
+    position: absolute; left: 0; right: 0; top: 60%;
+    z-index: 4; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    pointer-events: none;
+    transition: opacity .5s ease, transform .7s cubic-bezier(.19,.76,.22,1);
+  }
+  .greeting::before{
+    content: ""; position: absolute; left: 50%; top: 50%;
+    width: 820px; height: 320px; transform: translate(-50%,-50%);
+    background: radial-gradient(closest-side, oklch(0.12 0.01 70 / .68), transparent 72%);
+    z-index: -1;
+  }
+  .greeting h1{
+    font-size: clamp(32px, 4.6vw, 66px);
+    font-weight: 500; letter-spacing: -0.03em; line-height: 1; white-space: nowrap;
+    text-shadow: 0 4px 30px oklch(0 0 0 / .55);
+  }
+  .greeting h1 b{ font-weight: 700; }
+  .greeting p{
+    font-family: "JetBrains Mono", monospace;
+    font-size: clamp(10px, 1vw, 12.5px); letter-spacing: .3em; text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .world[data-side="ml"]   .greeting,
+  .world[data-side="comm"] .greeting{ opacity: 0; transform: translateY(12px); }
 
-.timeline-subtitle {
-    color: #555;
-    font-style: italic;
-    margin-bottom: 10px;
-}
+  /* ---------- side panels ---------- */
+  .panel{
+    position: absolute; top: 0; bottom: 0;
+    width: min(500px, 42vw);
+    display: flex; flex-direction: column; justify-content: center; gap: 22px;
+    opacity: 0; pointer-events: none; z-index: 5;
+    transition: opacity .7s ease, transform .85s cubic-bezier(.19,.76,.22,1), filter .7s ease;
+    filter: blur(6px);
+  }
+  .panel.ml{ right: clamp(36px, 6vw, 120px); align-items: flex-start; text-align: left; transform: translateX(40px); }
+  .panel.comm{
+    left: clamp(36px, 6vw, 120px); align-items: flex-end; text-align: right; transform: translateX(-40px);
+    font-family: "Spectral", Georgia, serif;
+  }
+  .world[data-side="ml"]   .panel.ml{ opacity: 1; transform: none; filter: none; pointer-events: auto; }
+  .world[data-side="comm"] .panel.comm{ opacity: 1; transform: none; filter: none; pointer-events: auto; }
 
-/* Publications & Projects */
-.project-card {
-    background: white;
-    padding: 25px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    transition: transform 0.2s;
-}
+  .kicker{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px; letter-spacing: .26em; text-transform: uppercase;
+    color: var(--ml);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .panel.comm .kicker{ color: var(--comm); font-family: "JetBrains Mono", monospace; justify-content: flex-end; }
+  .kicker .ln{ width: 38px; height: 1px; background: currentColor; opacity: .6; }
 
-.project-card:hover {
-    transform: translateY(-3px);
-}
+  .panel h2{
+    font-size: clamp(30px, 3.7vw, 54px);
+    font-weight: 600; line-height: 1.02; letter-spacing: -0.025em; text-wrap: balance;
+  }
+  .panel.comm h2{ font-weight: 500; letter-spacing: -0.01em; line-height: 1.06; }
+  .panel.comm h2 em{ font-style: italic; color: var(--comm); }
+  .panel.ml h2 em{ font-style: normal; color: var(--ml); }
 
-.project-title {
-    color: var(--primary-color);
-    font-weight: 700;
-    margin-bottom: 10px;
-    text-decoration: none;
-    display: inline-block;
-}
+  .panel p.lede{
+    font-size: clamp(15px, 1.15vw, 18px); line-height: 1.6; color: var(--ink-dim); max-width: 42ch;
+  }
+  .panel.comm p.lede{ font-size: clamp(16px, 1.25vw, 20px); font-weight: 300; line-height: 1.62; }
 
-.tags {
-    margin-top: 15px;
-}
+  .chips{ display: flex; flex-wrap: wrap; gap: 8px; }
+  .panel.comm .chips{ justify-content: flex-end; }
+  .chip{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    padding: 6px 12px; border-radius: 999px;
+    border: 1px solid oklch(1 0 0 / .16); color: var(--ink-dim);
+  }
+  .panel.ml .chip{ border-color: color-mix(in oklab, var(--ml) 40%, transparent); }
+  .panel.comm .chip{ border-color: color-mix(in oklab, var(--comm) 46%, transparent); font-family: "Spectral", serif; letter-spacing: .04em; text-transform: none; font-size: 13px; font-style: italic; }
 
-.tag {
-    background: #eee;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    margin-right: 5px;
-    color: #555;
-}
+  .cta{
+    align-self: flex-start;
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 15px; font-weight: 500; letter-spacing: .01em;
+    color: var(--bg); background: var(--ml);
+    padding: 14px 22px; border-radius: 999px; text-decoration: none;
+    transition: transform .25s ease, box-shadow .25s ease, gap .25s ease;
+    box-shadow: 0 14px 34px -14px color-mix(in oklab, var(--ml) 80%, transparent);
+  }
+  .panel.comm .cta{ align-self: flex-end; background: var(--comm); box-shadow: 0 14px 34px -14px color-mix(in oklab, var(--comm) 80%, transparent); font-family: "Spectral", serif; font-style: italic; font-size: 16px; }
+  .cta:hover{ transform: translateY(-2px); gap: 18px; }
+  .cta .arrow{ transition: transform .25s ease; }
+  .cta:hover .arrow{ transform: translateX(4px); }
 
-/* Skills */
-.skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    text-align: center;
-}
+  .creds{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px; letter-spacing: .08em; color: var(--ink-faint); line-height: 1.7;
+  }
+  .panel.comm .creds{ font-family: "Spectral", serif; font-style: italic; letter-spacing: .01em; font-size: 13px; }
 
-.skill-box {
-    background: white;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    font-weight: 600;
-}
+  /* ---------- chrome ---------- */
+  .brand{
+    position: absolute; top: 30px; left: 34px; z-index: 8;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px; letter-spacing: .42em; text-transform: uppercase;
+    color: var(--ink); opacity: .9;
+    display: flex; align-items: center; gap: 12px; transition: opacity .5s ease;
+  }
+  .world[data-side="ml"] .brand,
+  .world[data-side="comm"] .brand{ opacity: 0; pointer-events: none; }
+  .brand .dot{ width: 7px; height: 7px; border-radius: 50%; background: var(--ink); transition: background .6s ease; }
+  .world[data-side="ml"]   .brand .dot{ background: var(--ml); }
+  .world[data-side="comm"] .brand .dot{ background: var(--comm); }
 
-/* Footer */
-footer {
-    background: #333;
-    color: white;
-    text-align: center;
-    padding: 30px 20px;
-    margin-top: 60px;
-}
+  .hints{
+    position: absolute; left: 0; right: 0; bottom: 34px; z-index: 7;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 clamp(28px, 5vw, 80px); pointer-events: none; transition: opacity .5s ease;
+  }
+  .hint{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-faint);
+    display: flex; align-items: center; gap: 12px; transition: color .4s ease;
+  }
+  .hint .k{ font-size: 18px; line-height: 1; }
+  .world[data-side="ml"]   .hints,
+  .world[data-side="comm"] .hints{ opacity: 0; }
 
-.social-links {
-    margin-bottom: 15px;
-}
+  .scrollnote{
+    position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); z-index: 7;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px; letter-spacing: .26em; text-transform: uppercase; color: var(--ink-faint);
+    transition: opacity .5s ease;
+  }
+  .world[data-side="ml"]   .scrollnote,
+  .world[data-side="comm"] .scrollnote{ opacity: 0; }
 
-.social-links a {
-    color: white;
-    margin: 0 10px;
-    text-decoration: none;
-    font-size: 1.2rem;
-}
+  .back{
+    position: absolute; top: 26px; z-index: 9;
+    display: inline-flex; align-items: center; gap: 9px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-dim);
+    background: oklch(0.16 0.012 72 / .55); backdrop-filter: blur(6px); border: 1px solid oklch(1 0 0 / .14);
+    padding: 9px 15px; border-radius: 999px; cursor: pointer;
+    opacity: 0; transform: translateY(-8px); pointer-events: none;
+    transition: opacity .4s ease, transform .4s ease, border-color .3s ease, color .3s ease;
+  }
+  .back:hover{ color: var(--ink); border-color: oklch(1 0 0 / .3); }
+  .world[data-side="ml"]   .back{ left: 30px; right: auto; opacity: 1; transform: none; pointer-events: auto; }
+  .world[data-side="comm"] .back{ right: 30px; left: auto; opacity: 1; transform: none; pointer-events: auto; }
 
-/* Responsive */
-@media (max-width: 600px) {
-    header h1 { font-size: 2rem; }
-    nav ul { display: none; } /* Simple mobile hide for now */
-}
-
-/* Bullet padding inside Experience timeline items (affects only the list content) */
-section#experience .timeline-item ul {
-    padding-left: 1.25rem; /* space inside the box before bullets */
-    margin-top: 0.5rem;
-}
-
-/* If you prefer the bullet to sit inside the padding (aligned with text), uncomment:
-section#experience .timeline-item ul { list-style-position: inside; }
-*/
-
+  @media (max-width: 760px){
+    .panel{ width: 80vw; }
+    .fig.center{ width: 96vw; height: 80vh; }
+    .greeting{ top: 60%; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .fig, .panel, .field, .greeting{ transition-duration: .01ms; }
+  }
 </style>
 </head>
 <body>
+  <div id="root"></div>
 
-    <nav>
-    <div class="logo">Hugo Albert Bonet</div>
-    <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#research">Research</a></li>
-        <li><a href="#contact">Contact</a></li>
-    </ul>
-</nav>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
 
+  <script type="text/babel">
+    const { useState, useRef, useEffect, useCallback } = React;
 
-    <header>
-    <h1>Hugo Albert Bonet</h1>
-    <span class="tagline">Fulbright Scholar | MSCS @ USC | AI & Machine Learning Researcher</span>
-    <p>Exploring the intersection of Deep Learning, Natural Language Processing, and Embedded Control Systems.</p>
-    <br>
-    <a href="#contact" class="btn">Get in Touch</a>
-    <a href="https://www.linkedin.com/in/hugoalbert" target="_blank" class="btn" style="background-color: #0077b5; margin-left: 10px;">LinkedIn</a>
-</header>
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "greeting": "Hi, I'm Hugo!",
+      "trigger": "hover",
+      "motion": 100,
+      "mlAccent": "#3D7BFF",
+      "commAccent": "#E2A24A"
+    }/*EDITMODE-END*/;
 
+    function App(){
+      const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+      const m = Math.max(0, Math.min(1, (t.motion ?? 100) / 100));
 
-    <section id="about">
-    <h2>About Me</h2>
-    <div class="about-grid">
-        <div>
-            <img src="/images/profile.png" alt="Hugo Albert Bonet" class="profile-img">
-        </div>
-        <div>
-            <p>
-                MSc in Computer Science with a specialization in Artificial Intelligence at the University of Southern California, thanks to the Fulbright Scholarship.
+      const [side, setSide] = useState('center');
+      const [locked, setLocked] = useState(false);
+      const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+      const worldRef = useRef(null);
+      const sideRef = useRef('center');
+      const lockedRef = useRef(false);
+      sideRef.current = side; lockedRef.current = locked;
+
+      const commit = useCallback((s) => { setSide(s); setLocked(true); setTilt({x:0,y:0}); }, []);
+      const reset  = useCallback(() => { setSide('center'); setLocked(false); }, []);
+
+      const onMove = useCallback((e) => {
+        const el = worldRef.current; if (!el) return;
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width;
+        const y = (e.clientY - r.top) / r.height;
+        if (!lockedRef.current && t.trigger === 'hover'){
+          const target = x < 0.32 ? 'ml' : (x > 0.68 ? 'comm' : 'center');
+          if (target !== sideRef.current) setSide(target);
+        }
+        if (sideRef.current === 'center' && !lockedRef.current){
+          setTilt({ x: (x - 0.5) * 26 * m, y: (0.5 - y) * 16 * m });
+        }
+      }, [t.trigger, m]);
+
+      const onLeave = useCallback(() => {
+        if (!lockedRef.current){
+          if (t.trigger === 'hover') setSide('center');
+          setTilt({ x: 0, y: 0 });
+        }
+      }, [t.trigger]);
+
+      const onClick = useCallback((e) => {
+        const el = worldRef.current; if (!el) return;
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width;
+        if (x < 0.34) commit('ml');
+        else if (x > 0.66) commit('comm');
+        else reset();
+      }, [commit, reset]);
+
+      useEffect(() => {
+        const onKey = (e) => {
+          if (e.key === 'ArrowLeft') commit('ml');
+          else if (e.key === 'ArrowRight') commit('comm');
+          else if (e.key === 'Escape' || e.key === 'ArrowDown') reset();
+        };
+        window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
+      }, [commit, reset]);
+
+      const centerFigStyle = side === 'center'
+        ? { transform: `translateX(-50%) translate(${tilt.x.toFixed(1)}px, ${(-tilt.y).toFixed(1)}px)` }
+        : undefined;
+
+      const rootStyle = { '--ml': t.mlAccent, '--comm': t.commAccent, '--m': m };
+
+      return (
+        <div
+          className="world"
+          ref={worldRef}
+          data-side={side}
+          style={rootStyle}
+          onPointerMove={onMove}
+          onPointerLeave={onLeave}
+          onClick={onClick}
+        >
+          <div className="field base"></div>
+          <div className="field ml"></div>
+          <div className="field comm"></div>
+          <div className="field grid"></div>
+          <div className="field spot"></div>
+
+          <div className="figures">
+            <div className="fig ml"></div>
+            <div className="fig comm"></div>
+            <div className="fig center" style={centerFigStyle}></div>
+          </div>
+
+          <div className="brand"><span className="dot"></span> HUGO</div>
+
+          <button className="back" onClick={(e)=>{ e.stopPropagation(); reset(); }}>
+            <span>✕</span> Back to center
+          </button>
+
+          {/* ML — text panel on the right, photo grows on the left */}
+          <div className="panel ml">
+            <div className="kicker"><span className="ln"></span>01 · Machine Learning Engineer</div>
+            <h2>I teach machines to <em>act</em> in the real world.</h2>
+            <p className="lede">
+              From a deep-RL levitation controller for a hyperloop vehicle to imitation-learning
+              research at USC, I turn cutting-edge reinforcement learning into systems that hold
+              up outside the paper — and aim them at problems that actually matter.
             </p>
-            <br>
-            <p>
-                I proudly carry the values of the Culture of Effort and my Valencian identity. Professionally, I have two core passions whose combination I firmly believe can help change the world:
+            <div className="chips">
+              <span className="chip">Deep RL</span>
+              <span className="chip">Robotics</span>
+              <span className="chip">Imitation Learning</span>
+              <span className="chip">Computer Vision</span>
+            </div>
+            <a className="cta" href="#ml" onClick={(e)=>e.stopPropagation()}>
+              Explore the engineering <span className="arrow">→</span>
+            </a>
+            <div className="creds">Fulbright Scholar · MSc Artificial Intelligence, USC · BSc Data Science, UPV</div>
+          </div>
+
+          {/* Communication — text panel on the left, photo grows on the right */}
+          <div className="panel comm">
+            <div className="kicker">Communicator &amp; Speaker · 02<span className="ln"></span></div>
+            <h2>I help people speak so they are <em>truly heard</em>.</h2>
+            <p className="lede">
+              Fifteen-plus stages, rooms of three hundred, and a team of fifty I once led — I shape
+              ideas into words that move people, and I am building toward teaching that craft so
+              others can be heard in their work, their projects, and their lives.
             </p>
-            <br>
-            <p>
-                Artificial Intelligence — as thrilling as it is complex. My goal is to dive deep into its algorithms and apply them ethically and purposefully, for the benefit of society.
-            </p>
-            <br>
-            <p>
-                Communication — the driving force behind collaboration and innovation. It's essential for teaching, inspiring, connecting, negotiating, and building strong relationships. Without it, ideas wither.
-            </p>
-            <br>
-            <p>
-                My path is built on these pillars: from leading the Hyperloop UPV team—where cutting-edge technology and communication unite to solve international challenges—to the "Salvem les fotos" project, where AI helps recover the collective memory of those affected by the DANA floods.
-            </p>
+            <div className="chips">
+              <span className="chip">Public speaking</span>
+              <span className="chip">Leadership</span>
+              <span className="chip">Storytelling</span>
+              <span className="chip">Improv</span>
+            </div>
+            <a className="cta" href="#comm" onClick={(e)=>e.stopPropagation()}>
+              Step into the story <span className="arrow">→</span>
+            </a>
+            <div className="creds">Hyperloop UPV team lead · mentored by Tomás Baviera · trained with Vinh Giang &amp; Paco Grau</div>
+          </div>
+
+          <div className="greeting">
+            <h1 dangerouslySetInnerHTML={{ __html: t.greeting.replace(/Hugo/g, '<b>Hugo</b>') }} />
+            <p>Machine learning engineer × communicator</p>
+          </div>
+
+          <div className="hints">
+            <div className="hint l"><span className="k">←</span> Machine Learning</div>
+            <div className="hint r">Communication <span className="k">→</span></div>
+          </div>
+          <div className="scrollnote">{t.trigger === 'hover' ? 'Move toward a side · click to hold' : 'Click a side to enter'}</div>
+
+          <TweaksPanel>
+            <TweakSection label="Identity" />
+            <TweakText label="Greeting" value={t.greeting} onChange={(v)=>setTweak('greeting', v)} />
+            <TweakSection label="Interaction" />
+            <TweakRadio label="Trigger" value={t.trigger} options={['hover','click']} onChange={(v)=>setTweak('trigger', v)} />
+            <TweakSlider label="Parallax" value={t.motion} min={0} max={100} step={5} unit="%" onChange={(v)=>setTweak('motion', v)} />
+            <TweakSection label="Accents" />
+            <TweakColor label="ML side" value={t.mlAccent} options={['#3D7BFF','#2BD4D4','#6E7BFF','#34C56B']} onChange={(v)=>setTweak('mlAccent', v)} />
+            <TweakColor label="Comm side" value={t.commAccent} options={['#E2A24A','#E8765A','#E06A86','#D98AE0']} onChange={(v)=>setTweak('commAccent', v)} />
+          </TweaksPanel>
         </div>
-    </div>
-</section>
+      );
+    }
 
-
-
-    <section id="education">
-    <h2>Education</h2>
-    
-    <div class="timeline-item">
-        <div class="timeline-header">
-            <span class="timeline-title">University of Southern California (USC)</span>
-            <span class="timeline-date">Expected Graduation: May 2027</span>
-        </div>
-        <div class="timeline-subtitle">Master of Science in Computer Science (Artificial Intelligence)</div>
-        <p>Fulbright and Viterbi School of Engineering scholarship.</p>
-    </div>
-
-    <div class="timeline-item">
-        <div class="timeline-header">
-            <span class="timeline-title">Universitat Politècnica de València (UPV)</span>
-            <span class="timeline-date">Graduated July 2025</span>
-        </div>
-        <div class="timeline-subtitle">M.S. in Artificial Intelligence, Pattern Recognition, and Digital Imaging</div>
-    </div>
-
-    <div class="timeline-item">
-        <div class="timeline-header">
-            <span class="timeline-title">Universitat Politècnica de València (UPV)</span>
-            <span class="timeline-date">Graduated June 2024</span>
-        </div>
-        <div class="timeline-subtitle">B.S. in Data Science</div>
-    </div>
-</section>
-
-
-    <section id="experience">
-    <h2>Experience</h2>
-
-    <div class="timeline-item">
-        <div class="timeline-header">
-            <span class="timeline-title">Valencian Research Institute for Artificial Intelligence (VRAIN)</span>
-            <span class="timeline-date">November 2024 - August 2025</span>
-        </div>
-        <div class="timeline-subtitle">Computer Vision Graduate Researcher</div>
-        <ul> 
-            <li>Developed a web application to automate damaged image repair, improving reconstruction time by 98% w.r.t. manual restoration (AAAI-26 Demonstrations Program).</li>
-            <li>Achieved over 90% identity preservation in more than 200,000 images with a specialized loss function and a facial treatment pipeline.</li>
-            <li>Improved inference time by 30% and performance by 20%, per Borda Count expert voting, by substituting foundational model SAM2 for SegFormer fine-tuned with previously mentioned loss.</li>
-        </ul>
-    </div>
-
-    <div class="timeline-item">
-        <div class="timeline-header">
-            <span class="timeline-title">Valencian Research Institute for Artificial Intelligence (VRAIN)</span>
-            <span class="timeline-date">November 2023 - July 2024</span>
-        </div>
-        <div class="timeline-subtitle">Undergraduate Robotics Intern</div>
-        <ul> 
-            <li>Reduced response time of levitation control system of 250kg autonomous electric vehicle by 94% from previous PID system by training a Soft Actor-Critic Deep Reinforcement Learning Agent, while keeping power consumption below 100W, on embedded system STM32H7.</li>
-            <li>Improved adjusting time by 99% by implementing a dynamic simulator for testing, minimizing material risks.</li>
-        </ul>
-    </div>
-</section>
-
-
-    <section id="research">
-    <h2>Research & Projects</h2>
-
-    <div class="project-card">
-        <a href="#" class="project-title">HUrtful HUmor (HUHU) Detection on Twitter</a>
-        <p>
-            Authored the paper <em>"Detection, Classification and Quantification of HUrtful HUmor (HUHU) on Twitter Using Classical Models, Ensemble Models, and Transformers"</em> (IberLEF @ SEPLN, 2023).
-            Developed NLP pipelines to distinguish between benign jokes and prejudiced humor using Transformer architectures.
-        </p>
-        <div class="tags">
-            <span class="tag">NLP</span>
-            <span class="tag">Transformers</span>
-            <span class="tag">Python</span>
-            <span class="tag">Research</span>
-        </div>
-    </div>
-
-    <div class="project-card">
-        <a href="#" class="project-title">Hyperloop Levitation Control System</a>
-        <p>
-            Designed and tested an embedded control system for the levitation of a Hyperloop vehicle. Utilized <strong>Reinforcement Learning (RL)</strong> algorithms to optimize magnetic levitation stability dynamically. This work was part of the Hyperloop UPV team competition entry.
-        </p>
-        <div class="tags">
-            <span class="tag">Reinforcement Learning</span>
-            <span class="tag">Embedded Systems</span>
-            <span class="tag">Control Theory</span>
-            <span class="tag">C++</span>
-        </div>
-    </div>
-</section>
-
-
-    <section id="skills">
-    <h2>Technical Skills</h2>
-    <div class="skills-grid">
-        <div class="skill-box">Python & C++</div>
-        <div class="skill-box">PyTorch / TensorFlow</div>
-        <div class="skill-box">Reinforcement Learning</div>
-        <div class="skill-box">Natural Language Processing</div>
-        <div class="skill-box">Embedded Systems</div>
-        <div class="skill-box">Git & Version Control</div>
-    </div>
-</section>
-
-
-    <section id="contact">
-    <h2>Contact</h2>
-    <div style="text-align: center;">
-        <p>I am always open to discussing new opportunities in AI research and Software Engineering.</p>
-        <br>
-        <a href="mailto:hugo.albert.16@gmail.com" class="btn">Email Me</a>
-    </div>
-</section>
-
-
-    <footer>
-    <div class="social-links">
-        <a href="https://www.linkedin.com/in/hugoalbert" target="_blank">LinkedIn</a>
-        <a href="https://scholar.google.com/citations?user=EhPcpxwAAAAJ" target="_blank">Google Scholar</a>
-    </div>
-    <p>&copy; 2025 Hugo Albert Bonet. All rights reserved.</p>
-</footer>
-
-
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
 </body>
 </html>
