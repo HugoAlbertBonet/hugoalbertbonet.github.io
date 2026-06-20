@@ -79,9 +79,6 @@
   .world[data-side="comm"] .field.spot{ opacity: 1; }
   .world[data-side="ml"]   .field.base,
   .world[data-side="comm"] .field.base{ opacity: .5; }
-  /* faint identity tint on each side while idle, so the two zones read clearly */
-  .world[data-side="center"] .field.ml{ opacity: .2; }
-  .world[data-side="center"] .field.comm{ opacity: .2; }
 
   /* ---------- figures ---------- */
   .figures{ position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
@@ -96,7 +93,7 @@
   /* centre — Hugo cut-out */
   .fig.center{
     left: 50%; bottom: -2vh;
-    width: 72vh; height: 96vh;
+    width: 100vh; height: 132vh;
     transform: translateX(-50%);
     background-image: url('assets/portrait-final.png');
     background-size: contain;
@@ -110,13 +107,13 @@
   /* ML photo — lives on the LEFT */
   .fig.ml{
     left: 0; top: 0; height: 100%;
-    width: 19vw;
+    width: 15vw;
     background-image: url('assets/ml-soft.png');
     background-size: cover; background-position: 60% 36%;
-    opacity: .62;
-    filter: grayscale(.16) brightness(.94) saturate(.95);
-    -webkit-mask-image: linear-gradient(to right, #000 54%, transparent 100%);
-            mask-image: linear-gradient(to right, #000 54%, transparent 100%);
+    opacity: .42;
+    filter: grayscale(.3) brightness(.72) saturate(.85);
+    -webkit-mask-image: linear-gradient(to right, #000 46%, transparent 95%);
+            mask-image: linear-gradient(to right, #000 46%, transparent 95%);
   }
   .world[data-side="ml"]   .fig.ml{ width: 50vw; opacity: 1; filter: saturate(1) brightness(1.02); }
   .world[data-side="comm"] .fig.ml{ width: 11vw; opacity: 0; }
@@ -124,13 +121,13 @@
   /* Communication photo — lives on the RIGHT */
   .fig.comm{
     right: 0; top: 0; height: 100%;
-    width: 19vw;
+    width: 15vw;
     background-image: url('assets/comm-soft.png');
     background-size: cover; background-position: 42% 32%;
-    opacity: .62;
-    filter: brightness(.96) saturate(.98);
-    -webkit-mask-image: linear-gradient(to left, #000 54%, transparent 100%);
-            mask-image: linear-gradient(to left, #000 54%, transparent 100%);
+    opacity: .42;
+    filter: brightness(.78) saturate(.9);
+    -webkit-mask-image: linear-gradient(to left, #000 46%, transparent 95%);
+            mask-image: linear-gradient(to left, #000 46%, transparent 95%);
   }
   .world[data-side="comm"] .fig.comm{ width: 50vw; opacity: 1; filter: saturate(1.02) brightness(.94); }
   .world[data-side="ml"]   .fig.comm{ width: 11vw; opacity: 0; }
@@ -258,31 +255,18 @@
   .world[data-side="comm"] .brand .dot{ background: var(--comm); }
 
   .hints{
-    position: absolute; left: 0; right: 0; bottom: 30px; z-index: 7;
+    position: absolute; left: 0; right: 0; bottom: 34px; z-index: 7;
     display: flex; justify-content: space-between; align-items: center;
     padding: 0 clamp(28px, 5vw, 80px); pointer-events: none; transition: opacity .5s ease;
   }
   .hint{
     font-family: "JetBrains Mono", monospace;
-    font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink);
-    display: flex; align-items: center; gap: 12px;
-    background: oklch(0.2 0.012 72 / .55); backdrop-filter: blur(8px);
-    border: 1px solid oklch(1 0 0 / .18); border-radius: 999px;
-    padding: 11px 18px; cursor: pointer; pointer-events: auto;
-    transition: color .3s ease, border-color .3s ease, background .3s ease, transform .3s ease;
+    font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-faint);
+    display: flex; align-items: center; gap: 12px; transition: color .4s ease;
   }
-  .hint .hnum{ color: var(--ink-faint); }
-  .hint .k{ font-size: 18px; line-height: 1; transition: transform .3s ease; }
-  .hint.l .k{ color: var(--ml); }
-  .hint.r .k{ color: var(--comm); }
-  .hint.l:hover{ color: #fff; border-color: color-mix(in oklab, var(--ml) 62%, transparent); background: color-mix(in oklab, var(--ml) 14%, oklch(0.2 0.012 72 / .6)); transform: translateY(-2px); }
-  .hint.r:hover{ color: #fff; border-color: color-mix(in oklab, var(--comm) 62%, transparent); background: color-mix(in oklab, var(--comm) 14%, oklch(0.2 0.012 72 / .6)); transform: translateY(-2px); }
-  .hint.l:hover .k{ transform: translateX(-4px); }
-  .hint.r:hover .k{ transform: translateX(4px); }
+  .hint .k{ font-size: 18px; line-height: 1; }
   .world[data-side="ml"]   .hints,
   .world[data-side="comm"] .hints{ opacity: 0; }
-  .world[data-side="ml"]   .hint,
-  .world[data-side="comm"] .hint{ pointer-events: none; }
 
   .scrollnote{
     position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); z-index: 7;
@@ -347,49 +331,33 @@
       const worldRef = useRef(null);
       const sideRef = useRef('center');
       const lockedRef = useRef(false);
-      const armedRef = useRef(true); // must pass through the centre band before a side can re-open
       sideRef.current = side; lockedRef.current = locked;
 
       const commit = useCallback((s) => { setSide(s); setLocked(true); setTilt({x:0,y:0}); }, []);
-      const reset  = useCallback(() => { setSide('center'); setLocked(false); armedRef.current = false; }, []);
+      const reset  = useCallback(() => { setSide('center'); setLocked(false); }, []);
 
       const onMove = useCallback((e) => {
         const el = worldRef.current; if (!el) return;
         const r = el.getBoundingClientRect();
         const x = (e.clientX - r.left) / r.width;
         const y = (e.clientY - r.top) / r.height;
-        const onChrome = !!(e.target.closest && e.target.closest('.panel, .back, .hint'));
-
-        // Hover OPENS a side and holds it, so the whole panel (incl. the CTA)
-        // stays put and is freely clickable. Sweep to the far opposite edge to
-        // switch; use Back / Esc / centre to return.
-        if (t.trigger === 'hover' && !onChrome){
-          const cur = sideRef.current;
-          if (cur === 'center'){
-            // re-arm once the cursor returns to the neutral centre band, so coming
-            // back from a side doesn't instantly re-open the one you're parked on
-            if (x > 0.40 && x < 0.60) armedRef.current = true;
-            if (armedRef.current){
-              if (x < 0.30) commit('ml');
-              else if (x > 0.70) commit('comm');
-            }
-          } else if (cur === 'ml' && x > 0.86){
-            commit('comm');
-          } else if (cur === 'comm' && x < 0.14){
-            commit('ml');
-          }
+        if (!lockedRef.current && t.trigger === 'hover'){
+          const target = x < 0.32 ? 'ml' : (x > 0.68 ? 'comm' : 'center');
+          if (target !== sideRef.current) setSide(target);
         }
-        if (sideRef.current === 'center'){
+        if (sideRef.current === 'center' && !lockedRef.current){
           setTilt({ x: (x - 0.5) * 26 * m, y: (0.5 - y) * 16 * m });
         }
-      }, [t.trigger, m, commit]);
+      }, [t.trigger, m]);
 
       const onLeave = useCallback(() => {
-        if (!lockedRef.current) setTilt({ x: 0, y: 0 });
-      }, []);
+        if (!lockedRef.current){
+          if (t.trigger === 'hover') setSide('center');
+          setTilt({ x: 0, y: 0 });
+        }
+      }, [t.trigger]);
 
       const onClick = useCallback((e) => {
-        if (e.target.closest && e.target.closest('.panel, .back, .hint, .cta')) return;
         const el = worldRef.current; if (!el) return;
         const r = el.getBoundingClientRect();
         const x = (e.clientX - r.left) / r.width;
@@ -490,16 +458,10 @@
           </div>
 
           <div className="hints">
-            <button className="hint l" onClick={(e)=>{ e.stopPropagation(); commit('ml'); }}>
-              <span className="k">←</span>
-              <span><span className="hnum">01</span> Machine Learning</span>
-            </button>
-            <button className="hint r" onClick={(e)=>{ e.stopPropagation(); commit('comm'); }}>
-              <span>Communication <span className="hnum">02</span></span>
-              <span className="k">→</span>
-            </button>
+            <div className="hint l"><span className="k">←</span> Machine Learning</div>
+            <div className="hint r">Communication <span className="k">→</span></div>
           </div>
-          <div className="scrollnote">{t.trigger === 'hover' ? 'Hover or tap a side to open · Esc to return' : 'Click a side to open · Esc to return'}</div>
+          <div className="scrollnote">{t.trigger === 'hover' ? 'Move toward a side · click to hold' : 'Click a side to enter'}</div>
 
           <TweaksPanel>
             <TweakSection label="Identity" />
