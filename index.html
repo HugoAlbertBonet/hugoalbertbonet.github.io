@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Hugo — Machine Learning × Communication</title>
+<title>Hugo — Machine Learning × Comunicación</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
@@ -333,7 +333,7 @@
     const { useState, useRef, useEffect, useCallback } = React;
 
     const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-      "greeting": "Hi, I'm Hugo!",
+      "greeting": "¡Hola, soy Hugo!",
       "trigger": "hover",
       "motion": 100,
       "mlAccent": "#3D7BFF",
@@ -443,54 +443,54 @@
           <div className="brand"><span className="dot"></span> HUGO</div>
 
           <button className="back" onClick={(e)=>{ e.stopPropagation(); reset(); }}>
-            <span>✕</span> Back to center
+            <span>✕</span> Volver al centro
           </button>
 
-          {/* ML — text panel on the right, photo grows on the left */}
+          {/* ML — panel de texto a la derecha, la foto crece a la izquierda */}
           <div className="panel ml">
-            <div className="kicker"><span className="ln"></span>01 · Machine Learning Engineer</div>
-            <h2>I teach machines to <em>act</em> in the real world.</h2>
+            <div className="kicker"><span className="ln"></span>01 · Ingeniero de Machine Learning</div>
+            <h2>Enseño a las máquinas a <em>actuar</em> en el mundo real.</h2>
             <p className="lede">
-              From a deep-RL levitation controller for a hyperloop vehicle to imitation-learning
-              research at USC, I turn cutting-edge reinforcement learning into systems that hold
-              up outside the paper — and aim them at problems that actually matter.
+              Desde un controlador de levitación por aprendizaje por refuerzo profundo (deep-RL) para un vehículo hyperloop
+              hasta la investigación en aprendizaje por imitación en la USC, convierto el aprendizaje por refuerzo
+              de vanguardia en sistemas que funcionan fuera del papel, y los dirijo a problemas que realmente importan.
             </p>
             <div className="chips">
               <span className="chip">Deep RL</span>
-              <span className="chip">Robotics</span>
-              <span className="chip">Imitation Learning</span>
-              <span className="chip">Computer Vision</span>
+              <span className="chip">Robótica</span>
+              <span className="chip">Aprendizaje por Imitación</span>
+              <span className="chip">Visión por Computador</span>
             </div>
             <a className="cta" href="#ml" onClick={(e)=>e.stopPropagation()}>
-              Explore the engineering <span className="arrow">→</span>
+              Explora la ingeniería <span className="arrow">→</span>
             </a>
-            <div className="creds">Fulbright Scholar · MSc Artificial Intelligence, USC · BSc Data Science, UPV</div>
+            <div className="creds">Becario Fulbright · Máster en Inteligencia Artificial, USC · Grado en Ciencia de Datos, UPV</div>
           </div>
 
-          {/* Communication — text panel on the left, photo grows on the right */}
+          {/* Comunicación — panel de texto a la izquierda, la foto crece a la derecha */}
           <div className="panel comm">
-            <div className="kicker">Communicator &amp; Speaker · 02<span className="ln"></span></div>
-            <h2>I help people speak so they are <em>truly heard</em>.</h2>
+            <div className="kicker">Comunicador y Orador · 02<span className="ln"></span></div>
+            <h2>Ayudo a las personas a hablar para que sean <em>escuchadas de verdad</em>.</h2>
             <p className="lede">
-              Fifteen-plus stages, rooms of three hundred, and a team of fifty I once led — I shape
-              ideas into words that move people, and I am building toward teaching that craft so
-              others can be heard in their work, their projects, and their lives.
+              Más de quince escenarios, salas de trescientas personas y un equipo de cincuenta personas que lideré — transformo
+              ideas en palabras que mueven a la gente, y trabajo para enseñar este arte para que otros puedan
+              ser escuchados en su trabajo, sus proyectos y sus vidas.
             </p>
             <div className="chips">
-              <span className="chip">Public speaking</span>
-              <span className="chip">Leadership</span>
+              <span className="chip">Oratoria</span>
+              <span className="chip">Liderazgo</span>
               <span className="chip">Storytelling</span>
-              <span className="chip">Improv</span>
+              <span className="chip">Improvisación</span>
             </div>
             <a className="cta" href="#comm" onClick={(e)=>e.stopPropagation()}>
-              Step into the story <span className="arrow">→</span>
+              Adéntrate en la historia <span className="arrow">→</span>
             </a>
-            <div className="creds">Hyperloop UPV team lead · mentored by Tomás Baviera · trained with Vinh Giang &amp; Paco Grau</div>
+            <div className="creds">Líder del equipo Hyperloop UPV · mentorizado por Tomás Baviera · formado con Vinh Giang y Paco Grau</div>
           </div>
 
           <div className="greeting">
             <h1 dangerouslySetInnerHTML={{ __html: t.greeting.replace(/Hugo/g, '<b>Hugo</b>') }} />
-            <p>Machine learning engineer × communicator</p>
+            <p>Ingeniero de machine learning × comunicador</p>
           </div>
 
           <div className="hints">
@@ -499,21 +499,21 @@
               <span><span className="hnum">01</span> Machine Learning</span>
             </button>
             <button className="hint r" onClick={(e)=>{ e.stopPropagation(); commit('comm'); }}>
-              <span>Communication <span className="hnum">02</span></span>
+              <span>Comunicación <span className="hnum">02</span></span>
               <span className="k">→</span>
             </button>
           </div>
-          <div className="scrollnote">{t.trigger === 'hover' ? 'Hover or tap a side to open · Esc to return' : 'Click a side to open · Esc to return'}</div>
+          <div className="scrollnote">{t.trigger === 'hover' ? 'Pasa el cursor o pulsa un lado para abrir · Esc para volver' : 'Haz clic en un lado para abrir · Esc para volver'}</div>
 
-          <TweaksPanel>
-            <TweakSection label="Identity" />
-            <TweakText label="Greeting" value={t.greeting} onChange={(v)=>setTweak('greeting', v)} />
-            <TweakSection label="Interaction" />
-            <TweakRadio label="Trigger" value={t.trigger} options={['hover','click']} onChange={(v)=>setTweak('trigger', v)} />
-            <TweakSlider label="Parallax" value={t.motion} min={0} max={100} step={5} unit="%" onChange={(v)=>setTweak('motion', v)} />
-            <TweakSection label="Accents" />
-            <TweakColor label="ML side" value={t.mlAccent} options={['#3D7BFF','#2BD4D4','#6E7BFF','#34C56B']} onChange={(v)=>setTweak('mlAccent', v)} />
-            <TweakColor label="Comm side" value={t.commAccent} options={['#E2A24A','#E8765A','#E06A86','#D98AE0']} onChange={(v)=>setTweak('commAccent', v)} />
+          <TweaksPanel title="Ajustes">
+            <TweakSection label="Identidad" />
+            <TweakText label="Saludo" value={t.greeting} onChange={(v)=>setTweak('greeting', v)} />
+            <TweakSection label="Interacción" />
+            <TweakRadio label="Activador" value={t.trigger} options={[{value:'hover',label:'cursor'},{value:'click',label:'clic'}]} onChange={(v)=>setTweak('trigger', v)} />
+            <TweakSlider label="Paralaje" value={t.motion} min={0} max={100} step={5} unit="%" onChange={(v)=>setTweak('motion', v)} />
+            <TweakSection label="Acentos" />
+            <TweakColor label="Lado ML" value={t.mlAccent} options={['#3D7BFF','#2BD4D4','#6E7BFF','#34C56B']} onChange={(v)=>setTweak('mlAccent', v)} />
+            <TweakColor label="Lado Comm" value={t.commAccent} options={['#E2A24A','#E8765A','#E06A86','#D98AE0']} onChange={(v)=>setTweak('commAccent', v)} />
           </TweaksPanel>
         </div>
       );
