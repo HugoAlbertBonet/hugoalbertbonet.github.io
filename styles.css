@@ -101,12 +101,14 @@ body {
   font-family: var(--font-display);
   font-weight: 700;
   -webkit-text-stroke: 0.016em currentColor;
-  font-size: clamp(3.6rem, 14vw, 13rem);
+  font-size: clamp(3.4rem, 12vw, 12rem);
   letter-spacing: -0.02em;
   line-height: 0.95;
   color: var(--ink);
   white-space: nowrap;
 }
+/* Spanish headline is longer — scale down so it never overflows */
+html[lang="es"] .hero-text h1 { font-size: clamp(3.2rem, 10.3vw, 10.3rem); }
 
 .hero-sub {
   position: absolute;
@@ -345,7 +347,8 @@ body {
 /* ---------- mobile ---------- */
 
 @media (max-width: 768px) {
-  .hero-text h1 { white-space: normal; font-size: clamp(3.2rem, 18vw, 5.6rem); }
+  .hero-text h1,
+  html[lang="es"] .hero-text h1 { white-space: normal; font-size: clamp(3.2rem, 18vw, 5.6rem); }
   .hero-text { padding-top: clamp(56px, 10vh, 100px); }
 
   .hero-sub {
