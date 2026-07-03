@@ -79,35 +79,57 @@
   document.getElementById("langToggleFooter").addEventListener("click", toggleLang);
   applyLang();
 
-  /* ==================== white-background keying ====================== */
-  /* Soft luma key with feathering + despill. Background is near-white   */
-  /* but not perfectly uniform, so we ramp alpha between KEY_LO/KEY_HI   */
-  /* instead of a hard cut, and only key low-chroma (grayish) pixels.    */
+  /* ==================== background keying ====================== */
+  /* Adaptive color key: the backdrop is near-flat but its tone varies
+     (t1 is near-white, t2 is pinkish ~rgb(237,225,232), and it drifts
+     between frames). Per frame we estimate the backdrop color from the
+     image borders, then key on color distance with a feathered ramp. */
 
-  const KEY_LO = 216;      // min-channel below this -> fully opaque
-  const KEY_HI = 244;      // min-channel above this -> fully transparent
-  const CHROMA_MAX = 30;   // colorful pixels are never keyed
+  const KEY_D_LO = 16;   // distance below -> fully transparent
+  const KEY_D_HI = 52;   // distance above -> fully opaque
+  const BG_FALLBACK = [240, 240, 240];
 
-  function keyImageData(data) {
+  function estimateBg(px, w, h) {
+    /* median of plausible border pixels (top rows + side columns) */
+    const rs = [], gs = [], bs = [];
+    function take(i) {
+      const r = px[i], g = px[i + 1], b = px[i + 2];
+      const mn = Math.min(r, g, b), mx = Math.max(r, g, b);
+      if (mn > 165 && mx - mn < 55) { rs.push(r); gs.push(g); bs.push(b); }
+    }
+    const band = Math.max(2, Math.round(h * 0.02));
+    for (let y = 0; y < band; y++)
+      for (let x = 0; x < w; x += 7) take((y * w + x) * 4);
+    const side = Math.max(2, Math.round(w * 0.015));
+    for (let y = 0; y < h; y += 5) {
+      for (let x = 0; x < side; x++) take((y * w + x) * 4);
+      for (let x = w - side; x < w; x++) take((y * w + x) * 4);
+    }
+    if (rs.length < 40) return BG_FALLBACK;
+    const med = (a) => { a.sort((m, n) => m - n); return a[a.length >> 1]; };
+    return [med(rs), med(gs), med(bs)];
+  }
+
+  function keyImageData(data, w, h) {
     const px = data.data;
-    const span = KEY_HI - KEY_LO;
+    const bg = estimateBg(px, w, h);
+    const bR = bg[0], bG = bg[1], bB = bg[2];
+    const span = KEY_D_HI - KEY_D_LO;
     for (let i = 0; i < px.length; i += 4) {
       const r = px[i], g = px[i + 1], b = px[i + 2];
-      const mn = r < g ? (r < b ? r : b) : (g < b ? g : b);
-      const mx = r > g ? (r > b ? r : b) : (g > b ? g : b);
-      if (mx - mn > CHROMA_MAX || mn <= KEY_LO) continue;
-      let a = 1 - (mn - KEY_LO) / span;
-      if (a <= 0.02) { px[i + 3] = 0; continue; }
-      if (a < 1) {
-        // smoothstep feather
-        a = a * a * (3 - 2 * a);
-        // despill: remove the white that mixes into semi-transparent edges
-        const inv = (1 - a) * 255;
-        px[i]     = Math.max(0, Math.min(255, (r - inv) / a));
-        px[i + 1] = Math.max(0, Math.min(255, (g - inv) / a));
-        px[i + 2] = Math.max(0, Math.min(255, (b - inv) / a));
-        px[i + 3] = Math.round(px[i + 3] * a);
-      }
+      const dr = r - bR, dg = g - bG, db = b - bB;
+      const ar = dr < 0 ? -dr : dr, ag = dg < 0 ? -dg : dg, ab = db < 0 ? -db : db;
+      const d = ar > ag ? (ar > ab ? ar : ab) : (ag > ab ? ag : ab);
+      if (d >= KEY_D_HI) continue;                    // clearly Hugo
+      if (d <= KEY_D_LO) { px[i + 3] = 0; continue; } // clearly backdrop
+      let a = (d - KEY_D_LO) / span;
+      a = a * a * (3 - 2 * a);                        // smoothstep feather
+      // despill: un-mix the backdrop color from semi-transparent edges
+      const inv = 1 - a;
+      px[i]     = Math.max(0, Math.min(255, (r - bR * inv) / a));
+      px[i + 1] = Math.max(0, Math.min(255, (g - bG * inv) / a));
+      px[i + 2] = Math.max(0, Math.min(255, (b - bB * inv) / a));
+      px[i + 3] = Math.round(px[i + 3] * a);
     }
     return data;
   }
@@ -128,7 +150,7 @@
     } catch (e) {
       return false; // tainted canvas (shouldn't happen same-origin)
     }
-    keyImageData(data);
+    keyImageData(data, w, h);
     if (targetCanvas.width !== w || targetCanvas.height !== h) {
       targetCanvas.width = w;
       targetCanvas.height = h;
@@ -263,10 +285,10 @@
 
   /* progress checkpoints (0..1 across the sticky scroller) */
   const P = {
-    heroHold: 0.06,   // static frame 1
-    v1End: 0.46,      // transition-1 fully played (Hugo on the left)
-    x2Start: 0.60,    // start of programmer -> speaker transition
-    x2End: 0.78,      // Hugo on the right
+    heroHold: 0.05,   // static frame 1
+    v1End: 0.38,      // transition-1 fully played (Hugo on the left)
+    x2Start: 0.50,    // start of programmer -> speaker transition
+    x2End: 0.88,      // Hugo on the right
   };
 
   const clamp01 = (x) => (x < 0 ? 0 : x > 1 ? 1 : x);
@@ -336,15 +358,15 @@
     progress = p;
 
     /* phase attr (drives mobile object-position) */
-    stage.dataset.phase = p < 0.3 ? "hero" : p < P.x2Start ? "ml" : "sp";
+    stage.dataset.phase = p < 0.26 ? "hero" : p < P.x2Start ? "ml" : "sp";
 
     /* figure grows from 0.88 (hero) to full-bleed by a quarter of transition-1 */
     const figScale = 0.88 + 0.12 * smooth(P.heroHold, P.heroHold + (P.v1End - P.heroHold) / 4, p);
     figure.style.transform = "scale(" + figScale.toFixed(4) + ")";
 
     /* backgrounds */
-    const inMl = smooth(0.10, 0.30, p);
-    const inSp = smooth(0.55, 0.72, p);
+    const inMl = smooth(0.08, 0.26, p);
+    const inSp = smooth(0.52, 0.75, p);
     bgHero.style.opacity = String(1 - inMl);
     bgMl.style.opacity = String(inMl * (1 - inSp));
     bgSp.style.opacity = String(inSp);
@@ -359,12 +381,12 @@
       "translateY(" + (-0.2 * window.innerHeight * (1 - heroOut)) + "px)";
     scrollHint.style.opacity = String(1 - smooth(0.01, 0.05, p));
 
-    const mlIn = smooth(0.30, 0.42, p) * (1 - smooth(0.55, 0.64, p));
+    const mlIn = smooth(0.26, 0.36, p) * (1 - smooth(0.46, 0.54, p));
     mlText.style.opacity = String(mlIn);
     mlText.style.transform =
       "translateY(calc(-50% + " + (24 * (1 - mlIn)) + "px))";
 
-    const spIn = smooth(0.68, 0.79, p);
+    const spIn = smooth(0.82, 0.92, p);
     spText.style.opacity = String(spIn);
     spText.style.transform =
       "translateY(calc(-50% + " + (24 * (1 - spIn)) + "px))";
