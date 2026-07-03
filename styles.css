@@ -108,7 +108,7 @@ body {
   white-space: nowrap;
 }
 /* Spanish headline is longer — scale down so it never overflows */
-html[lang="es"] .hero-text h1 { font-size: clamp(3.2rem, 10.3vw, 10.3rem); }
+html[lang="es"] .hero-text h1 { font-size: clamp(3rem, 9vw, 9rem); }
 
 .hero-sub {
   position: absolute;
@@ -347,8 +347,8 @@ html[lang="es"] .hero-text h1 { font-size: clamp(3.2rem, 10.3vw, 10.3rem); }
 /* ---------- mobile ---------- */
 
 @media (max-width: 768px) {
-  .hero-text h1,
-  html[lang="es"] .hero-text h1 { white-space: normal; font-size: clamp(3.2rem, 18vw, 5.6rem); }
+  .hero-text h1 { white-space: normal; font-size: clamp(3.2rem, 18vw, 5.6rem); }
+  html[lang="es"] .hero-text h1 { white-space: normal; font-size: clamp(2.8rem, 15vw, 4.8rem); }
   .hero-text { padding-top: clamp(56px, 10vh, 100px); }
 
   .hero-sub {
