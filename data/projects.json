@@ -14,15 +14,15 @@
     },
     "summary": {
       "es": "Algoritmo de imitation learning con rendimiento SOTA y una inferencia entre 5 y 100 veces más rápida que Diffusion Policy o Implicit BC.",
-      "en": "An imitation learning algorithm with SOTA performance and inference 5–100× faster than Diffusion Policy or Implicit BC."
+      "en": "An imitation learning algorithm with SOTA performance and inference 5-100x faster than Diffusion Policy or Implicit BC."
     },
     "detail": {
-      "es": "Un algoritmo de imitation learning basado en wire-fitting y Q3C que alcanza rendimiento SOTA con una inferencia entre 5 y 100 veces más rápida que Diffusion Policy o Implicit Behavioral Cloning. Validado primero en simulación y después en despliegue real sobre un brazo WidowX, donde la latencia de la política es lo que decide si el robot puede reaccionar o no.",
-      "en": "A wire-fitting and Q3C based imitation learning algorithm that reaches SOTA performance with inference 5–100× faster than Diffusion Policy or Implicit Behavioral Cloning. Validated first in simulation and then on a real WidowX arm, where policy latency is what decides whether the robot can react at all."
+      "es": "Un algoritmo de imitation learning basado en wire-fitting (Q3C) que alcanza rendimiento SOTA con una inferencia entre 5 y 100 veces más rápida que Diffusion Policy o Implicit Behavioral Cloning. Validado primero en simulación y después en despliegue real sobre un brazo WidowX. Controlar la latencia es clave para actuar en tiempo real, y el algoritmo debe ser capaz de cumplir su función ante distribuciones multimodales de observación y acción.",
+      "en": "A wire-fitting based imitation learning algorithm (Q3C) that reaches SOTA performance with inference 5-100x faster than Diffusion Policy or Implicit Behavioral Cloning. Validated first in simulation and then on a real WidowX arm. Controlling latency is key to acting in real time, and the algorithm must be able to fulfill its function under multimodal observation and action distributions."
     },
     "metrics": [
       {
-        "value": "5–100×",
+        "value": "5-100x",
         "label": {
           "es": "inferencia más rápida",
           "en": "faster inference"
@@ -48,7 +48,7 @@
   },
   {
     "id": "rebrot",
-    "year": "2024 – 2025",
+    "year": "2024 - 2025",
     "order": 5,
     "color": "#0E7490",
     "title": {
@@ -60,12 +60,12 @@
       "en": "VRAIN · Machine Learning Researcher (Computer Vision)"
     },
     "summary": {
-      "es": "Aplicación web que repara fotografías dañadas por la DANA con diffusion inpainting: un 98% más rápida que la restauración manual.",
-      "en": "A web application that repairs flood-damaged photographs with diffusion inpainting: 98% faster than manual restoration."
+      "es": "Aplicación web que repara fotografías dañadas por la DANA: un 98% más rápida que la restauración manual.",
+      "en": "A web application that repairs flood-damaged photographs: 98% faster than manual restoration."
     },
     "detail": {
-      "es": "Aplicación web que automatiza la reparación de fotografías dañadas por la DANA con diffusion inpainting, un 98% más rápida que la restauración manual y con más del 90% de preservación de identidad sobre más de 200.000 imágenes. Sustituir SAM2 por un SegFormer afinado con una función de pérdida propia mejoró la inferencia un 30% y la calidad un 20% según votación experta por conteo de Borda. Aceptado en el AAAI-26 Demonstrations Program.",
-      "en": "A web application that automates the repair of flood-damaged photographs with diffusion inpainting, 98% faster than manual restoration and preserving facial identity in over 90% of more than 200,000 images. Replacing SAM2 with a SegFormer fine-tuned on a custom loss improved inference by 30% and quality by 20% under expert Borda-count voting. Accepted at the AAAI-26 Demonstrations Program."
+      "es": "Aplicación web que automatiza la reparación de fotografías dañadas por la DANA, un 98% más rápida que la restauración manual y con más del 90% de preservación de identidad sobre más de 200.000 imágenes. El pipeline combina técnicas clásicas de visión por computador y aprendizaje automático, como segmentación, detección, e inpainting mediante modelos de difusión. Sustituir SAM2 por un SegFormer afinado con una función de pérdida propia mejoró la inferencia un 30% y la calidad un 20% según votación experta por conteo de Borda. Aceptado en el AAAI-26 Demonstrations Program.",
+      "en": "A web application that automates the repair of flood-damaged photographs, 98% faster than manual restoration and preserving facial identity in over 90% of more than 200,000 images. The pipeline combines classical computer vision techniques and machine learning, such as segmentation, detection, and inpainting with diffusion models. Replacing SAM2 with a SegFormer fine-tuned on a custom loss improved inference by 30% and quality by 20% under expert Borda-count voting. Accepted at the AAAI-26 Demonstrations Program."
     },
     "metrics": [
       {
@@ -103,8 +103,8 @@
       "en": "EXIST 2025 — sexism in TikTok videos"
     },
     "role": {
-      "es": "Investigación · modelos visión-lenguaje",
-      "en": "Research · vision-language models"
+      "es": "Investigación · Vision-Language Models",
+      "en": "Research · Vision-Language Models"
     },
     "summary": {
       "es": "Pipeline visión-lenguaje que describe el vídeo fotograma a fotograma en vez de procesarlo directamente: primer puesto en el track LeWiDi de inglés.",
@@ -112,7 +112,7 @@
     },
     "detail": {
       "es": "Pipeline con modelos visión-lenguaje que usa captioning a nivel de fotograma en lugar de procesar el vídeo directamente, mejorando la clasificación un 75% en norma ICM y obteniendo el primer puesto en el track LeWiDi de inglés de EXIST 2025, una tarea que aprende del desacuerdo entre anotadores en lugar de borrarlo.",
-      "en": "A vision-language pipeline using frame-level captioning instead of direct video processing, improving classification by 75% in ICM norm and taking first place in the English LeWiDi track of EXIST 2025 — a task that learns from annotator disagreement instead of erasing it."
+      "en": "Implemented a VLM pipeline using frame-level captioning instead of direct video processing, boosting classification by 75% (ICM Norm) and earning first place in the EXIST 2025 English LeWiDi track."
     },
     "metrics": [
       {
@@ -143,16 +143,16 @@
       "en": "Biomedical Visual Question Answering"
     },
     "role": {
-      "es": "Investigación · benchmark multimodal",
-      "en": "Research · multimodal benchmark"
+      "es": "Investigación · Multimodal benchmark",
+      "en": "Research · Multimodal benchmark"
     },
     "summary": {
       "es": "Comparativa de modelos visión-lenguaje en preguntas sobre imagen biomédica: el SLM multimodal gana, y LoRA le añade 20 puntos.",
       "en": "A comparison of vision-language models on biomedical image questions: the multimodal SLM wins, and LoRA adds 20 points."
     },
     "detail": {
-      "es": "Comparativa de modelos visión-lenguaje respondiendo preguntas sobre imagen biomédica, que muestra que el modelo de lenguaje pequeño multimodal rinde mejor que alternativas más grandes, con una mejora media de 20 puntos porcentuales de accuracy mediante fine-tuning con LoRA.",
-      "en": "A comparison of vision-language models answering questions about biomedical images, showing that the multimodal small language model outperforms larger alternatives, with an average 20 percentage-point accuracy gain from LoRA fine-tuning."
+      "es": "Comparativa de modelos visión-lenguaje respondiendo preguntas sobre imagen biomédica, que muestra que los SLM multimodales rinden mejor que alternativas más grandes, con una mejora media de 20 puntos porcentuales de accuracy mediante fine-tuning con LoRA.",
+      "en": "A comparison of vision-language models answering questions about biomedical images, showing that the multimodal Small Language Models outperform larger alternatives, with an average 20 percentage-point accuracy gain from LoRA fine-tuning."
     },
     "metrics": [
       {
@@ -175,7 +175,7 @@
   },
   {
     "id": "hyperloop-rl",
-    "year": "2023 – 2024",
+    "year": "2023 - 2024",
     "order": 2,
     "color": "#F59E0B",
     "title": {
@@ -196,24 +196,17 @@
     },
     "metrics": [
       {
-        "value": "−94%",
+        "value": "-94%",
         "label": {
           "es": "tiempo de respuesta",
           "en": "response time"
         }
       },
       {
-        "value": "−99%",
+        "value": "-99%",
         "label": {
           "es": "tiempo de ajuste",
           "en": "tuning time"
-        }
-      },
-      {
-        "value": "48",
-        "label": {
-          "es": "personas dirigidas",
-          "en": "people led"
         }
       }
     ],
@@ -222,7 +215,7 @@
   },
   {
     "id": "rag-assistant",
-    "year": "2023 – 2024",
+    "year": "2023 - 2024",
     "order": 1,
     "color": "#059669",
     "title": {
@@ -234,7 +227,7 @@
       "en": "Hyperloop UPV · internal tooling"
     },
     "summary": {
-      "es": "Asistente basado en LangChain conectado a la documentación del equipo para formar a divulgación en conocimiento técnico interno.",
+      "es": "Asistente basado en LangChain conectado a la documentación del equipo para formar a los miembros del equipo en conocimiento técnico interno.",
       "en": "A LangChain assistant wired to the team's documentation, training the outreach division on internal technical knowledge."
     },
     "detail": {

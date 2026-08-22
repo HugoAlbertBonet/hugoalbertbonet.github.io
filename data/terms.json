@@ -100,13 +100,14 @@
     }
   },
   {
-    "id": "policy-inference",
+    "id": "policy-optimization",
     "label": {
-      "es": "inferencia de políticas",
-      "en": "policy inference"
+      "es": "optimización de políticas",
+      "en": "policy optimization"
     },
     "projects": [
-      "liralab"
+      "liralab",
+      "hyperloop-rl"
     ],
     "coords": {
       "semantic": [
@@ -120,10 +121,10 @@
     }
   },
   {
-    "id": "action-sampling",
+    "id": "inference-time-refinement",
     "label": {
-      "es": "muestreo de acciones",
-      "en": "action sampling"
+      "es": "refinamiento en tiempo de inferencia",
+      "en": "inference time refinement"
     },
     "projects": [
       "liralab"
@@ -160,13 +161,14 @@
     }
   },
   {
-    "id": "diffusion-policy",
+    "id": "diffusion-models",
     "label": {
-      "es": "diffusion policy",
-      "en": "diffusion policy"
+      "es": "modelos de difusión",
+      "en": "diffusion models"
     },
     "projects": [
-      "liralab"
+      "liralab",
+      "rebrot"
     ],
     "coords": {
       "semantic": [
@@ -246,7 +248,8 @@
       "en": "reinforcement learning"
     },
     "projects": [
-      "liralab"
+      "liralab",
+      "hyperloop-rl"
     ],
     "coords": {
       "semantic": [
@@ -266,7 +269,8 @@
       "en": "continuous control"
     },
     "projects": [
-      "liralab"
+      "liralab",
+      "hyperloop-rl"
     ],
     "coords": {
       "semantic": [
@@ -280,30 +284,10 @@
     }
   },
   {
-    "id": "inference-latency",
+    "id": "inpainting",
     "label": {
-      "es": "latencia de inferencia",
-      "en": "inference latency"
-    },
-    "projects": [
-      "liralab"
-    ],
-    "coords": {
-      "semantic": [
-        0.58,
-        0.3
-      ],
-      "umap": [
-        3.484,
-        -0.748
-      ]
-    }
-  },
-  {
-    "id": "diffusion-inpainting",
-    "label": {
-      "es": "inpainting con difusión",
-      "en": "diffusion inpainting"
+      "es": "inpainting",
+      "en": "inpainting"
     },
     "projects": [
       "rebrot"
@@ -406,7 +390,9 @@
       "en": "foundation models"
     },
     "projects": [
-      "rebrot"
+      "rebrot",
+      "biomedvqa",
+      "rag-assistant"
     ],
     "coords": {
       "semantic": [
@@ -426,7 +412,10 @@
       "en": "fine-tuning"
     },
     "projects": [
-      "rebrot"
+      "rebrot",
+      "biomedvqa",
+      "liralab",
+      "exist"
     ],
     "coords": {
       "semantic": [
@@ -446,7 +435,8 @@
       "en": "loss function design"
     },
     "projects": [
-      "rebrot"
+      "rebrot",
+      "liralab"
     ],
     "coords": {
       "semantic": [
@@ -526,7 +516,8 @@
       "en": "dataset curation"
     },
     "projects": [
-      "rebrot"
+      "rebrot",
+      "liralab"
     ],
     "coords": {
       "semantic": [
@@ -546,7 +537,8 @@
       "en": "web application"
     },
     "projects": [
-      "rebrot"
+      "rebrot",
+      "rag-assistant"
     ],
     "coords": {
       "semantic": [
@@ -580,13 +572,14 @@
     }
   },
   {
-    "id": "disaster-response",
+    "id": "social-impact",
     "label": {
-      "es": "respuesta ante desastres",
-      "en": "disaster response"
+      "es": "impacto social",
+      "en": "social impact"
     },
     "projects": [
-      "rebrot"
+      "rebrot",
+      "exist"
     ],
     "coords": {
       "semantic": [
@@ -606,8 +599,11 @@
       "en": "vision-language models"
     },
     "projects": [
+      "rebrot",
       "exist",
-      "biomedvqa"
+      "biomedvqa",
+      "rag-assistant",
+      "liralab"
     ],
     "coords": {
       "semantic": [
@@ -667,7 +663,11 @@
       "en": "multimodal pipelines"
     },
     "projects": [
-      "exist"
+      "exist",
+      "biomedvqa",
+      "rag-assistant",
+      "liralab",
+      "rebrot"
     ],
     "coords": {
       "semantic": [
@@ -747,7 +747,9 @@
       "en": "text classification"
     },
     "projects": [
-      "exist"
+      "exist",
+      "biomedvqa",
+      "rag-assistant"
     ],
     "coords": {
       "semantic": [
@@ -767,7 +769,7 @@
       "en": "prompt engineering"
     },
     "projects": [
-      "exist"
+      "biomedvqa"
     ],
     "coords": {
       "semantic": [
@@ -861,26 +863,6 @@
     }
   },
   {
-    "id": "multimodal-benchmarks",
-    "label": {
-      "es": "benchmarks multimodales",
-      "en": "multimodal benchmarks"
-    },
-    "projects": [
-      "biomedvqa"
-    ],
-    "coords": {
-      "semantic": [
-        -0.1,
-        -0.55
-      ],
-      "umap": [
-        -5.008,
-        -1.821
-      ]
-    }
-  },
-  {
     "id": "biomedical-imaging",
     "label": {
       "es": "imagen biomédica",
@@ -897,66 +879,6 @@
       "umap": [
         -4.062,
         -1.103
-      ]
-    }
-  },
-  {
-    "id": "model-comparison",
-    "label": {
-      "es": "comparativa de modelos",
-      "en": "model comparison"
-    },
-    "projects": [
-      "biomedvqa"
-    ],
-    "coords": {
-      "semantic": [
-        -0.05,
-        -0.4
-      ],
-      "umap": [
-        -5.397,
-        -3.734
-      ]
-    }
-  },
-  {
-    "id": "deep-reinforcement-learning",
-    "label": {
-      "es": "aprendizaje por refuerzo profundo",
-      "en": "deep reinforcement learning"
-    },
-    "projects": [
-      "hyperloop-rl"
-    ],
-    "coords": {
-      "semantic": [
-        0.38,
-        -0.7
-      ],
-      "umap": [
-        0.76,
-        3.467
-      ]
-    }
-  },
-  {
-    "id": "control-systems",
-    "label": {
-      "es": "sistemas de control",
-      "en": "control systems"
-    },
-    "projects": [
-      "hyperloop-rl"
-    ],
-    "coords": {
-      "semantic": [
-        0.55,
-        0.1
-      ],
-      "umap": [
-        1.455,
-        2.66
       ]
     }
   },
@@ -987,7 +909,8 @@
       "en": "physics simulation"
     },
     "projects": [
-      "hyperloop-rl"
+      "hyperloop-rl",
+      "liralab"
     ],
     "coords": {
       "semantic": [
@@ -1021,13 +944,18 @@
     }
   },
   {
-    "id": "neural-network-control",
+    "id": "neural-networks",
     "label": {
-      "es": "control por red neuronal",
-      "en": "neural network control"
+      "es": "redes neuronales",
+      "en": "neural networks"
     },
     "projects": [
-      "hyperloop-rl"
+      "hyperloop-rl",
+      "liralab",
+      "rebrot",
+      "biomedvqa",
+      "rag-assistant",
+      "exist"
     ],
     "coords": {
       "semantic": [
@@ -1101,33 +1029,14 @@
     }
   },
   {
-    "id": "model-optimization",
-    "label": {
-      "es": "optimización de modelos",
-      "en": "model optimization"
-    },
-    "projects": [
-      "hyperloop-rl"
-    ],
-    "coords": {
-      "semantic": [
-        0.18,
-        0.45
-      ],
-      "umap": [
-        0.89,
-        4.474
-      ]
-    }
-  },
-  {
     "id": "real-time-inference",
     "label": {
       "es": "inferencia en tiempo real",
       "en": "real-time inference"
     },
     "projects": [
-      "hyperloop-rl"
+      "hyperloop-rl",
+      "liralab"
     ],
     "coords": {
       "semantic": [
