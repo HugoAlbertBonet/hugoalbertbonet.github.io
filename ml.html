@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hugo Albert Bonet — Machine Learning Engineer</title>
+<meta name="description" content="Hugo Albert Bonet — Machine Learning Engineer. Mapa latente de sus proyectos: imitation learning, visión por computador, RL embebido y RAG. Latent map of ML projects.">
+<meta name="author" content="Hugo Albert Bonet">
+<meta property="og:title" content="Hugo Albert Bonet — Machine Learning Engineer">
+<meta property="og:description" content="Un mapa de embeddings de seis proyectos de machine learning: de la percepción a la acción, de la simulación al despliegue real.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/portrait.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101418'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23ffffff' text-anchor='middle'%3EHA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="ml.css">
+</head>
+<body class="ml-page" data-title-key="mlDocTitle">
+
+<button id="langToggle" class="lang-toggle" type="button" aria-label="Cambiar idioma / Switch language"></button>
+
+<header class="ml-top">
+  <a class="ml-back" href="index.html" data-i18n="mlBack">← Portada</a>
+  <span class="kicker" data-i18n="mlLabel">Ingeniero de Machine Learning</span>
+</header>
+
+<!-- ===================== SECTION 1 — the map ===================== -->
+<section class="map-sec" id="mapSec" data-screen-label="Mapa latente">
+  <div class="map-head">
+    <div>
+      <h1 data-i18n="mlMapTitle">El mapa latente de mi trabajo</h1>
+      <p class="intro" data-i18n="mlMapIntro">Cada punto es un término técnico colocado por su embedding. Un proyecto no es un punto: es el conjunto de sus términos, y por eso puede solaparse con los demás.</p>
+    </div>
+    <div class="map-controls">
+      <span class="ctrl-label" data-i18n="mlProjLabel">proyección</span>
+      <div class="seg" id="projSeg">
+        <button type="button" data-projection="semantic" aria-pressed="true" data-i18n="mlProjSemantic">ejes semánticos</button>
+        <button type="button" data-projection="umap" aria-pressed="false" data-i18n="mlProjUmap">UMAP</button>
+      </div>
+      <span class="ctrl-label" data-i18n="mlViewLabel">vista</span>
+      <div class="seg" id="viewSeg">
+        <button type="button" data-view="map" aria-pressed="true" data-i18n="mlViewMap">mapa</button>
+        <button type="button" data-view="list" aria-pressed="false" data-i18n="mlViewList">lista</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="map-wrap" id="mapWrap" data-projection="semantic">
+    <canvas id="mapCanvas" tabindex="0" role="img" aria-label="Mapa de términos técnicos por proyecto" data-i18n-aria="mlMapAria"></canvas>
+    <span class="axis axis-left" data-i18n="mlAxisPerception">percepción</span>
+    <span class="axis axis-right" data-i18n="mlAxisAction">acción</span>
+    <span class="axis axis-top" data-i18n="mlAxisReal">despliegue en el mundo real</span>
+    <span class="axis axis-bottom" data-i18n="mlAxisSim">simulación / investigación</span>
+    <p class="umap-note" data-i18n="mlUmapNote">En UMAP las direcciones no tienen significado interpretable: solo la vecindad entre puntos dice algo.</p>
+    <p class="map-hint" data-i18n="mlMapHint">Pasa el cursor por un término para ver a qué proyectos pertenece, o elige un proyecto.</p>
+  </div>
+
+  <div class="legend" id="legend" role="group" aria-label="Proyectos">
+    <span class="legend-title" data-i18n="mlLegendTitle">Proyectos</span>
+  </div>
+
+  <p class="map-foot" data-i18n="mlFootnote">El vocabulario está seleccionado editorialmente; las posiciones provienen de embeddings reales proyectados sobre ejes semánticos.</p>
+</section>
+
+<aside class="side-panel" id="panel" aria-live="polite" aria-hidden="true"></aside>
+
+<!-- ===================== SECTION 2 — walkthrough =====================
+     Real, crawlable DOM: readable with JavaScript disabled. The minimap
+     lights each project up as its block enters the viewport. -->
+<section class="journey" id="journey">
+  <div class="journey-head">
+    <span class="kicker" data-i18n="mlJourneyKicker">Recorrido</span>
+    <h2 data-i18n="mlJourneyTitle">Seis proyectos, del más reciente al primero</h2>
+  </div>
+
+  <article class="proj" id="p-liralab" data-project="liralab" data-screen-label="LiraLab" style="--c:#1D4ED8">
+    <div class="proj-body">
+      <p class="proj-index"><span class="num" style="color:var(--c)">01</span><span class="year">2025 —</span></p>
+      <h3 data-p="liralab" data-field="title">Imitation learning por wire-fitting</h3>
+      <p class="role" data-p="liralab" data-field="role">USC LiraLab · Graduate Student Researcher</p>
+      <p class="detail" data-p="liralab" data-field="detail">Un algoritmo de imitation learning basado en wire-fitting y Q3C que alcanza rendimiento SOTA con una inferencia entre 5 y 100 veces más rápida que Diffusion Policy o Implicit Behavioral Cloning. Validado primero en simulación y después en despliegue real sobre un brazo WidowX, donde la latencia de la política es lo que decide si el robot puede reaccionar o no.</p>
+      <div class="metrics" data-p="liralab" data-field="metrics">
+        <p class="metric"><b style="color:var(--c)">5–100×</b><span>inferencia más rápida</span></p>
+        <p class="metric"><b style="color:var(--c)">SOTA</b><span>rendimiento en benchmark</span></p>
+        <p class="metric"><b style="color:var(--c)">WidowX</b><span>despliegue real</span></p>
+      </div>
+      <a class="proj-cta" style="color:var(--c)" href="projects/liralab.html" data-project-link="liralab"><span data-i18n="mlPanelCta">Ver proyecto completo →</span></a>
+    </div>
+    <div class="proj-media" data-media="liralab" style="background:color-mix(in oklab, var(--c) 8%, #fffefc);color:var(--c)">
+      <div class="ph"></div>
+      <div class="ph-text"><span class="ph-id">liralab</span><span class="ph-terms">imitation learning · wire-fitting · WidowX · sim-to-real</span></div>
+    </div>
+  </article>
+
+  <article class="proj" id="p-rebrot" data-project="rebrot" data-screen-label="Rebrot" style="--c:#0E7490">
+    <div class="proj-body">
+      <p class="proj-index"><span class="num" style="color:var(--c)">02</span><span class="year">2024 – 2025</span></p>
+      <h3 data-p="rebrot" data-field="title">Rebrot — reconstrucción de imágenes tras la DANA</h3>
+      <p class="role" data-p="rebrot" data-field="role">VRAIN · Machine Learning Researcher (Computer Vision)</p>
+      <p class="detail" data-p="rebrot" data-field="detail">Aplicación web que automatiza la reparación de fotografías dañadas por la DANA con diffusion inpainting, un 98% más rápida que la restauración manual y con más del 90% de preservación de identidad sobre más de 200.000 imágenes. Sustituir SAM2 por un SegFormer afinado con una función de pérdida propia mejoró la inferencia un 30% y la calidad un 20% según votación experta por conteo de Borda. Aceptado en el AAAI-26 Demonstrations Program.</p>
+      <div class="metrics" data-p="rebrot" data-field="metrics">
+        <p class="metric"><b style="color:var(--c)">98%</b><span>más rápido que a mano</span></p>
+        <p class="metric"><b style="color:var(--c)">&gt;90%</b><span>identidad preservada</span></p>
+        <p class="metric"><b style="color:var(--c)">AAAI-26</b><span>demo aceptada</span></p>
+      </div>
+      <a class="proj-cta" style="color:var(--c)" href="projects/rebrot.html" data-project-link="rebrot"><span data-i18n="mlPanelCta">Ver proyecto completo →</span></a>
+    </div>
+    <div class="proj-media" data-media="rebrot" style="background:color-mix(in oklab, var(--c) 8%, #fffefc);color:var(--c)">
+      <div class="ph"></div>
+      <div class="ph-text"><span class="ph-id">rebrot</span><span class="ph-terms">diffusion inpainting · SegFormer · identidad facial · respuesta ante desastres</span></div>
+    </div>
+  </article>
+
+  <article class="proj" id="p-exist" data-project="exist" data-screen-label="EXIST 2025" style="--c:#7C3AED">
+    <div class="proj-body">
+      <p class="proj-index"><span class="num" style="color:var(--c)">03</span><span class="year">2025</span></p>
+      <h3 data-p="exist" data-field="title">EXIST 2025 — sexismo en vídeos de TikTok</h3>
+      <p class="role" data-p="exist" data-field="role">Investigación · modelos visión-lenguaje</p>
+      <p class="detail" data-p="exist" data-field="detail">Pipeline con modelos visión-lenguaje que usa captioning a nivel de fotograma en lugar de procesar el vídeo directamente, mejorando la clasificación un 75% en norma ICM y obteniendo el primer puesto en el track LeWiDi de inglés de EXIST 2025, una tarea que aprende del desacuerdo entre anotadores en lugar de borrarlo.</p>
+      <div class="metrics" data-p="exist" data-field="metrics">
+        <p class="metric"><b style="color:var(--c)">1.º</b><span>track LeWiDi (inglés)</span></p>
+        <p class="metric"><b style="color:var(--c)">+75%</b><span>norma ICM</span></p>
+      </div>
+      <a class="proj-cta" style="color:var(--c)" href="projects/exist.html" data-project-link="exist"><span data-i18n="mlPanelCta">Ver proyecto completo →</span></a>
+    </div>
+    <div class="proj-media" data-media="exist" style="background:color-mix(in oklab, var(--c) 8%, #fffefc);color:var(--c)">
+      <div class="ph"></div>
+      <div class="ph-text"><span class="ph-id">exist</span><span class="ph-terms">visión-lenguaje · captioning por fotograma · aprendizaje con desacuerdo</span></div>
+    </div>
+  </article>
+
+  <article class="proj" id="p-biomedvqa" data-project="biomedvqa" data-screen-label="BiomedVQA" style="--c:#0891B2">
+    <div class="proj-body">
+      <p class="proj-index"><span class="num" style="color:var(--c)">04</span><span class="year">2025</span></p>
+      <h3 data-p="biomedvqa" data-field="title">Biomedical Visual Question Answering</h3>
+      <p class="role" data-p="biomedvqa" data-field="role">Investigación · benchmark multimodal</p>
+      <p class="detail" data-p="biomedvqa" data-field="detail">Comparativa de modelos visión-lenguaje respondiendo preguntas sobre imagen biomédica, que muestra que el modelo de lenguaje pequeño multimodal rinde mejor que alternativas más grandes, con una mejora media de 20 puntos porcentuales de accuracy mediante fine-tuning con LoRA.</p>
+      <div class="metrics" data-p="biomedvqa" data-field="metrics">
+        <p class="metric"><b style="color:var(--c)">+20 pp</b><span>accuracy con LoRA</span></p>
+        <p class="metric"><b style="color:var(--c)">SLM</b><span>mejor modelo</span></p>
+      </div>
+      <a class="proj-cta" style="color:var(--c)" href="projects/biomedvqa.html" data-project-link="biomedvqa"><span data-i18n="mlPanelCta">Ver proyecto completo →</span></a>
+    </div>
+    <div class="proj-media" data-media="biomedvqa" style="background:color-mix(in oklab, var(--c) 8%, #fffefc);color:var(--c)">
+      <div class="ph"></div>
+      <div class="ph-text"><span class="ph-id">biomedvqa</span><span class="ph-terms">VQA · modelos de lenguaje pequeños · LoRA · imagen biomédica</span></div>
+    </div>
+  </article>
+
+  <article class="proj" id="p-hyperloop-rl" data-project="hyperloop-rl" data-screen-label="Hyperloop RL" style="--c:#F59E0B">
+    <div class="proj-body">
+      <p class="proj-index"><span class="num" style="color:var(--c)">05</span><span class="year">2023 – 2024</span></p>
+      <h3 data-p="hyperloop-rl" data-field="title">Control de levitación por deep RL</h3>
+      <p class="role" data-p="hyperloop-rl" data-field="role">VRAIN · Undergraduate Student Researcher</p>
+      <p class="detail" data-p="hyperloop-rl" data-field="detail">Sistema de control por red neuronal entrenado con deep reinforcement learning para la levitación de un vehículo autónomo, que redujo el tiempo de respuesta un 94% y se desplegó en ONNX sobre un sistema embebido STM32H7 con STMCubeAI en C++. El simulador de pruebas propio redujo el tiempo de ajuste de parámetros un 99% frente al testeo manual. Dentro de Hyperloop UPV, equipo campeón del mundo en Zúrich frente a 26 equipos, donde fui Director Técnico de 48 personas.</p>
+      <div class="metrics" data-p="hyperloop-rl" data-field="metrics">
+        <p class="metric"><b style="color:var(--c)">−94%</b><span>tiempo de respuesta</span></p>
+        <p class="metric"><b style="color:var(--c)">−99%</b><span>tiempo de ajuste</span></p>
+        <p class="metric"><b style="color:var(--c)">48</b><span>personas dirigidas</span></p>
+      </div>
+      <a class="proj-cta" style="color:var(--c)" href="projects/hyperloop-rl.html" data-project-link="hyperloop-rl"><span data-i18n="mlPanelCta">Ver proyecto completo →</span></a>
+    </div>
+    <div class="proj-media" data-media="hyperloop-rl" style="background:color-mix(in oklab, var(--c) 8%, #fffefc);color:var(--c)">
+      <div class="ph"></div>
+      <div class="ph-text"><span class="ph-id">hyperloop-rl</span><span class="ph-terms">deep RL · control de levitación · ONNX · STM32H7</span></div>
+    </div>
+  </article>
+
+  <article class="proj" id="p-rag-assistant" data-project="rag-assistant" data-screen-label="RAG assistant" style="--c:#059669">
+    <div class="proj-body">
+      <p class="proj-index"><span class="num" style="color:var(--c)">06</span><span class="year">2023 – 2024</span></p>
+      <h3 data-p="rag-assistant" data-field="title">Asistente RAG de Hyperloop UPV</h3>
+      <p class="role" data-p="rag-assistant" data-field="role">Hyperloop UPV · herramienta interna</p>
+      <p class="detail" data-p="rag-assistant" data-field="detail">Herramienta basada en LangChain conectada a la documentación del equipo, pensada para formar a los miembros de divulgación en el conocimiento técnico interno sin depender de los ingenieros. Contribuyó a un aumento del 45% (30.000 $) en el patrocinio anual del equipo.</p>
+      <div class="metrics" data-p="rag-assistant" data-field="metrics">
+        <p class="metric"><b style="color:var(--c)">+45%</b><span>patrocinio anual</span></p>
+        <p class="metric"><b style="color:var(--c)">$30k</b><span>captación adicional</span></p>
+      </div>
+      <a class="proj-cta" style="color:var(--c)" href="projects/rag-assistant.html" data-project-link="rag-assistant"><span data-i18n="mlPanelCta">Ver proyecto completo →</span></a>
+    </div>
+    <div class="proj-media" data-media="rag-assistant" style="background:color-mix(in oklab, var(--c) 8%, #fffefc);color:var(--c)">
+      <div class="ph"></div>
+      <div class="ph-text"><span class="ph-id">rag-assistant</span><span class="ph-terms">RAG · LangChain · búsqueda vectorial · base de conocimiento</span></div>
+    </div>
+  </article>
+</section>
+
+<div class="minimap" id="minimap" aria-hidden="true">
+  <canvas id="miniCanvas"></canvas>
+  <span class="mini-label" id="miniLabel"></span>
+</div>
+
+<!-- ===================== SECTION 3 — closing ===================== -->
+<section class="closing" data-screen-label="Cierre">
+  <div class="closing-inner">
+    <div>
+      <h2 data-i18n="mlCloseTitle">Hablemos</h2>
+      <p data-i18n="mlCloseBody">Si algo de esto se cruza con lo que estás construyendo, escríbeme. Me interesan especialmente los sistemas que aprenden y acaban desplegados de verdad.</p>
+    </div>
+    <div class="closing-links">
+      <a href="index.html" data-i18n="mlBackHome">Volver a la portada</a>
+      <a href="speaker.html" data-check-page data-i18n="mlSpeakerLink">Mi lado orador →</a>
+      <a href="mailto:hugo.albert.16@gmail.com">hugo.albert.16@gmail.com</a>
+      <a href="https://www.linkedin.com/in/hugoalbert" target="_blank" rel="noopener">linkedin.com/in/hugoalbert</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-name">Hugo Albert Bonet</div>
+    <div class="footer-links">
+      <a href="mailto:hugo.albert.16@gmail.com" aria-label="Email: hugo.albert.16@gmail.com" title="hugo.albert.16@gmail.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5"></rect><path d="M3.5 6.5 12 13l8.5-6.5"></path></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/hugoalbert" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5A2.25 2.25 0 1 1 4.98 8a2.25 2.25 0 0 1 0-4.5ZM3.25 9.75h3.5V20.5h-3.5V9.75Zm5.75 0h3.36v1.47h.05c.47-.84 1.61-1.72 3.32-1.72 3.55 0 4.2 2.27 4.2 5.22v5.78h-3.5v-5.13c0-1.22-.02-2.8-1.75-2.8-1.75 0-2.02 1.33-2.02 2.71v5.22H9V9.75Z"></path></svg>
+      </a>
+      <button id="langToggleFooter" class="footer-lang" type="button"></button>
+    </div>
+  </footer>
+</section>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="script.js"></script>
+<script src="ml.js"></script>
+</body>
+</html>

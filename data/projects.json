@@ -1,0 +1,263 @@
+[
+  {
+    "id": "liralab",
+    "year": "2025 —",
+    "order": 6,
+    "color": "#1D4ED8",
+    "title": {
+      "es": "Imitation learning por wire-fitting",
+      "en": "Wire-fitting imitation learning"
+    },
+    "role": {
+      "es": "USC LiraLab · Graduate Student Researcher",
+      "en": "USC LiraLab · Graduate Student Researcher"
+    },
+    "summary": {
+      "es": "Algoritmo de imitation learning con rendimiento SOTA y una inferencia entre 5 y 100 veces más rápida que Diffusion Policy o Implicit BC.",
+      "en": "An imitation learning algorithm with SOTA performance and inference 5–100× faster than Diffusion Policy or Implicit BC."
+    },
+    "detail": {
+      "es": "Un algoritmo de imitation learning basado en wire-fitting y Q3C que alcanza rendimiento SOTA con una inferencia entre 5 y 100 veces más rápida que Diffusion Policy o Implicit Behavioral Cloning. Validado primero en simulación y después en despliegue real sobre un brazo WidowX, donde la latencia de la política es lo que decide si el robot puede reaccionar o no.",
+      "en": "A wire-fitting and Q3C based imitation learning algorithm that reaches SOTA performance with inference 5–100× faster than Diffusion Policy or Implicit Behavioral Cloning. Validated first in simulation and then on a real WidowX arm, where policy latency is what decides whether the robot can react at all."
+    },
+    "metrics": [
+      {
+        "value": "5–100×",
+        "label": {
+          "es": "inferencia más rápida",
+          "en": "faster inference"
+        }
+      },
+      {
+        "value": "SOTA",
+        "label": {
+          "es": "rendimiento en benchmark",
+          "en": "benchmark performance"
+        }
+      },
+      {
+        "value": "WidowX",
+        "label": {
+          "es": "despliegue real",
+          "en": "real deployment"
+        }
+      }
+    ],
+    "href": "projects/liralab.html",
+    "image": "assets/projects/liralab.jpg"
+  },
+  {
+    "id": "rebrot",
+    "year": "2024 – 2025",
+    "order": 5,
+    "color": "#0E7490",
+    "title": {
+      "es": "Rebrot — reconstrucción de imágenes tras la DANA",
+      "en": "Rebrot — image reconstruction after the DANA floods"
+    },
+    "role": {
+      "es": "VRAIN · Machine Learning Researcher (Computer Vision)",
+      "en": "VRAIN · Machine Learning Researcher (Computer Vision)"
+    },
+    "summary": {
+      "es": "Aplicación web que repara fotografías dañadas por la DANA con diffusion inpainting: un 98% más rápida que la restauración manual.",
+      "en": "A web application that repairs flood-damaged photographs with diffusion inpainting: 98% faster than manual restoration."
+    },
+    "detail": {
+      "es": "Aplicación web que automatiza la reparación de fotografías dañadas por la DANA con diffusion inpainting, un 98% más rápida que la restauración manual y con más del 90% de preservación de identidad sobre más de 200.000 imágenes. Sustituir SAM2 por un SegFormer afinado con una función de pérdida propia mejoró la inferencia un 30% y la calidad un 20% según votación experta por conteo de Borda. Aceptado en el AAAI-26 Demonstrations Program.",
+      "en": "A web application that automates the repair of flood-damaged photographs with diffusion inpainting, 98% faster than manual restoration and preserving facial identity in over 90% of more than 200,000 images. Replacing SAM2 with a SegFormer fine-tuned on a custom loss improved inference by 30% and quality by 20% under expert Borda-count voting. Accepted at the AAAI-26 Demonstrations Program."
+    },
+    "metrics": [
+      {
+        "value": "98%",
+        "label": {
+          "es": "más rápido que a mano",
+          "en": "faster than manual"
+        }
+      },
+      {
+        "value": ">90%",
+        "label": {
+          "es": "identidad preservada",
+          "en": "identity preserved"
+        }
+      },
+      {
+        "value": "AAAI-26",
+        "label": {
+          "es": "demo aceptada",
+          "en": "demo accepted"
+        }
+      }
+    ],
+    "href": "projects/rebrot.html",
+    "image": "assets/projects/rebrot.jpg"
+  },
+  {
+    "id": "exist",
+    "year": "2025",
+    "order": 4,
+    "color": "#7C3AED",
+    "title": {
+      "es": "EXIST 2025 — sexismo en vídeos de TikTok",
+      "en": "EXIST 2025 — sexism in TikTok videos"
+    },
+    "role": {
+      "es": "Investigación · modelos visión-lenguaje",
+      "en": "Research · vision-language models"
+    },
+    "summary": {
+      "es": "Pipeline visión-lenguaje que describe el vídeo fotograma a fotograma en vez de procesarlo directamente: primer puesto en el track LeWiDi de inglés.",
+      "en": "A vision-language pipeline that captions video frame by frame instead of processing it directly: first place in the English LeWiDi track."
+    },
+    "detail": {
+      "es": "Pipeline con modelos visión-lenguaje que usa captioning a nivel de fotograma en lugar de procesar el vídeo directamente, mejorando la clasificación un 75% en norma ICM y obteniendo el primer puesto en el track LeWiDi de inglés de EXIST 2025, una tarea que aprende del desacuerdo entre anotadores en lugar de borrarlo.",
+      "en": "A vision-language pipeline using frame-level captioning instead of direct video processing, improving classification by 75% in ICM norm and taking first place in the English LeWiDi track of EXIST 2025 — a task that learns from annotator disagreement instead of erasing it."
+    },
+    "metrics": [
+      {
+        "value": "1.º",
+        "label": {
+          "es": "track LeWiDi (inglés)",
+          "en": "LeWiDi track (English)"
+        }
+      },
+      {
+        "value": "+75%",
+        "label": {
+          "es": "norma ICM",
+          "en": "ICM norm"
+        }
+      }
+    ],
+    "href": "projects/exist.html",
+    "image": "assets/projects/exist.jpg"
+  },
+  {
+    "id": "biomedvqa",
+    "year": "2025",
+    "order": 3,
+    "color": "#0891B2",
+    "title": {
+      "es": "Biomedical Visual Question Answering",
+      "en": "Biomedical Visual Question Answering"
+    },
+    "role": {
+      "es": "Investigación · benchmark multimodal",
+      "en": "Research · multimodal benchmark"
+    },
+    "summary": {
+      "es": "Comparativa de modelos visión-lenguaje en preguntas sobre imagen biomédica: el SLM multimodal gana, y LoRA le añade 20 puntos.",
+      "en": "A comparison of vision-language models on biomedical image questions: the multimodal SLM wins, and LoRA adds 20 points."
+    },
+    "detail": {
+      "es": "Comparativa de modelos visión-lenguaje respondiendo preguntas sobre imagen biomédica, que muestra que el modelo de lenguaje pequeño multimodal rinde mejor que alternativas más grandes, con una mejora media de 20 puntos porcentuales de accuracy mediante fine-tuning con LoRA.",
+      "en": "A comparison of vision-language models answering questions about biomedical images, showing that the multimodal small language model outperforms larger alternatives, with an average 20 percentage-point accuracy gain from LoRA fine-tuning."
+    },
+    "metrics": [
+      {
+        "value": "+20 pp",
+        "label": {
+          "es": "accuracy con LoRA",
+          "en": "accuracy with LoRA"
+        }
+      },
+      {
+        "value": "SLM",
+        "label": {
+          "es": "mejor modelo",
+          "en": "best model"
+        }
+      }
+    ],
+    "href": "projects/biomedvqa.html",
+    "image": "assets/projects/biomedvqa.jpg"
+  },
+  {
+    "id": "hyperloop-rl",
+    "year": "2023 – 2024",
+    "order": 2,
+    "color": "#F59E0B",
+    "title": {
+      "es": "Control de levitación por deep RL",
+      "en": "Deep RL levitation control"
+    },
+    "role": {
+      "es": "VRAIN · Undergraduate Student Researcher",
+      "en": "VRAIN · Undergraduate Student Researcher"
+    },
+    "summary": {
+      "es": "Control por red neuronal para un vehículo autónomo que recortó el tiempo de respuesta un 94%, desplegado en ONNX sobre un STM32H7.",
+      "en": "Neural network control for an autonomous vehicle that cut response time by 94%, deployed in ONNX on an STM32H7."
+    },
+    "detail": {
+      "es": "Sistema de control por red neuronal entrenado con deep reinforcement learning para la levitación de un vehículo autónomo, que redujo el tiempo de respuesta un 94% y se desplegó en ONNX sobre un sistema embebido STM32H7 con STMCubeAI en C++. El simulador de pruebas propio redujo el tiempo de ajuste de parámetros un 99% frente al testeo manual. Dentro de Hyperloop UPV, equipo campeón del mundo en Zúrich frente a 26 equipos, donde fui Director Técnico de 48 personas.",
+      "en": "A neural network control system trained with deep reinforcement learning for the levitation of an autonomous vehicle, cutting response time by 94% and deployed in ONNX on an STM32H7 embedded system with STMCubeAI in C++. A custom test simulator reduced parameter-tuning time by 99% versus manual testing. Built inside Hyperloop UPV, world champion team in Zurich against 26 teams, where I was Technical Director of 48 people."
+    },
+    "metrics": [
+      {
+        "value": "−94%",
+        "label": {
+          "es": "tiempo de respuesta",
+          "en": "response time"
+        }
+      },
+      {
+        "value": "−99%",
+        "label": {
+          "es": "tiempo de ajuste",
+          "en": "tuning time"
+        }
+      },
+      {
+        "value": "48",
+        "label": {
+          "es": "personas dirigidas",
+          "en": "people led"
+        }
+      }
+    ],
+    "href": "projects/hyperloop-rl.html",
+    "image": "assets/projects/hyperloop-rl.jpg"
+  },
+  {
+    "id": "rag-assistant",
+    "year": "2023 – 2024",
+    "order": 1,
+    "color": "#059669",
+    "title": {
+      "es": "Asistente RAG de Hyperloop UPV",
+      "en": "Hyperloop UPV RAG assistant"
+    },
+    "role": {
+      "es": "Hyperloop UPV · herramienta interna",
+      "en": "Hyperloop UPV · internal tooling"
+    },
+    "summary": {
+      "es": "Asistente basado en LangChain conectado a la documentación del equipo para formar a divulgación en conocimiento técnico interno.",
+      "en": "A LangChain assistant wired to the team's documentation, training the outreach division on internal technical knowledge."
+    },
+    "detail": {
+      "es": "Herramienta basada en LangChain conectada a la documentación del equipo, pensada para formar a los miembros de divulgación en el conocimiento técnico interno sin depender de los ingenieros. Contribuyó a un aumento del 45% (30.000 $) en el patrocinio anual del equipo.",
+      "en": "A LangChain tool wired to the team's documentation, built to train outreach members on internal technical knowledge without depending on the engineers. It contributed to a 45% ($30k) increase in the team's annual sponsorship."
+    },
+    "metrics": [
+      {
+        "value": "+45%",
+        "label": {
+          "es": "patrocinio anual",
+          "en": "annual sponsorship"
+        }
+      },
+      {
+        "value": "$30k",
+        "label": {
+          "es": "captación adicional",
+          "en": "additional funding"
+        }
+      }
+    ],
+    "href": "projects/rag-assistant.html",
+    "image": "assets/projects/rag-assistant.jpg"
+  }
+]

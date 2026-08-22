@@ -26,6 +26,43 @@
       comingSoon: "Próximamente ✦ esta página está en construcción.",
       toggle: "EN",
       docTitle: "Hugo Albert Bonet — Ingeniero de Machine Learning y orador",
+
+      /* ---- ml.html ---- */
+      mlDocTitle: "Hugo Albert Bonet — Ingeniero de Machine Learning",
+      mlBack: "← Portada",
+      mlBackHome: "Volver a la portada",
+      mlSpeakerLink: "Mi lado orador →",
+      mlMapTitle: "El mapa latente de mi trabajo",
+      mlMapIntro:
+        "Cada punto es un término técnico colocado por su embedding. Un proyecto no es un punto: es el conjunto de sus términos, y por eso puede solaparse con los demás.",
+      mlProjLabel: "proyección",
+      mlProjSemantic: "ejes semánticos",
+      mlProjUmap: "UMAP",
+      mlViewLabel: "vista",
+      mlViewMap: "mapa",
+      mlViewList: "lista",
+      mlMapAria: "Mapa de términos técnicos por proyecto",
+      mlAxisPerception: "percepción",
+      mlAxisAction: "acción",
+      mlAxisReal: "despliegue en el mundo real",
+      mlAxisSim: "simulación / investigación",
+      mlUmapNote:
+        "En UMAP las direcciones no tienen significado interpretable: solo la vecindad entre puntos dice algo.",
+      mlMapHint:
+        "Pasa el cursor por un término para ver a qué proyectos pertenece, o elige un proyecto.",
+      mlLegendTitle: "Proyectos",
+      mlFootnote:
+        "El vocabulario está seleccionado editorialmente; las posiciones provienen de embeddings reales proyectados sobre ejes semánticos.",
+      mlJourneyKicker: "Recorrido",
+      mlJourneyTitle: "Seis proyectos, del más reciente al primero",
+      mlCloseTitle: "Hablemos",
+      mlCloseBody:
+        "Si algo de esto se cruza con lo que estás construyendo, escríbeme. Me interesan especialmente los sistemas que aprenden y acaban desplegados de verdad.",
+      mlPanelCta: "Ver proyecto completo →",
+      mlPanelClose: "Cerrar",
+      mlPanelTerms: "Términos",
+      mlTermsCount: "términos",
+      mlAllProjects: "Todos los proyectos",
     },
     en: {
       heroTitle: "Hi, I'm Hugo!",
@@ -46,6 +83,43 @@
       comingSoon: "Coming soon ✦ this page is under construction.",
       toggle: "ES",
       docTitle: "Hugo Albert Bonet — Machine Learning Engineer & Speaker",
+
+      /* ---- ml.html ---- */
+      mlDocTitle: "Hugo Albert Bonet — Machine Learning Engineer",
+      mlBack: "← Home",
+      mlBackHome: "Back to the home page",
+      mlSpeakerLink: "My speaking side →",
+      mlMapTitle: "The latent map of my work",
+      mlMapIntro:
+        "Every dot is a technical term placed by its embedding. A project isn't a dot: it's the set of its terms, which is why projects can overlap.",
+      mlProjLabel: "projection",
+      mlProjSemantic: "semantic axes",
+      mlProjUmap: "UMAP",
+      mlViewLabel: "view",
+      mlViewMap: "map",
+      mlViewList: "list",
+      mlMapAria: "Map of technical terms by project",
+      mlAxisPerception: "perception",
+      mlAxisAction: "action",
+      mlAxisReal: "real-world deployment",
+      mlAxisSim: "simulation / research",
+      mlUmapNote:
+        "In UMAP the directions carry no interpretable meaning: only the neighbourhood between points says anything.",
+      mlMapHint:
+        "Hover a term to see which projects it belongs to, or pick a project.",
+      mlLegendTitle: "Projects",
+      mlFootnote:
+        "The vocabulary is editorially curated; the positions come from real embeddings projected onto semantic axes.",
+      mlJourneyKicker: "Walkthrough",
+      mlJourneyTitle: "Six projects, from the most recent to the first",
+      mlCloseTitle: "Let's talk",
+      mlCloseBody:
+        "If any of this crosses paths with what you're building, write to me. I'm especially interested in systems that learn and actually end up deployed.",
+      mlPanelCta: "See the full project →",
+      mlPanelClose: "Close",
+      mlPanelTerms: "Terms",
+      mlTermsCount: "terms",
+      mlAllProjects: "All projects",
     },
   };
 
@@ -56,17 +130,28 @@
     else if ((navigator.language || "").toLowerCase().indexOf("es") !== 0) lang = "en";
   } catch (e) { /* storage unavailable */ }
 
+  /* subscribers (ml.js and friends) re-render their own dynamic copy */
+  const langListeners = [];
+
   function applyLang() {
     const t = I18N[lang];
     document.documentElement.lang = lang;
-    document.title = t.docTitle;
+    /* each page names its own <title> key on <body data-title-key="..."> */
+    const titleKey = document.body.getAttribute("data-title-key") || "docTitle";
+    document.title = t[titleKey] || t.docTitle;
     document.querySelectorAll("[data-i18n]").forEach((el) => {
       const key = el.getAttribute("data-i18n");
       if (t[key]) el.textContent = t[key];
     });
-    document.getElementById("langToggle").textContent = t.toggle;
-    document.getElementById("langToggleFooter").textContent =
-      lang === "es" ? "English" : "Español";
+    document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-aria");
+      if (t[key]) el.setAttribute("aria-label", t[key]);
+    });
+    const tg = document.getElementById("langToggle");
+    if (tg) tg.textContent = t.toggle;
+    const tgf = document.getElementById("langToggleFooter");
+    if (tgf) tgf.textContent = lang === "es" ? "English" : "Español";
+    langListeners.forEach((fn) => { try { fn(lang); } catch (e) {} });
   }
 
   function toggleLang() {
@@ -75,9 +160,47 @@
     applyLang();
   }
 
-  document.getElementById("langToggle").addEventListener("click", toggleLang);
-  document.getElementById("langToggleFooter").addEventListener("click", toggleLang);
+  ["langToggle", "langToggleFooter"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("click", toggleLang);
+  });
   applyLang();
+
+  /* shared i18n surface for per-page scripts (ml.js) */
+  window.HugoLang = {
+    get: () => lang,
+    t: (k) => (I18N[lang] && I18N[lang][k]) || "",
+    onChange: (fn) => { if (typeof fn === "function") langListeners.push(fn); },
+  };
+
+  /* ======================= toast + subpage links ======================= */
+
+  const toast = document.getElementById("toast");
+  let toastTimer = null;
+  function showToast(msg) {
+    if (!toast) return;
+    toast.hidden = false;
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
+  }
+  window.HugoToast = showToast;
+
+  /* Links to pages that may not exist yet: probe first, toast if missing.
+     Pages that are built link straight to their href, no probe. */
+  document.querySelectorAll("[data-check-page]").forEach((a) => {
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      const href = a.getAttribute("href");
+      fetch(href, { method: "HEAD" })
+        .then((r) => {
+          if (r.ok) window.location.href = href;
+          else showToast(I18N[lang].comingSoon);
+        })
+        .catch(() => showToast(I18N[lang].comingSoon));
+    });
+  });
 
   /* ==================== background keying ====================== */
   /* Adaptive color key: the backdrop is near-flat but its tone varies
@@ -189,6 +312,10 @@
   const cvVideo = document.getElementById("cvVideo");
   const cvSitting = document.getElementById("cvSitting");
   const cvStanding = document.getElementById("cvStanding");
+
+  /* Subpages (ml.html, ...) share this file for i18n + toasts only: they have
+     no scroll stage, so stop here instead of driving a null DOM. */
+  if (!scrolly || !stage || !figure) return;
 
   /* ====================== mode: video vs stills ====================== */
 
@@ -439,28 +566,4 @@
 
   update(true);
 
-  /* =================== subpage links (not built yet) ================== */
-
-  const toast = document.getElementById("toast");
-  let toastTimer = null;
-  function showToast(msg) {
-    toast.hidden = false;
-    toast.textContent = msg;
-    toast.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
-  }
-
-  document.querySelectorAll("[data-check-page]").forEach((a) => {
-    a.addEventListener("click", (e) => {
-      e.preventDefault();
-      const href = a.getAttribute("href");
-      fetch(href, { method: "HEAD" })
-        .then((r) => {
-          if (r.ok) window.location.href = href;
-          else showToast(I18N[lang].comingSoon);
-        })
-        .catch(() => showToast(I18N[lang].comingSoon));
-    });
-  });
 })();
