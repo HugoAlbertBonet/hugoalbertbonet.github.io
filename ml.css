@@ -551,7 +551,8 @@ body.panel-open .map-sec { padding-right: min(474px, 94vw); }
 .minimap {
   position: fixed;
   right: clamp(16px, 2.5vw, 34px);
-  bottom: clamp(16px, 2.5vw, 34px);
+  /* clears the footer contact icons when the page is scrolled to the end */
+  bottom: clamp(96px, 8vw, 124px);
   z-index: 35;
   width: clamp(170px, 16vw, 226px);
   aspect-ratio: 1;
@@ -641,7 +642,7 @@ body.panel-open .minimap {
 @media (max-width: 860px) {
   .minimap {
     right: 12px;
-    bottom: 12px;
+    bottom: 104px;
     width: 116px;
     border-radius: 14px;
   }
