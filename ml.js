@@ -691,11 +691,17 @@
     legendEl.querySelectorAll("button[data-project]").forEach((b) => {
       const p = PMAP[b.dataset.project];
       b.querySelector(".nm").textContent = shortName(p);
+      b.setAttribute("aria-label", shortName(p) + " — " +
+        TERMS.filter((tm) => tm.projects.indexOf(p.id) !== -1).length + " " + t("mlTermsCount"));
     });
     const clear = document.getElementById("clearSel");
     if (clear) clear.textContent = t("mlAllProjects");
     if (miniActive) miniLabel.textContent = shortName(PMAP[miniActive]);
     fillPlaceholders();
+    PROJECTS.forEach((p) => {
+      const image = document.querySelector('[data-media="' + p.id + '"] img');
+      if (image) image.alt = p.title[lg];
+    });
     if (selected) buildPanel(selected);
     dirty = true;
   }

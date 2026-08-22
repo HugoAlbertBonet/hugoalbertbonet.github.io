@@ -24,11 +24,17 @@
       ctaMl: "Más sobre mi lado ingeniero →",
       ctaSp: "Más sobre mi lado orador →",
       comingSoon: "Próximamente ✦ esta página está en construcción.",
+      toggleAria: "Cambiar idioma / Switch language",
       toggle: "EN",
       docTitle: "Hugo Albert Bonet — Ingeniero de Machine Learning y orador",
 
       /* ---- ml.html ---- */
       mlDocTitle: "Hugo Albert Bonet — Ingeniero de Machine Learning",
+      mlOgTitle: "Hugo Albert Bonet — Ingeniero de Machine Learning",
+      mlMetaDescription:
+        "Hugo Albert Bonet — Ingeniero de Machine Learning. Mapa latente de sus proyectos: imitation learning, visión por computador, RL embebido y RAG.",
+      mlOgDescription:
+        "Un mapa de embeddings de seis proyectos de machine learning: de la percepción a la acción, de la simulación al despliegue real.",
       mlBack: "← Portada",
       mlBackHome: "Volver a la portada",
       mlSpeakerLink: "Mi lado orador →",
@@ -63,6 +69,8 @@
       mlPanelTerms: "Términos",
       mlTermsCount: "términos",
       mlAllProjects: "Todos los proyectos",
+      mlScreenMap: "Mapa latente",
+      mlScreenClosing: "Cierre",
     },
     en: {
       heroTitle: "Hi, I'm Hugo!",
@@ -81,11 +89,17 @@
       ctaMl: "More on my engineering side →",
       ctaSp: "More on my speaking side →",
       comingSoon: "Coming soon ✦ this page is under construction.",
+      toggleAria: "Switch language / Cambiar idioma",
       toggle: "ES",
       docTitle: "Hugo Albert Bonet — Machine Learning Engineer & Speaker",
 
       /* ---- ml.html ---- */
       mlDocTitle: "Hugo Albert Bonet — Machine Learning Engineer",
+      mlOgTitle: "Hugo Albert Bonet — Machine Learning Engineer",
+      mlMetaDescription:
+        "Hugo Albert Bonet — Machine Learning Engineer. Latent map of his projects: imitation learning, computer vision, embedded RL, and RAG.",
+      mlOgDescription:
+        "An embedding map of six machine learning projects: from perception to action, from simulation to real-world deployment.",
       mlBack: "← Home",
       mlBackHome: "Back to the home page",
       mlSpeakerLink: "My speaking side →",
@@ -120,6 +134,8 @@
       mlPanelTerms: "Terms",
       mlTermsCount: "terms",
       mlAllProjects: "All projects",
+      mlScreenMap: "Latent map",
+      mlScreenClosing: "Closing",
     },
   };
 
@@ -146,6 +162,14 @@
     document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
       const key = el.getAttribute("data-i18n-aria");
       if (t[key]) el.setAttribute("aria-label", t[key]);
+    });
+    document.querySelectorAll("[data-i18n-content]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-content");
+      if (t[key]) el.setAttribute("content", t[key]);
+    });
+    document.querySelectorAll("[data-i18n-screen]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-screen");
+      if (t[key]) el.dataset.screenLabel = t[key];
     });
     const tg = document.getElementById("langToggle");
     if (tg) tg.textContent = t.toggle;
