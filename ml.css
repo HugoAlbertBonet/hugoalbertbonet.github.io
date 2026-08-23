@@ -507,7 +507,10 @@ body.panel-open .map-sec { padding-right: min(474px, 94vw); }
 .proj-media img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* contain, not cover: project shots are diagrams/screenshots, so cropping
+     them to the tile ratio cuts off content. Letterbox bands fall back to
+     the tile's own project-tinted background. */
+  object-fit: contain;
   display: block;
 }
 /* graceful placeholder in the project's own colour when the jpg isn't there:
