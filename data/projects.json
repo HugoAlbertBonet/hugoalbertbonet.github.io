@@ -125,13 +125,13 @@
       {
         "value": "+75%",
         "label": {
-          "es": "norma ICM",
+          "es": "ICM norm",
           "en": "ICM norm"
         }
       }
     ],
     "href": "projects/exist.html",
-    "image": "assets/projects/exist.jpg"
+    "image": "assets/projects/exist.png"
   },
   {
     "id": "biomedvqa",
