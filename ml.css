@@ -639,7 +639,23 @@ body.panel-open .minimap {
 
 @media (max-width: 1080px) {
   .proj, .closing-inner { grid-template-columns: 1fr; }
-  .proj-media { order: -1; }
+
+  /* Single column: the image used to lead, pushing the title/year/role below
+     it. .proj-body is an unstyled wrapper, so dissolving it promotes its
+     children to grid items and the image can be ordered in between them —
+     after the role line, right before the summary.
+     gap goes to 0 because the text elements carry their own margins; the
+     column gap would otherwise apply between every one of them. */
+  .proj { gap: 0; }
+  .proj-body { display: contents; }
+  .proj-index { order: 1; }
+  .proj h3 { order: 2; }
+  .proj .role { order: 3; }
+  .proj-media { order: 4; margin: 6px 0 26px; }
+  .proj .detail { order: 5; }
+  .proj .metrics { order: 6; }
+  /* blockified as a grid item, so keep it hugging its own text */
+  .proj-cta { order: 7; justify-self: start; }
 }
 
 @media (max-width: 860px) {
