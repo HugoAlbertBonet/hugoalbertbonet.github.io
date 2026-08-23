@@ -163,10 +163,10 @@
         }
       },
       {
-        "value": "SLM",
+        "value": "SLM + LoRA",
         "label": {
-          "es": "mejor modelo",
-          "en": "best model"
+          "es": "mejores resultados",
+          "en": "best performance"
         }
       }
     ],
