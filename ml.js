@@ -681,8 +681,11 @@
       set('[data-p="' + p.id + '"][data-field="detail"]', p.detail[lg]);
       const mw = document.querySelector('[data-p="' + p.id + '"][data-field="metrics"]');
       if (mw) {
+        /* projects.json owns how many metrics there are: one deleted there
+           must disappear, not linger as leftover static HTML */
         mw.querySelectorAll(".metric").forEach((m, i) => {
-          if (!p.metrics[i]) return;
+          if (!p.metrics[i]) { m.hidden = true; return; }
+          m.hidden = false;
           m.querySelector("b").textContent = p.metrics[i].value;
           m.querySelector("span").textContent = p.metrics[i].label[lg];
         });
