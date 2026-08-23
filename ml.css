@@ -32,6 +32,9 @@ body.ml-page {
 .ml-back {
   font: 600 13px/1 var(--font-body);
   letter-spacing: 0.02em;
+  /* keep the arrow and its label on one line ("← Portada" is wider than
+     "← Home" and was wrapping under the arrow in Spanish) */
+  white-space: nowrap;
   color: rgba(22, 24, 28, 0.7);
   text-decoration: none;
   padding: 8px 14px 8px 0;
@@ -659,6 +662,20 @@ body.panel-open .minimap {
 }
 
 @media (max-width: 860px) {
+  .ml-top {
+    gap: 12px;
+    /* .lang-toggle is position:fixed (top 20px / right 22px, ~52px wide), so
+       it floats over this bar: reserve the space instead of running under it */
+    padding: 14px 76px 14px 20px;
+  }
+  .ml-top .kicker {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    letter-spacing: 0.12em;
+  }
+
   .minimap {
     right: 12px;
     bottom: 104px;
