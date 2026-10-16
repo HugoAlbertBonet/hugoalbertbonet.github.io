@@ -104,8 +104,26 @@
     {
       "date": "2026",
       "title": "AAAI-26 demo: AI for Memory Preservation",
-      "where": "AAAI-26 Demonstration Track",
+      "where": "AAAI-26 Demonstration Track, Singapore",
       "role": "Speaker"
+    },
+    {
+      "date": "2024",
+      "title": "European Hyperloop Week presentation",
+      "where": "Zurich · presenting the vehicle",
+      "role": "Speaker"
+    },
+    {
+      "date": "2024",
+      "title": "Hyperloop UPV Unveiling",
+      "where": "The team's main event",
+      "role": "Organizer + speaker"
+    },
+    {
+      "date": "2024",
+      "title": "Hyperloop UPV Sponsor Premiere",
+      "where": "Presenting the vehicle to our sponsors",
+      "role": "Organizer + speaker"
     },
     {
       "date": "2023",
@@ -114,9 +132,21 @@
       "role": "Organizer + speaker"
     },
     {
-      "date": "[Year]",
-      "title": "European Hyperloop Week jury presentation",
-      "where": "[Where] · presenting the vehicle to the jury",
+      "date": "2023",
+      "title": "Hyperloop UPV Sponsor Premiere",
+      "where": "Presenting the vehicle to our sponsors",
+      "role": "Organizer + speaker"
+    },
+    {
+      "date": "2023",
+      "title": "VLC Tech X-perience",
+      "where": "Valencia",
+      "role": "Speaker"
+    },
+    {
+      "date": "2022",
+      "title": "Smart Mobility Valencia",
+      "where": "Startup stage, Valencia",
       "role": "Speaker"
     }
   ]

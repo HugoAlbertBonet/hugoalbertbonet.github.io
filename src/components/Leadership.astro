@@ -4,6 +4,8 @@ import Award from './Award.astro';
 import { leadership } from '../lib/content';
 
 const { photos, roles, competitions, events } = leadership;
+// Events show a page at a time (all of them without JavaScript).
+const EVENTS_PER_PAGE = 3;
 const extraComps = competitions.length - 1;
 const roleClass = {
   Organizer: 'organizer',
@@ -139,7 +141,7 @@ const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
         events.length > 0 && (
           <div class="block events-block extra">
             <h3 class="mini-label">Events I organized or spoke at</h3>
-            <ul class="events">
+            <ul class="events" data-events data-per-page={EVENTS_PER_PAGE}>
               {events.map((e) => (
                 <li class="event">
                   <span class="event-date">{e.date}</span>
@@ -151,6 +153,19 @@ const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
                 </li>
               ))}
             </ul>
+            {events.length > EVENTS_PER_PAGE && (
+              <div class="events-pager" data-events-pager hidden>
+                <span class="events-range" aria-live="polite" data-events-range />
+                <div class="events-arrows">
+                  <button type="button" class="events-arrow" aria-label="Previous events" data-events-prev>
+                    ←
+                  </button>
+                  <button type="button" class="events-arrow" aria-label="Next events" data-events-next>
+                    →
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )
       }
@@ -171,6 +186,37 @@ const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
 <script>
   import '../scripts/showMore';
+
+  // Events: three at a time, with previous / next.
+  document.querySelectorAll<HTMLElement>('[data-events]').forEach((list) => {
+    const pager = list.parentElement?.querySelector<HTMLElement>('[data-events-pager]');
+    if (!pager) return;
+    const items = [...list.querySelectorAll<HTMLElement>(':scope > li')];
+    const range = pager.querySelector<HTMLElement>('[data-events-range]')!;
+    const prev = pager.querySelector<HTMLButtonElement>('[data-events-prev]')!;
+    const next = pager.querySelector<HTMLButtonElement>('[data-events-next]')!;
+    const PER_PAGE = Number(list.dataset.perPage) || 3;
+    const pages = Math.ceil(items.length / PER_PAGE);
+    let page = 0;
+    const render = () => {
+      items.forEach((li, i) => (li.hidden = Math.floor(i / PER_PAGE) !== page));
+      const first = page * PER_PAGE + 1;
+      const last = Math.min(first + PER_PAGE - 1, items.length);
+      range.textContent = `${first}–${last} of ${items.length}`;
+      prev.disabled = page === 0;
+      next.disabled = page === pages - 1;
+    };
+    prev.addEventListener('click', () => {
+      page = Math.max(0, page - 1);
+      render();
+    });
+    next.addEventListener('click', () => {
+      page = Math.min(pages - 1, page + 1);
+      render();
+    });
+    pager.hidden = false;
+    render();
+  });
 
   document.querySelectorAll<HTMLElement>('[data-photos]').forEach((root) => {
     const slides = [...root.querySelectorAll<HTMLElement>('.photo')];
@@ -537,6 +583,53 @@ const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+  }
+
+  .event[hidden] {
+    display: none;
+  }
+
+  .events-pager {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .events-pager[hidden] {
+    display: none;
+  }
+
+  .events-range {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .events-arrows {
+    display: flex;
+    gap: 8px;
+  }
+
+  .events-arrow {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 16px;
+    transition: border-color 0.15s ease;
+  }
+
+  .events-arrow:hover:not(:disabled) {
+    border-color: var(--line-strong);
+  }
+
+  .events-arrow:disabled {
+    color: var(--line-strong);
+    cursor: default;
   }
 
   .events {

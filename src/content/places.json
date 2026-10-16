@@ -58,5 +58,25 @@
     "note": "Presented the flood-photo restoration demo in person (Demonstration Track).",
     "lat": 1.35,
     "lon": 103.82
+  },
+  {
+    "kind": "presented",
+    "title": "Hannover Messe 2023",
+    "city": "Hannover",
+    "country": "Germany",
+    "year": "2023",
+    "note": "With Hyperloop UPV and Würth Elektronik.",
+    "lat": 52.32,
+    "lon": 9.81
+  },
+  {
+    "kind": "presented",
+    "title": "JEC World 2022",
+    "city": "Paris",
+    "country": "France",
+    "year": "2022",
+    "note": "With Hyperloop UPV and Ziur Composites.",
+    "lat": 48.97,
+    "lon": 2.52
   }
 ]
