@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+import Intro from '../components/Intro.astro';
+import AskTerminal from '../components/AskTerminal.astro';
+import AtAGlance from '../components/AtAGlance.astro';
+import Quote from '../components/Quote.astro';
+import Education from '../components/Education.astro';
+import Experience from '../components/Experience.astro';
+import Leadership from '../components/Leadership.astro';
+import Projects from '../components/Projects.astro';
+import Courses from '../components/Courses.astro';
+import Contact from '../components/Contact.astro';
+import WorldMap from '../components/WorldMap.astro';
+---
+
+<Base>
+  <div class="home">
+    <Intro />
+    <div class="ask-wrap"><AskTerminal /></div>
+    <div class="glance-wrap"><AtAGlance /></div>
+    <Quote />
+  </div>
+
+  <div class="sections">
+    <Education />
+    <Experience />
+    <Leadership />
+
+    <WorldMap />
+
+    <div class="projects-group">
+      <Projects />
+      <Courses />
+    </div>
+
+    <Contact />
+  </div>
+</Base>
+
+<style>
+  .home {
+    display: flex;
+    flex-direction: column;
+    padding-top: 16px;
+  }
+
+  .ask-wrap {
+    margin-top: 18px;
+  }
+
+  .glance-wrap {
+    margin: 28px 0;
+  }
+
+  .sections {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    padding-top: 56px;
+  }
+
+  /* Courses sits close under Projects, as a quiet appendix. */
+  .projects-group {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  @media (min-width: 720px) {
+    .home {
+      padding-top: 32px;
+    }
+
+    .ask-wrap {
+      margin-top: 28px;
+    }
+
+    .glance-wrap {
+      margin: 40px 0 20px;
+    }
+
+    .sections {
+      gap: 96px;
+      padding-top: 96px;
+    }
+
+    .projects-group {
+      gap: 56px;
+    }
+  }
+</style>

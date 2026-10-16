@@ -1,0 +1,67 @@
+---
+// Orange award chip with a medal icon.
+interface Props {
+  size?: 'sm' | 'md';
+}
+const { size = 'md' } = Astro.props;
+---
+
+<span class:list={['award', size]}>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round"
+    stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="9" r="6"></circle>
+    <path d="M8.5 14 L7 22 L12 19.5 L17 22 L15.5 14"></path>
+  </svg>
+  <slot />
+</span>
+
+<style>
+  .award {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 9px;
+    background: var(--orange-tint);
+    color: var(--orange-text);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  svg {
+    flex: none;
+    width: 14px;
+    height: 14px;
+  }
+
+  .sm {
+    padding: 4px 8px;
+    border-radius: 7px;
+    font-size: 12px;
+  }
+
+  @media (min-width: 960px) {
+    .md {
+      gap: 8px;
+      padding: 7px 12px 7px 10px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .md svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .sm {
+      padding: 5px 10px 5px 8px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    .sm svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+</style>

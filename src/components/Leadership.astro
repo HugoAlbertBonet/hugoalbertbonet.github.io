@@ -1,0 +1,805 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import Award from './Award.astro';
+import { leadership } from '../lib/content';
+
+const { photos, roles, competitions, events } = leadership;
+const extraComps = competitions.length - 1;
+const roleClass = {
+  Organizer: 'organizer',
+  Speaker: 'speaker',
+  'Organizer + speaker': 'both',
+} as const;
+const isVideo = (src: string) => /\.(mp4|webm)$/i.test(src);
+const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
+---
+
+<section id="leadership" data-more>
+  <SectionHeader title="Leadership & competitions" />
+
+  <div class="grid">
+    <article class="org">
+      <div class="photos" role="region" aria-roledescription="carousel" aria-label="Photos" data-photos>
+        {
+          photos.map((p, i) => (
+            <figure class="photo" aria-roledescription="slide" aria-label={`${i + 1} of ${photos.length}`} hidden={i !== 0}>
+              {p.src ? (
+                isVideo(p.src) ? (
+                  <video src={p.src} poster={p.poster} muted loop playsinline preload="none" aria-label={p.alt} />
+                ) : (
+                  <img src={p.src} alt={p.alt} loading={i === 0 ? 'eager' : 'lazy'} />
+                )
+              ) : (
+                <span class="ph">{p.alt}</span>
+              )}
+              <figcaption class="caption">
+                {p.caption}
+                <span class="count">{` · ${i + 1} / ${photos.length}`}</span>
+              </figcaption>
+            </figure>
+          ))
+        }
+        {
+          photos.length > 1 && (
+            <div class="photo-nav">
+              <button type="button" aria-label="Previous photo" data-prev>
+                ←
+              </button>
+              <button type="button" aria-label="Next photo" data-next>
+                →
+              </button>
+            </div>
+          )
+        }
+      </div>
+
+      <div class="org-body">
+        <div class="org-head">
+          <div class="org-title-row">
+            <h3 class="org-name">{leadership.org}</h3>
+            <span class="years">
+              {leadership.start} – {leadership.end}
+            </span>
+          </div>
+          <p class="desc">{leadership.description}</p>
+        </div>
+
+        <div class="roles">
+          <span class="mini-label roles-label">Roles over the years</span>
+          <ol class="timeline">
+            {
+              roles.map((r, i) => (
+                <li class:list={['step', { latest: i === 0 }]}>
+                  <span class="rail" aria-hidden="true">
+                    <span class="node" />
+                    <span class="line" />
+                  </span>
+                  <span class="step-years">{r.years}</span>
+                  <span class="step-text">
+                    <span class="step-role">{r.role}</span>
+                    <span class="step-what">{r.what}</span>
+                  </span>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </div>
+    </article>
+
+    <div class="side">
+      {
+        competitions.length > 0 && (
+          <div class="block">
+            <h3 class="mini-label">International competitions</h3>
+            <ul class="comps">
+              {competitions.map((c, i) => (
+                <li class:list={['comp', { extra: i > 0 }]} tabindex={i === 1 ? -1 : undefined}>
+                  {c.image ? (
+                    <img class="vehicle" src={c.image} alt={c.vehicle} loading="lazy" />
+                  ) : (
+                    <span class="vehicle generated" aria-hidden="true">
+                      {c.vehicle}
+                    </span>
+                  )}
+                  <div class="comp-text">
+                    <div class="comp-head">
+                      <span class="comp-name">{c.name}</span>
+                      <span class="comp-year">{c.year}</span>
+                    </div>
+                    <span class="where">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" aria-hidden="true">
+                        <path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z" />
+                        <circle cx="12" cy="9" r="2.5" />
+                      </svg>
+                      {c.city}, {c.country}
+                      <span class="comp-year-phone"> · {c.year}</span>
+                    </span>
+                    <span class="vehicle-line">
+                      <b>{c.vehicle}</b>
+                      {c.meaning && <span class="meaning"> · {c.meaning}</span>}
+                    </span>
+                    {c.awards.length > 0 && (
+                      <div class="comp-awards">
+                        {c.awards.map((a) => (
+                          <Award size="sm">{a}</Award>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+
+      {
+        events.length > 0 && (
+          <div class="block events-block extra">
+            <h3 class="mini-label">Events I organized or spoke at</h3>
+            <ul class="events">
+              {events.map((e) => (
+                <li class="event">
+                  <span class="event-date">{e.date}</span>
+                  <span class="event-text">
+                    <span class="event-title">{e.title}</span>
+                    <span class="event-where">{e.where}</span>
+                  </span>
+                  <span class={`event-role ${roleClass[e.role]}`}>{e.role}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+
+      {
+        (extraComps > 0 || events.length > 0) && (
+          <button type="button" class="more-btn" data-more-toggle>
+            +{' '}
+            {[extraComps > 0 && `${plural(extraComps, 'more competition')}`, events.length > 0 && plural(events.length, 'event')]
+              .filter(Boolean)
+              .join(' · ')}
+          </button>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/showMore';
+
+  document.querySelectorAll<HTMLElement>('[data-photos]').forEach((root) => {
+    const slides = [...root.querySelectorAll<HTMLElement>('.photo')];
+    if (slides.length < 2) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let current = 0;
+    // Videos play silently only while their slide is showing; with reduced motion they wait for the
+    // visitor to press play.
+    const syncVideos = () => {
+      slides.forEach((s, j) => {
+        const v = s.querySelector('video');
+        if (!v) return;
+        if (j !== current) v.pause();
+        else if (reduceMotion) v.controls = true;
+        else v.play().catch(() => {});
+      });
+    };
+    const show = (i: number) => {
+      current = (i + slides.length) % slides.length;
+      slides.forEach((s, j) => (s.hidden = j !== current));
+      syncVideos();
+    };
+    root.querySelector('[data-prev]')?.addEventListener('click', () => show(current - 1));
+    root.querySelector('[data-next]')?.addEventListener('click', () => show(current + 1));
+
+    let startX = 0;
+    let startY = 0;
+    root.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+    root.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) show(current + (dx < 0 ? 1 : -1));
+    });
+  });
+</script>
+
+<style>
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  h3.mini-label {
+    margin: 0;
+    font-weight: 400;
+  }
+
+  /* Organization card */
+  .org {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+  }
+
+  .photos {
+    position: relative;
+    height: 190px;
+    background: var(--placeholder);
+  }
+
+  .photo {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    animation: fadein 0.35s ease-out;
+  }
+
+  .photo[hidden] {
+    display: none;
+  }
+
+  .photo img,
+  .photo video,
+  .photo .ph {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .photo .ph {
+    border-width: 0 0 1px;
+    font-size: 12px;
+  }
+
+  .caption {
+    position: absolute;
+    left: 12px;
+    bottom: 10px;
+    max-width: calc(100% - 120px);
+    padding: 4px 8px;
+    border-radius: 7px;
+    background: var(--scrim);
+    color: var(--scrim-ink);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .photo-nav {
+    position: absolute;
+    right: 12px;
+    bottom: 10px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .photo-nav button {
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--photo-btn);
+    color: var(--photo-btn-ink);
+    font-size: 16px;
+    transition: background-color 0.15s ease;
+  }
+
+  .photo-nav button:hover {
+    background: var(--photo-btn-hover);
+  }
+
+  .org-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px;
+  }
+
+  .org-head {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .org-title-row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .org-name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .years {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .desc {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  .roles-label {
+    display: block;
+    padding-bottom: 12px;
+  }
+
+  .timeline {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Phone: dot | role, years below. Desktop adds the rail line and a years column. */
+  .step {
+    display: grid;
+    grid-template-columns: 12px minmax(0, 1fr);
+    grid-template-areas:
+      'rail text'
+      'rail years';
+    column-gap: 10px;
+    padding-bottom: 10px;
+  }
+
+  .rail {
+    grid-area: rail;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .node {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    margin-top: 5px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--placeholder-line);
+  }
+
+  .latest .node {
+    background: var(--orange);
+    border-color: var(--orange);
+  }
+
+  .line {
+    display: none;
+  }
+
+  .step-years {
+    grid-area: years;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .step-text {
+    grid-area: text;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .step-role {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .step-what {
+    display: none;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+
+  /* Competitions and events */
+  .side {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .block > .mini-label {
+    padding-top: 8px;
+  }
+
+  .comps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .comp {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+  }
+
+  .comp:focus {
+    outline: none;
+  }
+
+  /* Vehicle renders sit whole on white, like the logos. */
+  .vehicle {
+    flex: none;
+    width: 92px;
+    height: 92px;
+    border-radius: 10px;
+    object-fit: contain;
+    padding: 4px;
+    background: var(--logo-bg);
+  }
+
+  .vehicle.generated {
+    display: flex;
+    align-items: flex-end;
+    padding: 8px;
+    background-color: var(--graphite);
+    background-image: radial-gradient(var(--cover-dots-graphite) 1.2px, transparent 1.4px);
+    background-size: 12px 12px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--orange-hand);
+  }
+
+  .comp-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .comp-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .comp-name {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .comp-year {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .where {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .where svg {
+    display: none;
+  }
+
+  .comp-year-phone {
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  .vehicle-line {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .meaning {
+    color: var(--muted);
+  }
+
+  .comp-awards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .events {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .event {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'date role'
+      'text role';
+    align-items: center;
+    gap: 2px 14px;
+    padding: 13px 2px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .event-date {
+    grid-area: date;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .event-text {
+    grid-area: text;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .event-title {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .event-where {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .event-role {
+    grid-area: role;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .organizer {
+    background: var(--blue-tint);
+    color: var(--blue-text);
+  }
+
+  .speaker {
+    background: var(--orange-tint);
+    color: var(--orange-text);
+  }
+
+  .both {
+    background: var(--graphite);
+    color: var(--on-accent);
+  }
+
+  @media (min-width: 720px) {
+    section {
+      gap: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      align-items: start;
+      gap: 24px;
+    }
+
+    .org {
+      border-radius: var(--radius-card);
+    }
+
+    .photos {
+      height: 260px;
+    }
+
+    .photo .ph {
+      font-size: 13px;
+    }
+
+    .caption {
+      left: 16px;
+      bottom: 14px;
+      padding: 5px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+    }
+
+    .count {
+      display: none;
+    }
+
+    .photo-nav {
+      right: 14px;
+      bottom: 12px;
+    }
+
+    .photo-nav button {
+      width: 36px;
+      height: 36px;
+    }
+
+    .org-body {
+      gap: 22px;
+      padding: 26px 28px 28px;
+    }
+
+    .org-title-row {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .org-name {
+      font-size: 26px;
+    }
+
+    .years {
+      font-size: 13px;
+    }
+
+    .desc {
+      font-size: 15px;
+    }
+
+    .step {
+      grid-template-columns: 18px 92px minmax(0, 1fr);
+      grid-template-areas: 'rail years text';
+      align-items: start;
+      gap: 12px;
+      padding-bottom: 0;
+    }
+
+    .rail {
+      align-self: stretch;
+    }
+
+    .node {
+      width: 12px;
+      height: 12px;
+      margin-top: 4px;
+    }
+
+    .line {
+      display: block;
+      flex: 1;
+      width: 2px;
+      min-height: 18px;
+      background: var(--line);
+    }
+
+    .step:last-child .line {
+      background: transparent;
+    }
+
+    .step-years {
+      padding-top: 3px;
+      font-size: 12px;
+    }
+
+    .step-text {
+      padding-bottom: 16px;
+    }
+
+    .step-role {
+      font-size: 16px;
+    }
+
+    .step-what {
+      display: inline;
+    }
+
+    .side {
+      gap: 28px;
+    }
+
+    .block > .mini-label {
+      padding-top: 0;
+    }
+
+    .events-block {
+      gap: 12px;
+    }
+
+    .comp {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 18px;
+      padding: 12px;
+    }
+
+    .vehicle {
+      width: 120px;
+      height: 96px;
+    }
+
+    .vehicle.generated {
+      padding: 10px 12px;
+      background-size: 14px 14px;
+      font-size: 15px;
+    }
+
+    .comp-text {
+      gap: 6px;
+      padding-right: 8px;
+    }
+
+    .comp-name {
+      font-size: 16px;
+    }
+
+    .comp-year {
+      display: inline;
+    }
+
+    .comp-year-phone {
+      display: none;
+    }
+
+    .where {
+      font-size: 14px;
+    }
+
+    .where svg {
+      display: inline;
+      margin-right: 4px;
+      vertical-align: -2px;
+    }
+
+    .vehicle-line {
+      font-size: 14px;
+    }
+
+    .comp-awards {
+      padding-top: 2px;
+    }
+
+    .event {
+      grid-template-columns: 86px minmax(0, 1fr) auto;
+      grid-template-areas: 'date text role';
+      gap: 14px;
+    }
+  }
+
+  @keyframes fadein {
+    from { opacity: 0.3; }
+    to { opacity: 1; }
+  }
+</style>

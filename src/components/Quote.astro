@@ -1,0 +1,103 @@
+---
+import Spark from './Spark.astro';
+import { profile } from '../lib/content';
+
+const { quote } = profile;
+---
+
+<figure class="quote">
+  <Spark size={16} />
+  <blockquote>“{quote.text}”</blockquote>
+  <figcaption>— {quote.author}</figcaption>
+  {
+    quote.aside && (
+      <span class="aside">
+        <svg class="arrow" width="38" height="16" viewBox="0 0 38 16" aria-hidden="true">
+          <path d="M36 11 C27 14 13 12 5 4" fill="none" stroke="var(--orange-type)" stroke-width="1.8" stroke-linecap="round" />
+          <path d="M4 11 L5 3 L12 5" fill="none" stroke="var(--orange-type)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>{quote.aside}</span>
+      </span>
+    )
+  }
+</figure>
+
+<style>
+  .quote {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 0 8px;
+    text-align: center;
+  }
+
+  /* On phone the spark is left out, as in the mockup. */
+  .quote :global(.spark) {
+    display: none;
+  }
+
+  blockquote {
+    margin: 0;
+    font-family: var(--font-hand);
+    font-size: 23px;
+    line-height: 1.25;
+    color: var(--ink-soft);
+  }
+
+  figcaption {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .aside {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transform: rotate(-3deg);
+    font-family: var(--font-hand);
+    font-size: 20px;
+    color: var(--orange-type);
+    white-space: nowrap;
+  }
+
+  .arrow {
+    flex: none;
+    width: 30px;
+    transform: rotate(60deg);
+  }
+
+  @media (min-width: 960px) {
+    .quote {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: center;
+      gap: 12px;
+      padding: 0;
+    }
+
+    .quote :global(.spark) {
+      display: block;
+      align-self: center;
+    }
+
+    blockquote {
+      font-size: 25px;
+    }
+
+    .aside {
+      margin-left: 6px;
+      transform: rotate(-4deg) translateY(-6px);
+      font-size: 21px;
+    }
+
+    .arrow {
+      width: 38px;
+      margin-top: -8px;
+      transform: none;
+    }
+  }
+</style>

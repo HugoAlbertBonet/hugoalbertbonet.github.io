@@ -1,0 +1,469 @@
+---
+// Personal projects with field filters. Pinned projects come first; the list starts with the first
+// FIRST_SHOWN and a "Show all" button (any filter shows every match). Projects with a cover image
+// show it; the rest get a generated cover (site color + dot pattern + initial).
+import SectionHeader from './SectionHeader.astro';
+import { coverLook, experience, getProjects, initialOf, projectFields } from '../lib/content';
+
+const projects = await getProjects();
+const base = import.meta.env.BASE_URL;
+const FIRST_SHOWN = 6;
+const filters = [
+  { key: 'all', label: 'All' },
+  ...Object.entries(projectFields).map(([key, label]) => ({ key, label })),
+];
+const linkLabels = { live: 'Live', code: 'Code', paper: 'Paper', download: 'Download' } as const;
+const orgOf = (id?: string) => experience.find((j) => j.id === id)?.org;
+---
+
+<section id="projects">
+  <div class="section-head">
+    <SectionHeader title="Projects" />
+    <div class="filters" role="group" aria-label="Filter projects">
+      {
+        filters.map((f) => (
+          <button type="button" class="filter-pill" aria-pressed={f.key === 'all' ? 'true' : 'false'} data-filter={f.key}>
+            {f.label}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <ul class="list" data-project-list>
+    {
+      projects.map((p, i) => {
+        const d = p.data;
+        const href = `${base}projects/${p.id}/`;
+        const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[]).filter((k) => d.links[k]);
+        const rel = orgOf(d.relatedExperience);
+        return (
+          <li class:list={['project', { 'has-cover': d.cover, later: i >= FIRST_SHOWN }]} data-fields={d.fields.join(' ')}>
+            {d.cover ? (
+              <img
+                class:list={['cover', { contain: d.coverFit === 'contain' }]}
+                src={d.cover}
+                style={d.coverPosition ? `object-position: ${d.coverPosition}` : undefined}
+                alt=""
+                loading="lazy"
+              />
+            ) : (
+              <span class={`cover generated cover-${coverLook(i)}`} aria-hidden="true">
+                {d.mark ?? initialOf(d.name)}
+              </span>
+            )}
+
+            <div class="body">
+              <div class="head">
+                <a class="name tap" href={href}>
+                  {d.name} <span class="go" aria-hidden="true">→</span>
+                </a>
+                <span class="year year-phone">{d.year}</span>
+              </div>
+              <p class="line">{d.line}</p>
+              <div class="chips">
+                {d.tags.map((t) => (
+                  <span class="tag">{t}</span>
+                ))}
+                {rel && (
+                  <a class="rel tap" href={`#experience-${d.relatedExperience}`} data-jump>
+                    ↗ Related to {rel}
+                  </a>
+                )}
+              </div>
+              {links.length > 0 && (
+                <div class="links links-phone">
+                  {links.map((k) => (
+                    <a class="ext" href={d.links[k]}>
+                      {linkLabels[k]} <span aria-hidden="true">↗</span>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div class="side">
+              <span class="year">{d.year}</span>
+              {links.length > 0 && (
+                <div class="links">
+                  {links.map((k) => (
+                    <a class="ext" href={d.links[k]}>
+                      {linkLabels[k]} <span aria-hidden="true">↗</span>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </li>
+        );
+      })
+    }
+  </ul>
+  {
+    projects.length > FIRST_SHOWN && (
+      <button type="button" class="show-all" data-show-all hidden>
+        Show all {projects.length} projects
+      </button>
+    )
+  }
+  <p class="visually-hidden" aria-live="polite" data-filter-status></p>
+</section>
+
+<script>
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+  const items = [...document.querySelectorAll<HTMLElement>('[data-project-list] > li')];
+  const status = document.querySelector<HTMLElement>('[data-filter-status]')!;
+  const showAll = document.querySelector<HTMLButtonElement>('[data-show-all]');
+
+  // Without JavaScript every project is listed; with it, "later" ones wait behind "Show all".
+  let expanded = !showAll;
+  let filter = 'all';
+
+  const render = () => {
+    let shown = 0;
+    items.forEach((li) => {
+      const matches = filter === 'all' || (li.dataset.fields ?? '').split(' ').includes(filter);
+      li.hidden = !matches || (filter === 'all' && !expanded && li.classList.contains('later'));
+      if (!li.hidden) shown++;
+    });
+    if (showAll) showAll.hidden = expanded || filter !== 'all';
+    return shown;
+  };
+
+  buttons.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      filter = btn.dataset.filter ?? 'all';
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      const shown = render();
+      status.textContent = `${shown} project${shown === 1 ? '' : 's'} shown`;
+    }),
+  );
+
+  showAll?.addEventListener('click', () => {
+    const first = items.find((li) => li.hidden);
+    expanded = true;
+    render();
+    first?.querySelector<HTMLElement>('a')?.focus();
+  });
+
+  render();
+</script>
+
+<style>
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* !important: the desktop grid rule for rows with a cover would otherwise win over [hidden]. */
+  .project[hidden] {
+    display: none !important;
+  }
+
+  .show-all {
+    align-self: center;
+    min-height: 44px;
+    padding: 0 20px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 600;
+    transition: border-color 0.15s ease;
+  }
+
+  .show-all:hover {
+    border-color: var(--blue);
+  }
+
+  .show-all[hidden] {
+    display: none;
+  }
+
+  /* Phone: compact row (small generated cover), or cover on top when there's an image. */
+  .project {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background: var(--surface-sunken);
+    border: 1px solid var(--line-soft);
+    border-radius: 16px;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .project.has-cover {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .cover {
+    flex: none;
+    width: 84px;
+    height: 84px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  .has-cover .cover {
+    width: 100%;
+    height: 150px;
+    border-radius: 0;
+  }
+
+  /* Figures and screenshots: show them whole, on white. */
+  .cover.contain {
+    object-fit: contain;
+    background: var(--logo-bg);
+    border: 1px solid var(--line);
+  }
+
+  .generated {
+    display: flex;
+    align-items: flex-end;
+    padding: 8px 10px;
+    background-size: 12px 12px;
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .has-cover .body {
+    gap: 8px;
+    padding: 14px 16px 16px;
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .name {
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .has-cover .name {
+    font-size: 17px;
+  }
+
+  .go {
+    color: var(--blue-link);
+  }
+
+  .year {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .project:not(.has-cover) .year-phone {
+    display: none;
+  }
+
+  .line {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .has-cover .line {
+    font-size: 14px;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .rel {
+    padding: 4px 10px;
+    border: 1px solid var(--blue-tint-line);
+    border-radius: var(--radius-sm);
+    color: var(--blue-text);
+    font-size: 12.5px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+  }
+
+  .rel:hover {
+    background: var(--blue-tint-hover);
+    color: var(--blue-text);
+  }
+
+  .links {
+    display: flex;
+    gap: 8px;
+  }
+
+  .links-phone {
+    padding-top: 2px;
+  }
+
+  .project:not(.has-cover) .links-phone {
+    display: none;
+  }
+
+  .ext {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 40px;
+    padding: 9px 12px;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: 9px;
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .ext:hover {
+    border-color: var(--orange);
+    color: var(--ink);
+  }
+
+  .ext span {
+    color: var(--orange);
+  }
+
+  .side {
+    display: none;
+  }
+
+  /* Desktop: cover | text | year + links. */
+  @media (min-width: 720px) {
+    section {
+      gap: 20px;
+    }
+
+    .project,
+    .project.has-cover {
+      display: grid;
+      grid-template-columns: 168px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 24px;
+      padding: 12px 20px 12px 12px;
+      overflow: visible;
+    }
+
+    .project:hover {
+      background: var(--surface);
+      border-color: var(--line-strong);
+    }
+
+    .cover,
+    .has-cover .cover {
+      width: 168px;
+      height: 104px;
+      border-radius: 10px;
+    }
+
+    .generated {
+      padding: 12px 14px;
+      background-size: 14px 14px;
+      font-size: 34px;
+    }
+
+    .body,
+    .has-cover .body {
+      gap: 8px;
+      padding: 0;
+    }
+
+    .head {
+      display: block;
+    }
+
+    .name,
+    .has-cover .name {
+      font-size: 18px;
+    }
+
+    .go {
+      display: inline-block;
+      opacity: 0;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+
+    .project:hover .go,
+    .name:focus-visible .go {
+      opacity: 1;
+      transform: translateX(2px);
+    }
+
+    .year-phone,
+    .links-phone {
+      display: none;
+    }
+
+    .line,
+    .has-cover .line {
+      margin-top: -5px;
+      font-size: 15px;
+    }
+
+    .chips .tag {
+      padding: 5px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+    }
+
+    .side {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    .side .year {
+      font-size: 13px;
+    }
+
+    .links {
+      gap: 6px;
+    }
+
+    .ext {
+      min-height: 0;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+    }
+  }
+</style>

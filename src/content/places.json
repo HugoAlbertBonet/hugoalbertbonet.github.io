@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "studied",
+    "title": "B.S. in Data Science and M.S. in AI",
+    "city": "Valencia",
+    "country": "Spain",
+    "year": "2020–25",
+    "note": "Universitat Politècnica de València. Theses on RL levitation control and flood-photo restoration.",
+    "lat": 39.48,
+    "lon": -0.34
+  },
+  {
+    "kind": "studied",
+    "title": "M.S. in Computer Science",
+    "city": "Los Angeles",
+    "country": "United States",
+    "year": "2025–27",
+    "note": "USC, as a Fulbright Scholar. Robot-learning research at LiraLab.",
+    "lat": 34.02,
+    "lon": -118.29
+  },
+  {
+    "kind": "competed",
+    "title": "European Hyperloop Week 2022",
+    "city": "Delft",
+    "country": "Netherlands",
+    "year": "2022",
+    "note": "With Auran: 2nd place, plus four awards including Levitation System.",
+    "lat": 52.01,
+    "lon": 4.36
+  },
+  {
+    "kind": "competed",
+    "title": "European Hyperloop Week 2023",
+    "city": "Edinburgh",
+    "country": "United Kingdom",
+    "year": "2023",
+    "note": "With Kénos: 3rd place.",
+    "lat": 55.95,
+    "lon": -3.19
+  },
+  {
+    "kind": "competed",
+    "title": "European Hyperloop Week 2024",
+    "city": "Zurich",
+    "country": "Switzerland",
+    "year": "2024",
+    "note": "With Vèsper: Complete System Award, with me as team lead.",
+    "lat": 47.38,
+    "lon": 8.54
+  },
+  {
+    "kind": "presented",
+    "title": "AAAI-26 demo",
+    "city": "Singapore",
+    "country": "Singapore",
+    "year": "2026",
+    "note": "Presented the flood-photo restoration demo in person (Demonstration Track).",
+    "lat": 1.35,
+    "lon": 103.82
+  }
+]

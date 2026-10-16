@@ -1,0 +1,144 @@
+---
+// "Say hi" tile: local time, email that copies on click, LinkedIn and GitHub.
+import { profile } from '../lib/content';
+---
+
+<div class="tile hi" data-copy-scope>
+  <div class="top">
+    <span class="tile-label">Say hi</span>
+    <span class="time"><span data-local-time data-tz={profile.timezone}></span> in {profile.city}</span>
+  </div>
+  <div class="bottom">
+    <button type="button" class="email tap" data-copy={profile.email} aria-label={`Copy email address ${profile.email}`}>
+      {profile.email}
+    </button>
+    <div class="hint">
+      <span data-copy-status aria-live="polite"><span class="verb-click">Click</span><span class="verb-tap">Tap</span> to copy</span>
+      <span class="links"> · <a href={profile.links.linkedin}>LinkedIn</a> · <a href={profile.links.github}>GitHub</a></span>
+    </div>
+  </div>
+</div>
+
+<script>
+  import '../scripts/localTime';
+  import '../scripts/copyEmail';
+</script>
+
+<style>
+  .hi {
+    gap: 10px;
+    padding: 16px;
+    background: var(--graphite);
+    border-color: var(--graphite);
+    color: var(--on-accent);
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .top .tile-label {
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--graphite-status);
+  }
+
+  .time {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--graphite-status);
+  }
+
+  .bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .email {
+    align-self: flex-start;
+    max-width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--on-accent);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    word-break: break-all;
+  }
+
+  .email:hover {
+    text-decoration: underline;
+  }
+
+  .email:focus-visible,
+  .hint a:focus-visible {
+    outline-color: var(--graphite-link);
+  }
+
+  .hint {
+    font-size: 12px;
+    color: var(--graphite-status);
+  }
+
+  .hint a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .hint a:hover {
+    color: var(--on-accent);
+  }
+
+  .links,
+  .verb-click {
+    display: none;
+  }
+
+  @media (hover: hover) {
+    .verb-click {
+      display: inline;
+    }
+
+    .verb-tap {
+      display: none;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .hi {
+      padding: 22px;
+    }
+
+    .top .tile-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+
+    .time {
+      display: inline;
+    }
+
+    .bottom {
+      gap: 6px;
+    }
+
+    .email {
+      font-size: 15px;
+      word-break: normal;
+    }
+
+    .hint {
+      font-size: 13px;
+    }
+
+    .links {
+      display: inline;
+    }
+  }
+</style>

@@ -1,0 +1,691 @@
+---
+// "Around the world": dotted world map with pins by type, filters, a details card and a list of places.
+// Dashed arcs run from Valencia (the team's base, leadership.base) to every other place, colored by type.
+// The view is zoomed to the smallest box that still shows every pin.
+import SectionHeader from './SectionHeader.astro';
+import { leadership, places } from '../lib/content';
+import type { Place } from '../lib/schemas';
+import { arcPath, fitView, landPath, project, spreadPins, toPercent } from '../lib/geo';
+
+const kinds = {
+  studied: 'Studied',
+  competed: 'Competed',
+  presented: 'Presented',
+} as const;
+
+// The team base is listed with the competitions (just before the first one).
+const { base } = leadership;
+const baseEntry: Place = {
+  kind: 'competed',
+  title: base.name,
+  city: base.city,
+  country: base.country,
+  year: `${leadership.start}–${leadership.end}`,
+  note: base.note,
+  lat: base.lat,
+  lon: base.lon,
+};
+const firstCompeted = places.findIndex((p) => p.kind === 'competed');
+const all: Place[] =
+  firstCompeted === -1 ? [...places, baseEntry] : [...places.slice(0, firstCompeted), baseEntry, ...places.slice(firstCompeted)];
+
+const view = fitView(all);
+const zoom = 1000 / view.width;
+// Pins are nudged apart at 1× so close ones stay clickable; zoomed in, they sit at their true spot.
+const pinPositions = spreadPins(all, view).map((p) => toPercent(p, view));
+const truePositions = all.map((p) => toPercent(project(p.lon, p.lat), view));
+
+// One arc from the base to each place that isn't at the base itself.
+const origin = project(base.lon, base.lat);
+const arcs = all
+  .filter((p) => {
+    const q = project(p.lon, p.lat);
+    return Math.hypot(q.x - origin.x, q.y - origin.y) > 3;
+  })
+  .map((p) => ({ kind: p.kind, d: arcPath([base.lon, base.lat], [p.lon, p.lat]) }));
+const dot = 7 / zoom; // keep the dot pattern the same size on screen at any zoom
+const filters = [{ key: 'all', label: 'All' }, ...Object.entries(kinds).map(([key, label]) => ({ key, label }))];
+const placeName = (p: Place) => `${p.city}, ${p.country}`;
+---
+
+<section id="map" data-map>
+  <div class="section-head">
+    <SectionHeader title="Around the world" />
+    <div class="filters" role="group" aria-label="Filter places">
+      {
+        filters.map((f) => (
+          <button type="button" class="filter-pill" aria-pressed={f.key === 'all' ? 'true' : 'false'} data-kind-filter={f.key}>
+            <span class={`kind-dot ${f.key}`} aria-hidden="true" />
+            {f.label}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="map-card">
+      <div class="scroller" data-scroller tabindex="0" role="region" aria-label="World map; scrolls when zoomed in">
+        <div class="canvas" data-canvas>
+          <svg
+            viewBox={`${view.x.toFixed(1)} ${view.y.toFixed(1)} ${view.width.toFixed(1)} ${view.height.toFixed(1)}`}
+            role="img"
+            aria-label="World map with the places where I studied, competed and presented"
+          >
+            <defs>
+              <pattern id="landdots" width={dot} height={dot} patternUnits="userSpaceOnUse">
+                <circle cx={dot / 2} cy={dot / 2} r={(1.5 / 7) * dot} fill="var(--map-dot)"></circle>
+              </pattern>
+              <!-- Leave out Antarctica: the tall view would only catch a thin strip of its coast. -->
+              <clipPath id="land-clip">
+                <rect x="0" y="0" width="1000" height={project(0, -60).y} />
+              </clipPath>
+            </defs>
+            <path d={landPath} fill="url(#landdots)" clip-path="url(#land-clip)"></path>
+            {arcs.map((a) => <path class={`arc ${a.kind}`} d={a.d} data-arc data-kind={a.kind} />)}
+          </svg>
+
+          {
+            all.map((p, i) => {
+              const pos = pinPositions[i];
+              const exact = truePositions[i];
+              return (
+                <button
+                  type="button"
+                  class={`pin ${p.kind}`}
+                  style={`--x: ${pos.left}; --y: ${pos.top}; --tx: ${exact.left}; --ty: ${exact.top}`}
+                  data-place={i}
+                  data-kind={p.kind}
+                  aria-current={i === 0 ? 'true' : undefined}
+                  tabindex="-1"
+                  aria-hidden="true"
+                  title={`${kinds[p.kind]}: ${p.title}`}
+                />
+              );
+            })
+          }
+        </div>
+      </div>
+      <div class="zoom" role="group" aria-label="Map zoom">
+        <button type="button" class="zoom-btn" aria-label="Zoom in" data-zoom="1">+</button>
+        <button type="button" class="zoom-btn" aria-label="Zoom out" data-zoom="-1" disabled>−</button>
+      </div>
+      <span class="pan-hint" aria-hidden="true">drag to pan</span>
+    </div>
+
+    <div class="side">
+      <div class="details" aria-live="polite">
+        {
+          all.map((p, i) => (
+            <div class="detail" data-detail={i} hidden={i !== 0}>
+              <span class="detail-kind">
+                <span class={`kind-dot ${p.kind}`} aria-hidden="true" />
+                {kinds[p.kind]} · {p.year}
+              </span>
+              <h3 class="detail-title">{p.title}</h3>
+              <span class="detail-place">{placeName(p)}</span>
+              <p class="detail-note">{p.note}</p>
+            </div>
+          ))
+        }
+      </div>
+
+      <ul class="places" aria-label="Places">
+        {
+          all.map((p, i) => (
+            <li>
+              <button
+                type="button"
+                class="place"
+                data-place={i}
+                data-kind={p.kind}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+                aria-label={`${kinds[p.kind]}: ${p.title}, ${placeName(p)}, ${p.year}`}
+              >
+                <span class={`kind-dot ${p.kind}`} aria-hidden="true" />
+                <span class="place-title">{p.title}</span>
+                <span class="place-year">{p.year}</span>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-map]').forEach((root) => {
+    const pins = [...root.querySelectorAll<HTMLButtonElement>('.pin')];
+    const rows = [...root.querySelectorAll<HTMLButtonElement>('.place')];
+    const details = [...root.querySelectorAll<HTMLElement>('[data-detail]')];
+    const arcs = [...root.querySelectorAll<SVGPathElement>('[data-arc]')];
+    const filters = [...root.querySelectorAll<HTMLButtonElement>('[data-kind-filter]')];
+    const scroller = root.querySelector<HTMLElement>('[data-scroller]')!;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const canvas = root.querySelector<HTMLElement>('[data-canvas]')!;
+    const zoomBtns = [...root.querySelectorAll<HTMLButtonElement>('[data-zoom]')];
+    const ZOOMS = [1, 2, 3];
+    // Land dots stay the same size on screen at every zoom.
+    const pattern = root.querySelector<SVGPatternElement>('#landdots')!;
+    const patternDot = pattern.querySelector('circle')!;
+    const baseDot = Number(pattern.getAttribute('width'));
+    const sizeDots = (z: number) => {
+      const d = baseDot / z;
+      pattern.setAttribute('width', String(d));
+      pattern.setAttribute('height', String(d));
+      patternDot.setAttribute('cx', String(d / 2));
+      patternDot.setAttribute('cy', String(d / 2));
+      patternDot.setAttribute('r', String((1.5 / 7) * d));
+    };
+    let zoomIndex = 0;
+    let selected = 0;
+
+    // Center a pin in the scrollable map, without moving the page.
+    const reveal = (pin: HTMLElement, smooth = true) => {
+      scroller.scrollTo({
+        left: pin.offsetLeft - scroller.clientWidth / 2,
+        top: pin.offsetTop - scroller.clientHeight / 2,
+        behavior: smooth && !reduceMotion.matches ? 'smooth' : 'auto',
+      });
+    };
+
+    // Zooming in centers on the selected place; zooming out keeps the current center.
+    const setZoom = (index: number) => {
+      const centerX = (scroller.scrollLeft + scroller.clientWidth / 2) / scroller.scrollWidth;
+      const centerY = (scroller.scrollTop + scroller.clientHeight / 2) / scroller.scrollHeight;
+      const zoomingIn = index > zoomIndex;
+      zoomIndex = index;
+      canvas.style.setProperty('--z', String(ZOOMS[index]));
+      sizeDots(ZOOMS[index]);
+      canvas.classList.toggle('zoomed', index > 0);
+      zoomBtns[0].disabled = index === ZOOMS.length - 1;
+      zoomBtns[1].disabled = index === 0;
+      if (zoomingIn) reveal(pins[selected], false);
+      else {
+        scroller.scrollLeft = centerX * scroller.scrollWidth - scroller.clientWidth / 2;
+        scroller.scrollTop = centerY * scroller.scrollHeight - scroller.clientHeight / 2;
+      }
+    };
+    zoomBtns.forEach((b) => b.addEventListener('click', () => setZoom(zoomIndex + Number(b.dataset.zoom))));
+
+    // Drag to pan with a mouse (touch already scrolls natively). A real drag doesn't count as a click.
+    let drag: { x: number; y: number; left: number; top: number; moved: boolean } | null = null;
+    scroller.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse' || scroller.scrollWidth <= scroller.clientWidth) return;
+      drag = { x: e.clientX, y: e.clientY, left: scroller.scrollLeft, top: scroller.scrollTop, moved: false };
+    });
+    window.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x;
+      const dy = e.clientY - drag.y;
+      if (Math.abs(dx) + Math.abs(dy) > 4) {
+        drag.moved = true;
+        scroller.classList.add('dragging');
+      }
+      scroller.scrollLeft = drag.left - dx;
+      scroller.scrollTop = drag.top - dy;
+    });
+    window.addEventListener('pointerup', () => {
+      if (drag?.moved) scroller.addEventListener('click', (e) => e.stopPropagation(), { capture: true, once: true });
+      drag = null;
+      scroller.classList.remove('dragging');
+    });
+
+    const select = (i: number, fromList = false) => {
+      selected = i;
+      pins.forEach((p, j) => (j === i ? p.setAttribute('aria-current', 'true') : p.removeAttribute('aria-current')));
+      rows.forEach((r, j) => r.setAttribute('aria-pressed', String(j === i)));
+      details.forEach((d, j) => (d.hidden = j !== i));
+      if (fromList) reveal(pins[i]);
+    };
+
+    const filter = (kind: string) => {
+      filters.forEach((f) => f.setAttribute('aria-pressed', String(f.dataset.kindFilter === kind)));
+      const dim = (el: HTMLElement) => el.classList.toggle('dim', kind !== 'all' && el.dataset.kind !== kind);
+      pins.forEach(dim);
+      rows.forEach(dim);
+      arcs.forEach((a) => a.classList.toggle('off', kind !== 'all' && a.dataset.kind !== kind));
+    };
+
+    pins.forEach((p, i) => p.addEventListener('click', () => select(i)));
+    rows.forEach((r, i) => r.addEventListener('click', () => select(i, true)));
+    filters.forEach((f) => f.addEventListener('click', () => filter(f.dataset.kindFilter!)));
+
+    // Start centered on the first place (matters on phone, where the map is wider than the screen).
+    if (pins[0]) reveal(pins[0], false);
+  });
+</script>
+
+<style>
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .filters {
+    display: none;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .kind-dot {
+    flex: none;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .kind-dot.studied {
+    background: var(--blue);
+  }
+
+  .kind-dot.competed {
+    background: var(--orange);
+  }
+
+  .kind-dot.presented {
+    background: var(--graphite);
+  }
+
+  .layout {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Map */
+  .map-card {
+    position: relative;
+    padding: 12px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+  }
+
+  /* The map scrolls inside this box: sideways on phone, and in any direction when zoomed in. */
+  .scroller {
+    height: 300px;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border-radius: 10px;
+    scrollbar-width: none;
+  }
+
+  .scroller.dragging {
+    cursor: grabbing;
+  }
+
+  .scroller::-webkit-scrollbar {
+    display: none;
+  }
+
+  .canvas {
+    --z: 1;
+    position: relative;
+    width: calc(480px * var(--z));
+    aspect-ratio: 1.6;
+  }
+
+  .canvas.zoomed {
+    cursor: grab;
+  }
+
+  .canvas svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .arc {
+    fill: none;
+    stroke: var(--orange);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 5;
+    vector-effect: non-scaling-stroke;
+    opacity: 0.55;
+    transition: opacity 0.15s ease;
+  }
+
+  .arc.studied {
+    stroke: var(--blue);
+  }
+
+  .arc.presented {
+    stroke: var(--muted);
+  }
+
+  .arc.off {
+    opacity: 0;
+  }
+
+  .pin {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;
+    padding: 0;
+    border: 3px solid var(--pin-ring);
+    border-radius: 50%;
+    box-shadow: 0 2px 6px var(--pin-shadow);
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  /* Bigger invisible tap target. */
+  .pin::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+  }
+
+  .pin:hover {
+    transform: scale(1.25);
+  }
+
+  .pin[aria-current='true'] {
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    box-shadow: 0 0 0 6px var(--pin-halo), 0 2px 6px var(--pin-shadow);
+  }
+
+  .pin.studied {
+    background: var(--blue);
+  }
+
+  .pin.competed {
+    background: var(--orange);
+  }
+
+  .pin.presented {
+    background: var(--graphite);
+  }
+
+  .pin.dim {
+    opacity: 0.25;
+  }
+
+  .canvas.zoomed .pin {
+    left: var(--tx);
+    top: var(--ty);
+  }
+
+  .zoom {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    box-shadow: var(--shadow-float);
+  }
+
+  .zoom-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .zoom-btn + .zoom-btn {
+    border-top: 1px solid var(--line);
+  }
+
+  .zoom-btn:hover:not(:disabled) {
+    background: var(--surface-sunken);
+  }
+
+  .zoom-btn:disabled {
+    color: var(--line-strong);
+    cursor: default;
+  }
+
+  .pan-hint {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    padding: 3px 6px;
+    border-radius: 6px;
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* Details card */
+  .side {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .detail {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px;
+    background: var(--graphite);
+    border-radius: 16px;
+    color: var(--on-accent);
+  }
+
+  .detail[hidden] {
+    display: none;
+  }
+
+  .detail-kind {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--graphite-key-text);
+  }
+
+  .detail .kind-dot.presented {
+    background: var(--graphite-muted);
+  }
+
+  .detail-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .detail-place {
+    font-size: 13px;
+    color: var(--graphite-key-text);
+  }
+
+  .detail-note {
+    display: none;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--graphite-text);
+  }
+
+  /* Places: swipeable chips on phone, a list on desktop. */
+  .places {
+    display: flex;
+    gap: 8px;
+    margin: 0 calc(-1 * var(--gutter));
+    padding: 0 var(--gutter);
+    overflow-x: auto;
+    list-style: none;
+    scrollbar-width: none;
+  }
+
+  .places::-webkit-scrollbar {
+    display: none;
+  }
+
+  .place {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    text-align: left;
+    transition: opacity 0.15s ease;
+  }
+
+  .place[aria-pressed='true'] {
+    border-color: var(--chip-on-bg);
+  }
+
+  .place.dim {
+    opacity: 0.4;
+  }
+
+  .place-year {
+    display: none;
+  }
+
+  @media (min-width: 720px) {
+    section {
+      gap: 20px;
+    }
+
+    .filters {
+      display: flex;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      align-items: stretch;
+      gap: 20px;
+    }
+
+    .map-card {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      border-radius: var(--radius-card);
+    }
+
+    .scroller {
+      flex: 1;
+      height: auto;
+      aspect-ratio: 1.6;
+    }
+
+    .canvas {
+      width: calc(100% * var(--z));
+    }
+
+    .zoom {
+      top: 28px;
+      right: 28px;
+    }
+
+    .zoom-btn {
+      width: 36px;
+      height: 36px;
+      font-size: 18px;
+    }
+
+    .pan-hint {
+      display: none;
+    }
+
+    .detail {
+      gap: 10px;
+      padding: 22px;
+      border-radius: var(--radius-card);
+    }
+
+    .detail-kind {
+      font-size: 11px;
+    }
+
+    .detail-title {
+      font-size: 22px;
+    }
+
+    .detail-place {
+      font-size: 14px;
+    }
+
+    .detail-note {
+      display: block;
+    }
+
+    .places {
+      flex-direction: column;
+      gap: 0;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+      border-top: 1px solid var(--line);
+    }
+
+    .place {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      min-height: 0;
+      padding: 9px 6px;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      border-radius: 6px;
+      background: transparent;
+      font-size: 14px;
+      white-space: normal;
+    }
+
+    .place[aria-pressed='true'] {
+      background: var(--surface);
+    }
+
+    .place:hover {
+      background: var(--surface);
+    }
+
+    .kind-dot {
+      width: 9px;
+      height: 9px;
+    }
+
+    .place-title {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .place-year {
+      display: inline;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+  }
+</style>

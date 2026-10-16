@@ -1,0 +1,85 @@
+[
+  {
+    "id": "liralab",
+    "role": "Graduate Researcher, Robot Learning",
+    "org": "USC LiraLab",
+    "start": "Dec 2025",
+    "current": true,
+    "impact": "Building an imitation-learning method that is both accurate and fast enough for real robots.",
+    "bullets": [
+      "Designed a new imitation-learning algorithm and benchmarked it against Diffusion Policy, Consistency Policy, Implicit BC and regression BC on 7 synthetic, simulated and real tasks (paper under double-blind review at ICRA 2027).",
+      "On a real WidowX arm (Push-T) it reached 83.6 IoU, above Implicit BC (73.4), Diffusion Policy (65.6) and regression BC (61.0), with faster inference than Implicit BC and Diffusion Policy.",
+      "On LIBERO-Goal from camera images: 93.9% success vs. 84.5% for Diffusion Policy, at 5.5× lower latency.",
+      "Built the training pipeline on a SLURM GPU cluster, collected 151 teleoperated demonstrations, wrote the real-robot deployment client and shadow-tested every policy before giving it control.",
+      "Ran the real-robot evaluation of a fine-tuned π0.5 vision-language-action model on a Franka Panda arm (co-author of an ICLR 2027 submission)."
+    ],
+    "tags": [
+      "python",
+      "pytorch",
+      "mujoco",
+      "libero",
+      "slurm",
+      "docker"
+    ],
+    "mainProject": {
+      "name": "Fast imitation learning for real robots",
+      "line": "A new policy-learning method, tested on a WidowX arm. Paper under double-blind review."
+    },
+    "logo": "/logos/liralab.png"
+  },
+  {
+    "id": "vrain-vision",
+    "role": "Graduate Researcher, Computer Vision",
+    "org": "VRAIN",
+    "start": "Nov 2024",
+    "end": "Aug 2025",
+    "current": false,
+    "impact": "Co-built the AI tool that restored more than 200,000 photographs damaged by the 2024 Valencia floods.",
+    "bullets": [
+      "Co-developed a diffusion-based restoration web app in Python and Gradio, with a batch processor.",
+      "Built and labeled a 250-image training set and fine-tuned SegFormer to find damaged regions: 30% lower latency and 20% better expert-rated quality than the YOLO/SAM2 pipeline.",
+      "Built an identity-preservation pipeline, rated above 90% identity preservation by experts.",
+      "The restoration department used the app on more than 200,000 images with 98% less manual effort.",
+      "Published at [AAAI-26 (Demonstration Track)](https://doi.org/10.1609/aaai.v40i48.42383); I presented the demo in person in Singapore."
+    ],
+    "tags": [
+      "pytorch",
+      "segformer",
+      "stable diffusion",
+      "gradio"
+    ],
+    "mainProject": {
+      "name": "Rebrot",
+      "line": "Restoring photographs damaged by the 2024 Valencia floods. Published at AAAI-26.",
+      "media": "/projects/rebrot.webp"
+    },
+    "logo": "/logos/vrain.png"
+  },
+  {
+    "id": "vrain-rl",
+    "role": "Research Intern, Reinforcement Learning",
+    "org": "VRAIN",
+    "start": "Nov 2023",
+    "end": "Jun 2024",
+    "current": false,
+    "impact": "Trained a reinforcement-learning levitation controller for the Hyperloop UPV vehicle.",
+    "bullets": [
+      "Built a Gymnasium vehicle-dynamics simulator and trained a Soft Actor-Critic controller in it, with curriculum learning, domain randomization, sensor-noise and latency modeling.",
+      "The policy controlled 10 coils, 5-DoF, and ran in 0.06 ms on an STM32H7 microcontroller, with 94% less compute than the cascaded PID.",
+      "The simulator enabled automated testing and cut manual parameter tuning by 99%.",
+      "This work became my bachelor's thesis."
+    ],
+    "tags": [
+      "pytorch",
+      "stable-baselines3",
+      "gymnasium",
+      "stm32cube.ai"
+    ],
+    "mainProject": {
+      "name": "RL levitation controller",
+      "line": "A SAC controller running in 0.06 ms on a microcontroller, with 94% less compute than the PID.",
+      "media": "/projects/rl-levitation.webp"
+    },
+    "logo": "/logos/vrain.png"
+  }
+]

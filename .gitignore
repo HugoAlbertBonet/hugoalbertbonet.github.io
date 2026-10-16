@@ -1,2 +1,17 @@
-*:Zone.Identifier
-.thumbnail/
+node_modules/
+dist/
+.astro/
+.DS_Store
+*.zip
+
+# Private notes for the agent backend; not part of the site
+PROFILE.md
+website.md
+
+# Original photos and videos; the optimized copies used by the site are in public/
+images/
+
+# Build brief, approved mockups and assistant instructions; kept locally, not published
+CLAUDE.md
+BRIEF.md
+design/

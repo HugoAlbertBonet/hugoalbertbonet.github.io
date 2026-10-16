@@ -1,0 +1,288 @@
+{
+  "name": "Hugo Albert Bonet",
+  "headline": "Hi, I'm Hugo. I build software and I make sure people get it.",
+  "headlineHighlight": "get it",
+  "subline": "Nice to meet you! Let me tell you a bit about myself, and if you want to know more, I'm happy to chat.",
+  "city": "Los Angeles",
+  "timezone": "America/Los_Angeles",
+  "email": "hugo.albert.16@gmail.com",
+  "links": {
+    "linkedin": "https://www.linkedin.com/in/hugoalbert/",
+    "github": "https://github.com/HugoAlbertBonet",
+    "scholar": "https://scholar.google.com/citations?user=EhPcpxwAAAAJ"
+  },
+  "cvUrl": "/Hugo_Albert_Bonet_Resume.pdf",
+  "now": {
+    "title": "Graduate Researcher at USC LiraLab",
+    "line": "Building an imitation-learning method that is accurate and fast enough for real robot arms."
+  },
+  "studying": {
+    "degree": "M.S. in Computer Science",
+    "school": "USC",
+    "until": "May 2027"
+  },
+  "availability": "Full-time from September 2027, possibly from June 2027, after graduating from USC in May 2027.",
+  "goodAt": [
+    {
+      "title": "Robot learning & RL",
+      "line": "Imitation learning and RL, from simulation to real arms and microcontrollers",
+      "accent": "blue"
+    },
+    {
+      "title": "LLMs & ML systems",
+      "line": "Post-training, RAG, watermarking, on-device and local inference",
+      "accent": "blue"
+    },
+    {
+      "title": "Communication",
+      "line": "Led a 48-person team, demoed at AAAI-26, presented to 400 people",
+      "accent": "orange"
+    }
+  ],
+  "toolbox": [
+    {
+      "mark": "Py",
+      "name": "Python",
+      "color": "ink",
+      "group": "Languages"
+    },
+    {
+      "mark": "PT",
+      "name": "PyTorch",
+      "color": "orange",
+      "group": "ML & LLMs"
+    },
+    {
+      "mark": "C++",
+      "name": "C++",
+      "color": "blue",
+      "group": "Languages"
+    },
+    {
+      "mark": "HF",
+      "name": "Hugging Face Transformers",
+      "color": "ink",
+      "group": "ML & LLMs"
+    },
+    {
+      "mark": "MJ",
+      "name": "MuJoCo",
+      "color": "ink",
+      "group": "Robotics & simulation"
+    },
+    {
+      "mark": "Dk",
+      "name": "Docker",
+      "color": "blue",
+      "group": "Infrastructure"
+    },
+    {
+      "mark": "vL",
+      "name": "vLLM",
+      "color": "ink",
+      "group": "ML & LLMs"
+    },
+    {
+      "mark": "Gt",
+      "name": "Git",
+      "color": "orange",
+      "group": "Infrastructure"
+    },
+    {
+      "name": "SQL",
+      "color": "ink",
+      "group": "Languages"
+    },
+    {
+      "name": "JavaScript",
+      "color": "ink",
+      "group": "Languages"
+    },
+    {
+      "name": "HTML/CSS",
+      "color": "ink",
+      "group": "Languages"
+    },
+    {
+      "name": "R",
+      "color": "ink",
+      "group": "Languages"
+    },
+    {
+      "name": "MATLAB",
+      "color": "ink",
+      "group": "Languages"
+    },
+    {
+      "name": "TensorFlow/Keras",
+      "color": "ink",
+      "group": "ML & LLMs"
+    },
+    {
+      "name": "scikit-learn",
+      "color": "ink",
+      "group": "ML & LLMs"
+    },
+    {
+      "name": "Stable-Baselines3",
+      "color": "ink",
+      "group": "ML & LLMs"
+    },
+    {
+      "name": "llama.cpp",
+      "color": "ink",
+      "group": "ML & LLMs"
+    },
+    {
+      "name": "Unsloth",
+      "color": "ink",
+      "group": "ML & LLMs"
+    },
+    {
+      "name": "LlamaIndex",
+      "color": "ink",
+      "group": "ML & LLMs"
+    },
+    {
+      "name": "LangGraph",
+      "color": "ink",
+      "group": "LLM agents"
+    },
+    {
+      "name": "OpenClaw",
+      "color": "ink",
+      "group": "LLM agents"
+    },
+    {
+      "name": "NemoClaw",
+      "color": "ink",
+      "group": "LLM agents"
+    },
+    {
+      "name": "FastMCP",
+      "color": "ink",
+      "group": "LLM agents"
+    },
+    {
+      "name": "OpenAI API",
+      "color": "ink",
+      "group": "ML & LLMs"
+    },
+    {
+      "name": "PyBullet",
+      "color": "ink",
+      "group": "Robotics & simulation"
+    },
+    {
+      "name": "Gymnasium",
+      "color": "ink",
+      "group": "Robotics & simulation"
+    },
+    {
+      "name": "LIBERO",
+      "color": "ink",
+      "group": "Robotics & simulation"
+    },
+    {
+      "name": "ONNX",
+      "color": "ink",
+      "group": "Edge deployment"
+    },
+    {
+      "name": "TensorRT",
+      "color": "ink",
+      "group": "Edge deployment"
+    },
+    {
+      "name": "STM32Cube.AI",
+      "color": "ink",
+      "group": "Edge deployment"
+    },
+    {
+      "name": "Linux",
+      "color": "ink",
+      "group": "Infrastructure"
+    },
+    {
+      "name": "SLURM",
+      "color": "ink",
+      "group": "Infrastructure"
+    },
+    {
+      "name": "Weights & Biases",
+      "color": "ink",
+      "group": "Infrastructure"
+    },
+    {
+      "name": "pytest",
+      "color": "ink",
+      "group": "Infrastructure"
+    },
+    {
+      "name": "Flask",
+      "color": "ink",
+      "group": "Web & apps"
+    },
+    {
+      "name": "Gradio",
+      "color": "ink",
+      "group": "Web & apps"
+    },
+    {
+      "name": "FastAPI",
+      "color": "ink",
+      "group": "Web & apps"
+    },
+    {
+      "name": "Node.js",
+      "color": "ink",
+      "group": "Web & apps"
+    },
+    {
+      "name": "Claude Code",
+      "color": "ink",
+      "group": "AI coding tools"
+    },
+    {
+      "name": "Codex",
+      "color": "ink",
+      "group": "AI coding tools"
+    },
+    {
+      "name": "Cursor",
+      "color": "ink",
+      "group": "AI coding tools"
+    },
+    {
+      "name": "Antigravity",
+      "color": "ink",
+      "group": "AI coding tools"
+    }
+  ],
+  "toolboxGroups": [
+    "Languages",
+    "ML & LLMs",
+    "LLM agents",
+    "Robotics & simulation",
+    "Edge deployment",
+    "Web & apps",
+    "Infrastructure",
+    "AI coding tools"
+  ],
+  "suggestedQuestions": [
+    "what are you working on?",
+    "what did you study?",
+    "what's your best project?",
+    "when can you start?"
+  ],
+  "exampleQuestion": "what did you study?",
+  "quote": {
+    "text": "Don't be so attached to who you are in the present that you don't give the future version of you a chance.",
+    "author": "Vinh Giang",
+    "aside": "I really love this one :)"
+  },
+  "contact": {
+    "headline": "Let's build something,\nor just talk about it.",
+    "aside": "or ask the terminal up top"
+  }
+}

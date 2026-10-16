@@ -1,0 +1,75 @@
+---
+// The round orange pet. `state` picks the face: idle blinks, busy looks side to side, done smiles.
+// Change it at runtime by setting data-state on the element with [data-pet].
+interface Props {
+  size?: number;
+  state?: 'idle' | 'busy' | 'done';
+  breathe?: boolean;
+  class?: string;
+}
+const { size = 24, state = 'idle', breathe = false, class: className } = Astro.props;
+---
+
+<span class:list={['pet', { breathe }, className]} data-pet data-state={state} aria-hidden="true">
+  <svg width={size} height={size} viewBox="0 0 28 28">
+    <circle cx="14" cy="14" r="13" fill="var(--orange)"></circle>
+    <circle cx="7.5" cy="17" r="1.7" fill="var(--pet-cheek)"></circle>
+    <circle cx="20.5" cy="17" r="1.7" fill="var(--pet-cheek)"></circle>
+    <g class="face face-idle">
+      <ellipse cx="10.5" cy="12.5" rx="1.7" ry="2.2" fill="var(--pet-ink)"></ellipse>
+      <ellipse cx="17.5" cy="12.5" rx="1.7" ry="2.2" fill="var(--pet-ink)"></ellipse>
+    </g>
+    <g class="face face-busy">
+      <ellipse cx="10.5" cy="11.5" rx="1.6" ry="2" fill="var(--pet-ink)"></ellipse>
+      <ellipse cx="17.5" cy="11.5" rx="1.6" ry="2" fill="var(--pet-ink)"></ellipse>
+    </g>
+    <path class="face face-done" d="M8.6 13 q1.9 -2.6 3.8 0 M15.6 13 q1.9 -2.6 3.8 0" stroke="var(--pet-ink)"
+      stroke-width="1.6" fill="none" stroke-linecap="round"></path>
+  </svg>
+</span>
+
+<style>
+  .pet {
+    flex: none;
+    display: inline-flex;
+  }
+
+  .breathe {
+    animation: breathe 2.6s ease-in-out infinite;
+  }
+
+  .face {
+    display: none;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  [data-state='idle'] .face-idle,
+  [data-state='busy'] .face-busy,
+  [data-state='done'] .face-done {
+    display: inline;
+  }
+
+  .face-idle {
+    animation: blink 4.5s infinite;
+  }
+
+  .face-busy {
+    animation: look 1.1s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+
+  @keyframes blink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    94% { transform: scaleY(0.1); }
+  }
+
+  @keyframes look {
+    0%, 100% { transform: translateX(-2px); }
+    50% { transform: translateX(2px); }
+  }
+</style>

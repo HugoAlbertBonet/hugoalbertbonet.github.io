@@ -1,0 +1,209 @@
+---
+import Pet from './Pet.astro';
+import { profile } from '../lib/content';
+---
+
+<section id="contact" class="contact" aria-labelledby="contact-title">
+  <div class="main">
+    <div class="meta">
+      <Pet size={34} state="done" breathe class="contact-pet" />
+      <span class="time"><span data-local-time data-tz={profile.timezone}></span> in {profile.city}</span>
+    </div>
+    <h2 id="contact-title">{profile.contact.headline}</h2>
+    <div class="actions">
+      <button type="button" class="btn-primary copy" data-copy={profile.email} aria-live="polite">Copy my email</button>
+      <div class="ghosts">
+        <a class="ghost" href={profile.links.linkedin}>LinkedIn</a>
+        <a class="ghost" href={profile.links.github}>GitHub</a>
+        <a class="ghost" href={profile.cvUrl} download aria-label="Download CV">
+          <span class="cv-long">Download CV</span><span class="cv-short" aria-hidden="true">CV</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  {
+    profile.contact.aside && (
+      <a class="aside" href="#ask-input">
+        {profile.contact.aside} <span aria-hidden="true">↑</span>
+      </a>
+    )
+  }
+</section>
+
+<script>
+  import '../scripts/localTime';
+  import '../scripts/copyEmail';
+</script>
+
+<style>
+  .contact {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 28px 22px;
+    background: var(--graphite);
+    border-radius: 20px;
+    color: var(--on-accent);
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .meta :global(.contact-pet) {
+    display: none;
+  }
+
+  .time {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--graphite-key-text);
+  }
+
+  h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    white-space: pre-line;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .copy {
+    height: 48px;
+    font-size: 15px;
+  }
+
+  .copy:focus-visible,
+  .ghost:focus-visible,
+  .aside:focus-visible {
+    outline-color: var(--graphite-link);
+  }
+
+  .ghosts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .ghost {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 12px 0;
+    border: 1px solid var(--graphite-key-line);
+    border-radius: 11px;
+    color: var(--on-accent);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .ghost:hover {
+    border-color: var(--on-accent);
+    color: var(--on-accent);
+  }
+
+  .cv-long {
+    display: none;
+  }
+
+  .aside {
+    display: none;
+  }
+
+  @media (min-width: 720px) {
+    .contact {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 40px;
+      padding: 56px;
+      border-radius: 24px;
+    }
+
+    .main {
+      gap: 18px;
+    }
+
+    .meta :global(.contact-pet) {
+      display: inline-flex;
+    }
+
+    .time {
+      font-size: 13px;
+    }
+
+    h2 {
+      font-size: clamp(40px, 4.4vw, 56px);
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+    }
+
+    .actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .copy {
+      height: auto;
+      padding: 14px 20px;
+      font-size: 16px;
+    }
+
+    .ghosts {
+      display: flex;
+      gap: 12px;
+    }
+
+    .ghost {
+      min-height: 0;
+      padding: 13px 18px;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+    }
+
+    .cv-long {
+      display: inline;
+    }
+
+    .cv-short {
+      display: none;
+    }
+
+    .aside {
+      display: block;
+      padding-bottom: 8px;
+      transform: rotate(-3deg);
+      font-family: var(--font-hand);
+      font-size: 24px;
+      color: var(--orange-hand);
+      text-align: right;
+      text-decoration: none;
+    }
+
+    .aside:hover {
+      color: var(--orange-hand);
+      text-decoration: underline;
+    }
+  }
+</style>

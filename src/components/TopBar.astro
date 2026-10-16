@@ -1,0 +1,273 @@
+---
+import { profile } from '../lib/content';
+import { sections } from '../lib/sections';
+import ThemeToggle from './ThemeToggle.astro';
+
+const home = import.meta.env.BASE_URL;
+---
+
+<header class="topbar container">
+  <nav class="bar" aria-label="Main">
+    <a class="brand tap" href={home}>{profile.name}<span class="dot">.</span></a>
+
+    <ul class="links">
+      {sections.map((s) => <li><a href={`${home}#${s.id}`}>{s.label}</a></li>)}
+    </ul>
+
+    <div class="actions">
+      <span class="bar-toggle"><ThemeToggle /></span>
+      <a class="btn-primary cv" href={profile.cvUrl} download aria-label="Download CV">
+        <span class="cv-long">Download CV</span>
+        <span class="cv-short" aria-hidden="true">
+          CV
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"></path>
+          </svg>
+        </span>
+      </a>
+      <button type="button" class="btn-icon menu-btn" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" aria-hidden="true">
+          <path class="bars" d="M4 8h16M4 16h16"></path>
+          <path class="cross" d="M6 6l12 12M18 6L6 18"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="menu" id="site-menu" hidden>
+    <ul>
+      {sections.map((s) => <li><a href={`${home}#${s.id}`}>{s.label}</a></li>)}
+    </ul>
+    <!-- On very narrow phones the theme toggle lives here instead of in the bar. -->
+    <div class="menu-theme">
+      <ThemeToggle />
+      <span>Light / dark</span>
+    </div>
+  </div>
+</header>
+
+<style>
+  .topbar {
+    position: relative;
+    padding-top: 16px;
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .brand {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .brand:hover {
+    color: var(--ink);
+  }
+
+  .dot {
+    color: var(--orange);
+  }
+
+  .links {
+    display: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    gap: 28px;
+    font-size: 15px;
+  }
+
+  .links a,
+  .menu a {
+    text-decoration: none;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Phone: 44px tap targets, short CV label, menu button. */
+  .actions :global(.btn-icon),
+  .cv {
+    height: 44px;
+  }
+
+  .actions :global(.btn-icon) {
+    width: 44px;
+  }
+
+  .cv {
+    font-size: 13px;
+    padding: 0 14px;
+  }
+
+  .cv-long {
+    display: none;
+  }
+
+  .cv-short {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .cv-short svg {
+    flex: none;
+  }
+
+  .cv {
+    flex: none;
+  }
+
+  .menu-btn .cross,
+  .menu-btn[aria-expanded='true'] .bars {
+    display: none;
+  }
+
+  .menu-btn[aria-expanded='true'] .cross {
+    display: inline;
+  }
+
+  .menu {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 8px);
+    left: var(--gutter);
+    right: var(--gutter);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-float);
+    padding: 8px;
+  }
+
+  .menu ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .menu a {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 14px;
+    border-radius: var(--radius-md);
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  .menu a:hover {
+    background: var(--surface-sunken);
+  }
+
+  .bar-toggle {
+    display: contents;
+  }
+
+  .menu-theme {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+    padding: 10px 14px 6px;
+    border-top: 1px solid var(--line);
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  @media (max-width: 379.98px) {
+    .bar-toggle {
+      display: none;
+    }
+
+    .menu-theme {
+      display: flex;
+    }
+
+    .brand {
+      font-size: 17px;
+    }
+  }
+
+  @media (min-width: 720px) {
+    .topbar {
+      padding-top: 32px;
+    }
+
+    .brand {
+      font-size: 20px;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .links {
+      display: flex;
+    }
+
+    .actions :global(.btn-icon),
+    .cv {
+      height: 40px;
+    }
+
+    .actions :global(.btn-icon) {
+      width: 40px;
+    }
+
+    .cv {
+      font-size: 14px;
+      padding: 0 17px;
+    }
+
+    .cv-long {
+      display: inline;
+    }
+
+    .cv-short,
+    .menu-btn,
+    .menu {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.menu-btn');
+  const menu = document.getElementById('site-menu');
+
+  if (btn && menu) {
+    const setOpen = (open: boolean) => {
+      btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      menu.hidden = !open;
+    };
+
+    btn.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+    menu.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.hidden) {
+        setOpen(false);
+        btn.focus();
+      }
+    });
+    document.addEventListener('click', (e) => {
+      const t = e.target as Node;
+      if (!menu.hidden && !menu.contains(t) && !btn.contains(t)) setOpen(false);
+    });
+  }
+</script>

@@ -1,0 +1,423 @@
+---
+// Experience accordion. Native <details name> keeps one role open at a time and works without JavaScript.
+// Each role has id "experience-<id>", so links (carousel, "Related to") open and highlight it.
+import SectionHeader from './SectionHeader.astro';
+import InlineText from './InlineText.astro';
+import { experience, initialOf } from '../lib/content';
+import type { Job } from '../lib/schemas';
+
+const isVideo = (src: string) => /\.(mp4|webm)$/i.test(src);
+const datesOf = (j: Job) => (j.current ? `${j.start} – Now` : j.end ? `${j.start} – ${j.end}` : j.start);
+---
+
+<section id="experience">
+  <div class="section-head">
+    <SectionHeader title="Experience" />
+    <span class="hint">Click a role for details</span>
+  </div>
+
+  <div class="list">
+    {
+      experience.map((j, i) => (
+        <details class="job" id={`experience-${j.id}`} name="experience" open={i === 0}>
+          <summary class="row">
+            <span class="dates">{datesOf(j)}</span>
+            <span class="logo" aria-hidden="true">{j.logo ? <img src={j.logo} alt="" /> : initialOf(j.org)}</span>
+            <span class="what">
+              <span class="title-row">
+                <span class="role">{j.role}</span>
+                <span class="org">· {j.org}</span>
+                {j.current && <span class="badge">Now</span>}
+              </span>
+              <span class="sub">
+                <span class="org-phone">{j.org} · </span>
+                <span class="dates-phone">{datesOf(j)}</span>
+              </span>
+              <span class="impact">{j.impact}</span>
+            </span>
+            <span class="sign" aria-hidden="true" />
+          </summary>
+
+          <div class:list={['more', { 'has-project': j.mainProject }]}>
+            <div class="details">
+              {j.bullets.length > 0 && (
+                <ul class="bullets">
+                  {j.bullets.map((b) => (
+                    <li>
+                      <InlineText text={b} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {j.tags.length > 0 && (
+                <div class="tags">
+                  {j.tags.map((t) => (
+                    <span class="tag">{t}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+            {j.mainProject && (
+              <div class="project">
+                {j.mainProject.media ? (
+                  isVideo(j.mainProject.media) ? (
+                    <video class="media" src={j.mainProject.media} muted loop playsinline autoplay aria-hidden="true" />
+                  ) : (
+                    <img class="media" src={j.mainProject.media} alt="" loading="lazy" />
+                  )
+                ) : (
+                  <span class="media generated cover-graphite" aria-hidden="true">
+                    {initialOf(j.mainProject.name)}
+                  </span>
+                )}
+                <div class="project-text">
+                  <span class="project-label">Main project</span>
+                  <span class="project-name">{j.mainProject.name}</span>
+                  <span class="project-line">{j.mainProject.line}</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </details>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .hint {
+    display: none;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .list {
+    border-top: 1px solid var(--line);
+  }
+
+  .job {
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* Phone row: logo | role, org · dates | sign. */
+  .row {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 12px;
+    padding: 16px 0;
+    border-radius: var(--radius-md);
+    list-style: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .row::-webkit-details-marker {
+    display: none;
+  }
+
+  .row > .dates {
+    display: none;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--surface);
+    font-size: 16px;
+  }
+
+  .what {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .title-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+  }
+
+  .role {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .org {
+    display: none;
+    color: var(--muted);
+  }
+
+  .sub {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .dates-phone {
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  .impact {
+    display: none;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .sign {
+    width: 28px;
+    text-align: center;
+    font-size: 18px;
+    color: var(--muted);
+  }
+
+  .sign::before {
+    content: '+';
+  }
+
+  .job[open] .sign::before {
+    content: '−';
+  }
+
+  .more {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 0 16px 52px;
+    animation: open 0.25s ease-out;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .bullets :global(a) {
+    color: var(--blue-link);
+  }
+
+  .bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 0;
+    padding-left: 18px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .project {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+
+  .media {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .media.generated {
+    display: flex;
+    align-items: flex-end;
+    padding: 10px 14px;
+    background-size: 12px 12px;
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .project-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 12px 14px;
+  }
+
+  .project-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue-link);
+  }
+
+  .project-name {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .project-line {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* Desktop row: dates | logo | role · org + impact | sign. */
+  @media (min-width: 720px) {
+    section {
+      gap: 20px;
+    }
+
+    .hint {
+      display: inline;
+    }
+
+    .row {
+      grid-template-columns: 150px 48px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 16px;
+    }
+
+    .row:hover {
+      background: var(--surface);
+    }
+
+    .row > .dates {
+      display: inline;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      font-size: 18px;
+    }
+
+    .what {
+      gap: 4px;
+    }
+
+    .title-row {
+      gap: 10px;
+    }
+
+    .role,
+    .org {
+      display: inline;
+      font-size: 18px;
+    }
+
+    .sub {
+      display: none;
+    }
+
+    .impact {
+      display: inline;
+    }
+
+    .sign {
+      font-size: 20px;
+    }
+
+    .more {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+      gap: 28px;
+      padding: 0 16px 28px calc(16px + 150px + 20px + 48px + 20px);
+    }
+
+    .more.has-project {
+      max-width: 520px;
+    }
+
+    .details {
+      gap: 14px;
+    }
+
+    .bullets {
+      gap: 6px;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .project {
+      border-radius: 16px;
+    }
+
+    .media {
+      height: 150px;
+    }
+
+    .media.generated {
+      background-size: 14px 14px;
+      font-size: 40px;
+    }
+
+    .project-text {
+      padding: 14px 16px;
+    }
+
+    .project-label {
+      font-size: 11px;
+    }
+
+    .project-name {
+      font-size: 16px;
+    }
+  }
+
+  /* Wide enough for bullets and the project card side by side. */
+  @media (min-width: 960px) {
+    .more.has-project {
+      grid-template-columns: minmax(0, 1fr) 300px;
+      max-width: none;
+    }
+  }
+
+  @keyframes open {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: none; }
+  }
+</style>
+
+<script>
+  // Open the role a link points at (carousel "See it in Experience", project "Related to", or a shared URL).
+  const openFromHash = (hash: string) => {
+    if (!hash.startsWith('#experience-')) return;
+    const el = document.getElementById(decodeURIComponent(hash.slice(1)));
+    if (el instanceof HTMLDetailsElement) el.open = true;
+  };
+
+  openFromHash(location.hash);
+  window.addEventListener('hashchange', () => openFromHash(location.hash));
+  document.addEventListener('click', (e) => {
+    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href*="#experience-"]');
+    if (a) openFromHash(a.hash);
+  });
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll<HTMLVideoElement>('.job video').forEach((v) => {
+      v.removeAttribute('autoplay');
+      v.pause();
+    });
+  }
+</script>

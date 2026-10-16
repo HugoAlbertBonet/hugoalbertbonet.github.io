@@ -1,0 +1,123 @@
+{
+  "org": "Hyperloop UPV",
+  "start": "2021",
+  "end": "2024",
+  "description": "A student team of about 50 that designs and builds levitating high-speed vehicles and competes at European Hyperloop Week. I went from sponsorship agent to team lead.",
+  "base": {
+    "name": "Hyperloop UPV",
+    "city": "Valencia",
+    "country": "Spain",
+    "note": "Where the team designs, builds and tests its vehicles, at the Universitat Politècnica de València.",
+    "lat": 39.48,
+    "lon": -0.34
+  },
+  "photos": [
+    {
+      "src": "/hyperloop/team-ehw-2024.webp",
+      "alt": "The Hyperloop UPV team with Vèsper and Spanish and Valencian flags at European Hyperloop Week 2024",
+      "caption": "The team at European Hyperloop Week 2024"
+    },
+    {
+      "src": "/hyperloop/vesper-levitating.mp4",
+      "poster": "/hyperloop/vesper-levitating-poster.webp",
+      "alt": "Video: Vèsper levitating during a test",
+      "caption": "Vèsper levitating"
+    },
+    {
+      "src": "/hyperloop/testing-vesper.webp",
+      "alt": "Close-up of Vèsper's electronics and wiring during testing",
+      "caption": "Testing Vèsper"
+    },
+    {
+      "src": "/hyperloop/unveiling-vesper.webp",
+      "alt": "Two team members pulling the cover off Vèsper on stage",
+      "caption": "Unveiling Vèsper"
+    },
+    {
+      "src": "/hyperloop/presenting-unveiling-2023.webp",
+      "alt": "Hugo on stage with a microphone, presenting the 2023 Unveiling",
+      "caption": "Presenting the 2023 Unveiling"
+    },
+    {
+      "src": "/hyperloop/vacuum-tube-zurich.webp",
+      "alt": "The team's vacuum tube at the European Hyperloop Week test track in Zurich",
+      "caption": "Our vacuum tube at EHW 2024, Zurich"
+    }
+  ],
+  "roles": [
+    {
+      "years": "2023 – 24",
+      "role": "Team Lead",
+      "what": "Led 48 people to build and test a 250 kg levitating vehicle; ran recruitment, goals and budget."
+    },
+    {
+      "years": "2022 – 23",
+      "role": "Sponsorship Department Lead",
+      "what": "Grew funding 42% (64k€ to 91k€) and in-kind support 60%; presented the Unveiling to 400 people."
+    },
+    {
+      "years": "2021 – 22",
+      "role": "Sponsorship Agent",
+      "what": "Negotiated sponsorships and represented the team at public events."
+    }
+  ],
+  "competitions": [
+    {
+      "name": "European Hyperloop Week",
+      "year": "2024",
+      "city": "Zurich",
+      "country": "Switzerland",
+      "vehicle": "Vèsper",
+      "awards": [
+        "Complete System Award"
+      ],
+      "image": "/hyperloop/vesper.webp"
+    },
+    {
+      "name": "European Hyperloop Week",
+      "year": "2023",
+      "city": "Edinburgh",
+      "country": "United Kingdom",
+      "vehicle": "Kénos",
+      "awards": [
+        "3rd place"
+      ],
+      "image": "/hyperloop/kenos.webp"
+    },
+    {
+      "name": "European Hyperloop Week",
+      "year": "2022",
+      "city": "Delft",
+      "country": "Netherlands",
+      "vehicle": "Auran",
+      "awards": [
+        "2nd place",
+        "Ingenuity Award",
+        "Levitation System Award",
+        "Thermal Management Award",
+        "Most Scalable Prototype Award"
+      ],
+      "image": "/hyperloop/auran.webp"
+    }
+  ],
+  "events": [
+    {
+      "date": "2026",
+      "title": "AAAI-26 demo: AI for Memory Preservation",
+      "where": "AAAI-26 Demonstration Track",
+      "role": "Speaker"
+    },
+    {
+      "date": "2023",
+      "title": "Hyperloop UPV Unveiling",
+      "where": "The team's main event · 400 people",
+      "role": "Organizer + speaker"
+    },
+    {
+      "date": "[Year]",
+      "title": "European Hyperloop Week jury presentation",
+      "where": "[Where] · presenting the vehicle to the jury",
+      "role": "Speaker"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Robot Learning (CSCI 642, PhD course)",
+    "provider": "USC"
+  },
+  {
+    "name": "Agentic AI (CSCI 599)",
+    "provider": "USC"
+  },
+  {
+    "name": "Machine Learning (CSCI 567)",
+    "provider": "USC"
+  },
+  {
+    "name": "Analysis of Algorithms (CSCI 570)",
+    "provider": "USC"
+  },
+  {
+    "name": "Web Technologies (CSCI 571)",
+    "provider": "USC"
+  },
+  {
+    "name": "Foundations of AI (CSCI 561)",
+    "provider": "USC"
+  },
+  {
+    "name": "C1 Advanced (English)",
+    "provider": "Cambridge"
+  },
+  {
+    "name": "TOEFL iBT, score 107",
+    "provider": "ETS"
+  },
+  {
+    "name": "C1 certificate (Valencian)",
+    "provider": "GVA"
+  }
+]

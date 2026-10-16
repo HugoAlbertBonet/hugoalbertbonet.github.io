@@ -1,0 +1,43 @@
+[
+  {
+    "degree": "M.S. in Computer Science",
+    "school": "University of Southern California",
+    "city": "Los Angeles",
+    "start": "Aug 2025",
+    "end": "May 2027",
+    "current": true,
+    "highlight": "Robot-learning research at LiraLab. GPA 3.92/4.",
+    "awards": [
+      "Fulbright Scholar, 1 of 8 in Spain",
+      "USC Viterbi Scholarship"
+    ],
+    "logo": "/logos/usc.png"
+  },
+  {
+    "degree": "M.S. in Artificial Intelligence",
+    "school": "Universitat Politècnica de València",
+    "city": "Valencia",
+    "start": "Sep 2024",
+    "end": "Jul 2025",
+    "current": false,
+    "highlight": "Thesis: restoring flood-damaged photographs with AI, published at AAAI-26. GPA 9.5/10.",
+    "awards": [],
+    "logo": "/logos/upv.png"
+  },
+  {
+    "degree": "B.S. in Data Science",
+    "school": "Universitat Politècnica de València",
+    "city": "Valencia",
+    "start": "Sep 2020",
+    "end": "Jun 2024",
+    "current": false,
+    "highlight": "Thesis: a reinforcement-learning levitation controller for the Hyperloop UPV vehicle. GPA 9.6/10.",
+    "awards": [
+      "Best academic trajectory (NTT Data)",
+      "National transcript award, 1 of 9",
+      "Best AI & mobility thesis (Renault)",
+      "Honors in 26 of 35 courses"
+    ],
+    "logo": "/logos/upv.png"
+  }
+]

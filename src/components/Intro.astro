@@ -1,0 +1,83 @@
+---
+import { profile } from '../lib/content';
+
+// Split the headline around the highlighted words ("get it"), which are shown in orange.
+const { headline, headlineHighlight: hl } = profile;
+const at = hl ? headline.lastIndexOf(hl) : -1;
+const [before, after] = at >= 0 ? [headline.slice(0, at), headline.slice(at + hl.length)] : [headline, ''];
+---
+
+<div class="intro">
+  <h1>{before}{at >= 0 && <span class="hl">{hl}</span>}{after}</h1>
+  <p class="sub">
+    {
+      profile.sublineShort ? (
+        <>
+          <span class="long">{profile.subline}</span>
+          <span class="short">{profile.sublineShort}</span>
+        </>
+      ) : (
+        profile.subline
+      )
+    }
+  </p>
+</div>
+
+<style>
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(38px, 3.37vw + 24.9px, 68px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  .hl {
+    color: var(--orange);
+  }
+
+  .sub {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  .long {
+    display: none;
+  }
+
+  @media (min-width: 720px) {
+    .long {
+      display: inline;
+    }
+
+    .short {
+      display: none;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .intro {
+      gap: 12px;
+    }
+
+    h1 {
+      letter-spacing: -0.03em;
+      line-height: 1.02;
+    }
+
+    .sub {
+      font-size: 19px;
+      line-height: 1.6;
+    }
+  }
+</style>

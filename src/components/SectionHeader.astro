@@ -1,0 +1,58 @@
+---
+import Spark from './Spark.astro';
+
+interface Props {
+  title: string;
+  /** Quiet variant (Courses): smaller, muted, no spark. */
+  quiet?: boolean;
+  id?: string;
+}
+const { title, quiet = false, id } = Astro.props;
+---
+
+<h2 class:list={['section-header', { quiet }]} id={id}>
+  {!quiet && <Spark />}
+  {title}
+</h2>
+
+<style>
+  .section-header {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .section-header :global(.spark) {
+    width: 16px;
+    height: 16px;
+  }
+
+  .quiet {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  @media (min-width: 720px) {
+    .section-header {
+      gap: 10px;
+      font-size: 15px;
+    }
+
+    .section-header :global(.spark) {
+      width: 18px;
+      height: 18px;
+    }
+
+    .quiet {
+      font-size: 12px;
+    }
+  }
+</style>

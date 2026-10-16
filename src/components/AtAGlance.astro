@@ -1,0 +1,524 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import ProjectCarousel from './ProjectCarousel.astro';
+import OffTheClock from './OffTheClock.astro';
+import SayHi from './SayHi.astro';
+import { profile } from '../lib/content';
+
+const shownTools = profile.toolbox.slice(0, 8);
+const moreTools = profile.toolbox.slice(8);
+// Full list for the "+N" panel: groups in profile.toolboxGroups order, then any others as they first appear.
+const toolGroups = [...new Set([...profile.toolboxGroups, ...profile.toolbox.map((t) => t.group)])]
+  .filter((group) => profile.toolbox.some((t) => t.group === group))
+  .map((group) => ({
+  group,
+  names: profile.toolbox.filter((t) => t.group === group).map((t) => t.name),
+}));
+---
+
+<section class="glance" aria-labelledby="glance-title">
+  <SectionHeader title="At a glance" id="glance-title" />
+
+  <div class="grid">
+    <div class="tile now">
+      <div class="row">
+        <span class="tile-label">Now</span>
+        <svg class="clock" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+          stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="13" r="7"></circle>
+          <path d="M12 9v4l2.5 2M9 3h6"></path>
+        </svg>
+      </div>
+      <div class="stack">
+        <div class="now-title">{profile.now.title}</div>
+        <div class="muted">{profile.now.line}</div>
+      </div>
+    </div>
+
+    <div class="tile studying">
+      <span class="tile-label">Studying</span>
+      <div class="stack">
+        <div class="strong">{profile.studying.degree}</div>
+        <div class="muted">{profile.studying.school} · {profile.studying.until}</div>
+      </div>
+    </div>
+
+    <div class="tile toolbox" data-toolbox>
+      <div class="row">
+        <span class="tile-label">Toolbox</span>
+        {
+          moreTools.length > 0 && (
+            <button
+              type="button"
+              class="more"
+              aria-expanded="false"
+              aria-controls="toolbox-all"
+              aria-label={`Show all ${profile.toolbox.length} tools`}
+              data-toolbox-toggle
+            >
+              +{moreTools.length}
+            </button>
+          )
+        }
+      </div>
+      {
+        moreTools.length > 0 && (
+          <div class="all-tools" id="toolbox-all" role="region" aria-label="All tools" hidden>
+            {toolGroups.map((g) => (
+              <div class="tool-group">
+                <span class="mini-label">{g.group}</span>
+                <ul>
+                  {g.names.map((n) => (
+                    <li>{n}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        )
+      }
+      <ul class="tools">
+        {
+          shownTools.map((t) => (
+            <li class={`tool ${t.color}`} title={t.name}>
+              <span aria-hidden="true">{t.mark}</span>
+              <span class="visually-hidden">{t.name}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <ProjectCarousel />
+
+    <div class="tile good">
+      <span class="tile-label">Good at</span>
+      <ul class="fields">
+        {
+          profile.goodAt.map((g) => (
+            <li class="field">
+              <span class={`swatch ${g.accent}`} aria-hidden="true" />
+              <div>
+                <div class="field-title">{g.title}</div>
+                <div class="field-line">{g.line}</div>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <OffTheClock />
+    <SayHi />
+  </div>
+
+  <div class="legend">
+    <span><span class="swatch blue" aria-hidden="true"></span>Professional<span class="wide"> project</span></span>
+    <span><span class="swatch orange" aria-hidden="true"></span>Personal<span class="wide"> project</span></span>
+  </div>
+</section>
+
+<style>
+  .glance {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Phone: 2 columns, Now / carousel / Good at full width. */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .now,
+  .grid > :global(.carousel),
+  .good {
+    grid-column: span 2;
+  }
+
+  .studying,
+  .toolbox {
+    min-height: 140px;
+  }
+
+  .grid > :global(.off),
+  .grid > :global(.hi) {
+    min-height: 150px;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .clock {
+    display: none;
+    color: var(--muted);
+  }
+
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .now {
+    gap: 10px;
+    justify-content: flex-start;
+  }
+
+  .now-title {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .strong {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .muted {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .now .muted {
+    font-size: 14px;
+  }
+
+  .studying {
+    gap: 18px;
+    padding: 16px;
+  }
+
+  .toolbox {
+    position: relative;
+    padding: 16px;
+  }
+
+  /* While the full list is open, the tile (and its panel) sits above the neighbouring tiles. */
+  .toolbox.open {
+    z-index: 5;
+  }
+
+  /* "+N": small pill, with a 44px tap area. */
+  .more {
+    position: relative;
+    padding: 2px 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .more::after {
+    content: '';
+    position: absolute;
+    inset: -12px -8px;
+  }
+
+  .more:hover,
+  .more[aria-expanded='true'] {
+    border-color: var(--blue);
+    color: var(--blue-link);
+  }
+
+  /* The full list: a floating card under the tile. */
+  .all-tools {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: min(360px, calc(100vw - 2 * var(--gutter)));
+    max-height: min(70vh, 520px);
+    overflow-y: auto;
+    padding: 16px 18px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-float);
+    animation: pop 0.15s ease-out;
+  }
+
+  .all-tools[hidden] {
+    display: none;
+  }
+
+  .tool-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tool-group ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tool-group li {
+    padding: 3px 8px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    font-size: 13px;
+    color: var(--ink);
+  }
+
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .tools {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tool {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 0;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    cursor: default;
+  }
+
+  .tool.ink {
+    color: var(--ink);
+  }
+
+  .tool.blue {
+    color: var(--blue-link);
+  }
+
+  /* Small text: the deeper orange keeps 4.5:1 on white. */
+  .tool.orange {
+    color: var(--cover-ink-orange);
+  }
+
+  .good {
+    justify-content: flex-start;
+  }
+
+  .fields {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .field {
+    display: flex;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .field .swatch {
+    margin-top: 5px;
+  }
+
+  .field-title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .field-line {
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--muted);
+  }
+
+  .swatch {
+    flex: none;
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 3px;
+  }
+
+  .swatch.blue {
+    background: var(--blue);
+  }
+
+  .swatch.orange {
+    background: var(--orange);
+  }
+
+  .swatch.ink {
+    background: var(--ink);
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .legend > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .wide {
+    display: none;
+  }
+
+  /* Tablet: Good at fields side by side. */
+  @media (min-width: 600px) {
+    .fields {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .field {
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field .swatch {
+      margin-top: 0;
+    }
+
+    .wide {
+      display: inline;
+    }
+  }
+
+  /* Desktop: 4 columns, 160px rows. */
+  @media (min-width: 960px) {
+    .glance {
+      gap: 16px;
+    }
+
+    .grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-auto-rows: 160px;
+      gap: 16px;
+    }
+
+    .grid > :global(.carousel) {
+      grid-row: span 2;
+    }
+
+    .studying,
+    .toolbox,
+    .grid > :global(.off),
+    .grid > :global(.hi) {
+      min-height: 0;
+    }
+
+    .now {
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .clock {
+      display: block;
+    }
+
+    .stack {
+      gap: 4px;
+    }
+
+    .now-title {
+      font-size: 24px;
+    }
+
+    .strong {
+      font-size: 17px;
+    }
+
+    .muted {
+      font-size: 14px;
+    }
+
+    .studying,
+    .toolbox {
+      padding: 22px;
+    }
+
+    .studying {
+      gap: 14px;
+    }
+
+
+    .tools {
+      gap: 8px;
+    }
+
+    .tool {
+      height: 36px;
+      padding: 0;
+      border-radius: 10px;
+      font-size: 12px;
+    }
+
+    .good {
+      justify-content: space-between;
+    }
+
+    .swatch {
+      width: 10px;
+      height: 10px;
+    }
+
+    .legend {
+      gap: 18px;
+      font-size: 13px;
+    }
+  }
+</style>
+
+<script>
+  // "+N" opens the full toolbox; Escape or a click outside closes it.
+  document.querySelectorAll<HTMLElement>('[data-toolbox]').forEach((tile) => {
+    const btn = tile.querySelector<HTMLButtonElement>('[data-toolbox-toggle]');
+    const panel = tile.querySelector<HTMLElement>('#toolbox-all');
+    if (!btn || !panel) return;
+    const setOpen = (open: boolean) => {
+      btn.setAttribute('aria-expanded', String(open));
+      panel.hidden = !open;
+      tile.classList.toggle('open', open);
+    };
+    btn.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel.hidden) {
+        setOpen(false);
+        btn.focus();
+      }
+    });
+    document.addEventListener('click', (e) => {
+      if (!panel.hidden && !tile.contains(e.target as Node)) setOpen(false);
+    });
+  });
+</script>

@@ -1,0 +1,515 @@
+---
+// Project page: one per src/content/projects/*.md. Cover, story (the Markdown body), role, stack, links.
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { coverLook, experience, getProjects, initialOf, profile, projectFields, type Project } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project, index) => ({
+    params: { slug: project.id },
+    props: {
+      project,
+      index,
+      prev: projects[index - 1] as Project | undefined,
+      next: projects[index + 1] as Project | undefined,
+    },
+  }));
+}
+
+interface Props {
+  project: Project;
+  index: number;
+  prev?: Project;
+  next?: Project;
+}
+
+const { project, index, prev, next } = Astro.props;
+const d = project.data;
+const { Content } = await render(project);
+const base = import.meta.env.BASE_URL;
+const job = experience.find((j) => j.id === d.relatedExperience);
+const linkLabels = { live: 'Live', code: 'Code', paper: 'Paper', download: 'Download' } as const;
+const coverStyle = d.coverPosition ? `object-position: ${d.coverPosition}` : undefined;
+const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[]).filter((k) => d.links[k]);
+---
+
+<Base title={`${d.name} · ${profile.name}`} description={d.line}>
+  <article class="page">
+    <a class="back" href={`${base}#projects`}><span aria-hidden="true">←</span> All projects</a>
+
+    <header class="head">
+      <span class="kicker">Personal project · {d.fields.map((f) => projectFields[f]).join(' · ')} · {d.year}</span>
+      <h1>{d.name}</h1>
+      <p class="line">{d.line}</p>
+      {
+        links.length > 0 && (
+          <div class="links">
+            {links.map((k) => (
+              <a class="ext" href={d.links[k]}>
+                {linkLabels[k]} <span aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </header>
+
+    {
+      d.preview ? (
+        <video
+          class:list={['cover', { contain: d.coverFit === 'contain' }]}
+          src={d.preview}
+          poster={d.cover}
+          style={coverStyle}
+          muted
+          loop
+          playsinline
+          aria-hidden="true"
+          data-preview
+        />
+      ) : d.cover ? (
+        <img class:list={['cover', { contain: d.coverFit === 'contain' }]} src={d.cover} style={coverStyle} alt="" />
+      ) : (
+        <div class={`cover generated cover-${coverLook(index)}`} aria-hidden="true">
+          {d.mark ?? initialOf(d.name)}
+        </div>
+      )
+    }
+
+    <div class="body">
+      <div class="story">
+        <h2 class="mini-label">The story</h2>
+        <div class="prose"><Content /></div>
+      </div>
+
+      <aside class="facts" aria-label="Project facts">
+        {
+          d.role && (
+            <div class="fact">
+              <span class="mini-label">Role</span>
+              <span class="fact-value">{d.role}</span>
+            </div>
+          )
+        }
+        {
+          d.tags.length > 0 && (
+            <div class="fact">
+              <span class="mini-label">Stack</span>
+              <div class="tags">
+                {d.tags.map((t) => (
+                  <span class="tag">{t}</span>
+                ))}
+              </div>
+            </div>
+          )
+        }
+        {
+          job && (
+            <div class="fact">
+              <span class="mini-label">Related to</span>
+              <a class="rel" href={`${base}#experience-${job.id}`}>
+                ↗ {job.role} · {job.org}
+              </a>
+            </div>
+          )
+        }
+        <div class="fact">
+          <span class="mini-label">Year</span>
+          <span class="fact-value mono">{d.year}</span>
+        </div>
+      </aside>
+    </div>
+
+    {
+      (prev || next) && (
+        <nav class="pager" aria-label="More projects">
+          {prev ? (
+            <a class="pager-link" href={`${base}projects/${prev.id}/`}>
+              <span class="mini-label">← Newer</span>
+              <span class="pager-name">{prev.data.name}</span>
+            </a>
+          ) : (
+            <span />
+          )}
+          {next && (
+            <a class="pager-link next" href={`${base}projects/${next.id}/`}>
+              <span class="mini-label">Older →</span>
+              <span class="pager-name">{next.data.name}</span>
+            </a>
+          )}
+        </nav>
+      )
+    }
+  </article>
+</Base>
+
+<style>
+  .page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-top: 28px;
+  }
+
+  .back {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .back:hover {
+    color: var(--blue-link);
+  }
+
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--orange-text);
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(36px, 3.6vw + 22px, 60px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  .line {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 4px;
+  }
+
+  .ext {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 0 16px;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-md);
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .ext:hover {
+    border-color: var(--orange);
+    color: var(--ink);
+  }
+
+  .ext span {
+    color: var(--orange);
+  }
+
+  .cover {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    object-fit: cover;
+    border: 1px solid var(--line);
+  }
+
+  .cover.contain {
+    object-fit: contain;
+    background: var(--logo-bg);
+  }
+
+  .generated {
+    display: flex;
+    align-items: flex-end;
+    padding: 20px 24px;
+    border: 0;
+    background-size: 16px 16px;
+    font-family: var(--font-display);
+    font-size: 96px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .story {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  h2.mini-label {
+    margin: 0;
+    font-weight: 400;
+  }
+
+  /* Rendered Markdown. */
+  .prose {
+    max-width: 680px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+
+  .prose :global(> :first-child) {
+    margin-top: 0;
+  }
+
+  .prose :global(p),
+  .prose :global(ul),
+  .prose :global(ol),
+  .prose :global(blockquote) {
+    margin: 0 0 1em;
+  }
+
+  .prose :global(h2),
+  .prose :global(h3) {
+    margin: 1.6em 0 0.5em;
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+
+  .prose :global(h2) {
+    font-size: 24px;
+  }
+
+  .prose :global(h3) {
+    font-size: 19px;
+  }
+
+  .prose :global(a) {
+    color: var(--blue-link);
+  }
+
+  .prose :global(strong) {
+    color: var(--ink);
+  }
+
+  .prose :global(code) {
+    padding: 2px 5px;
+    border-radius: 5px;
+    background: var(--placeholder);
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+  }
+
+  .prose :global(pre) {
+    overflow-x: auto;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    background: var(--graphite);
+    color: var(--graphite-text);
+  }
+
+  .prose :global(pre code) {
+    padding: 0;
+    background: none;
+  }
+
+  /* Two images written on consecutive lines sit side by side. */
+  .prose :global(p:has(> img + img)) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .prose :global(p:has(> img + img) img) {
+    margin: 0;
+  }
+
+  .prose :global(img),
+  .prose :global(video) {
+    margin: 1.2em 0;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--line);
+  }
+
+  .prose :global(blockquote) {
+    padding-left: 16px;
+    border-left: 3px solid var(--orange);
+    color: var(--ink);
+  }
+
+  .facts {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+  }
+
+  .fact {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .fact-value {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-weight: 500;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .rel {
+    align-self: flex-start;
+    padding: 6px 10px;
+    border: 1px solid var(--blue-tint-line);
+    border-radius: var(--radius-sm);
+    color: var(--blue-text);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+  }
+
+  .rel:hover {
+    background: var(--blue-tint-hover);
+    color: var(--blue-text);
+  }
+
+  .pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .pager-link {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px 18px;
+    background: var(--surface-sunken);
+    border: 1px solid var(--line-soft);
+    border-radius: 16px;
+    text-decoration: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .pager-link:hover {
+    background: var(--surface);
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  .pager-link.next {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .pager-name {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  @media (min-width: 720px) {
+    .page {
+      gap: 32px;
+      padding-top: 56px;
+    }
+
+    .line {
+      font-size: 19px;
+      line-height: 1.6;
+    }
+
+    .cover {
+      aspect-ratio: 16 / 7;
+      border-radius: var(--radius-card);
+    }
+
+    .generated {
+      aspect-ratio: 16 / 5;
+      padding: 28px 36px;
+      background-size: 18px 18px;
+      font-size: 140px;
+    }
+
+    .body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      align-items: start;
+      gap: 48px;
+    }
+
+    .prose {
+      font-size: 17px;
+    }
+
+    .facts {
+      padding: 22px;
+      border-radius: var(--radius-card);
+    }
+
+    .pager {
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .pager-link {
+      padding: 18px 22px;
+      border-radius: var(--radius-card);
+    }
+
+    .pager-name {
+      font-size: 18px;
+    }
+  }
+</style>
+
+<script>
+  // The preview loops silently; with reduced motion it waits behind controls instead.
+  document.querySelectorAll<HTMLVideoElement>('[data-preview]').forEach((v) => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      v.controls = true;
+      v.removeAttribute('aria-hidden');
+    } else {
+      v.play().catch(() => {});
+    }
+  });
+</script>

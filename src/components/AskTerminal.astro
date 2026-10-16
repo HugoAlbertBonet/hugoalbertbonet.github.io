@@ -1,0 +1,617 @@
+---
+// Ask terminal: the frontend for the agent. Shows the last question, a thinking line, the answer typing out,
+// and jump links to the sections it came from. Also renders the suggested questions and the floating "Ask me" pill.
+import Pet from './Pet.astro';
+import { exampleAnswer, sectionsFor } from '../lib/ask';
+import { MAX_QUESTION_LENGTH } from '../lib/agent';
+import { education, profile } from '../lib/content';
+
+// The answered example shown on load is built from the content files, so it never needs the backend.
+const exampleText = exampleAnswer({
+  firstName: profile.name.split(' ')[0],
+  studying: profile.studying,
+  earlierDegrees: education.filter((d) => !d.current).map((d) => d.degree),
+});
+const exampleSections = sectionsFor(profile.exampleQuestion, exampleText);
+const handle = profile.name.toLowerCase().replace(/\s+/g, '-');
+---
+
+<div class="ask">
+  <div class="terminal" data-terminal>
+    <div class="head">
+      <Pet size={24} state="done" breathe class="term-pet" />
+      <span class="word">ask</span>
+      <span class="path">~/{handle}</span>
+      <span class="note">answers come from my CV and projects</span>
+    </div>
+
+    <div class="body">
+      <div class="line question" data-question>
+        <span class="prompt" aria-hidden="true">❯</span>
+        <span data-question-text>{profile.exampleQuestion}</span>
+      </div>
+
+      <div class="line busy" data-busy hidden>
+        <span class="spin" aria-hidden="true"></span>
+        <span class="status" data-status></span>
+      </div>
+
+      <div class="line answer" data-answer>
+        <span class="bullet" aria-hidden="true">●</span>
+        <span class="answer-text"><span data-answer-text>{exampleText}</span><span class="caret" data-caret hidden></span></span>
+      </div>
+
+      <div class="jumps" data-jumps>
+        <span aria-hidden="true">└</span> jump to
+        <span data-jump-links>
+          {exampleSections.map((id) => <a href={`#${id}`} data-jump>{id} ↓</a>)}
+        </span>
+      </div>
+
+      <p class="visually-hidden" aria-live="polite" data-live></p>
+
+      <form class="input" data-form>
+        <span class="prompt" aria-hidden="true">❯</span>
+        <label for="ask-input" class="visually-hidden">Ask a question about me</label>
+        <input
+          id="ask-input"
+          type="text"
+          autocomplete="off"
+          maxlength={MAX_QUESTION_LENGTH}
+          placeholder="ask me anything, e.g. what did you study?"
+          data-input
+        />
+        <button type="submit" class="send">
+          <span class="send-long">enter ↵</span><span class="send-short">send</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="try">
+    <span class="try-label">try</span>
+    <div class="chips">
+      {profile.suggestedQuestions.map((q) => <button type="button" class="chip" data-suggest={q}>{q}</button>)}
+    </div>
+  </div>
+</div>
+
+<button type="button" class="ask-pill" data-ask-pill aria-hidden="true" tabindex="-1">
+  <Pet size={22} state="idle" />
+  Ask me
+</button>
+
+<style>
+  .terminal {
+    position: relative;
+    background: var(--graphite);
+    border: 1px solid var(--graphite);
+    border-radius: 16px;
+    box-shadow: var(--shadow-float);
+    overflow: hidden;
+    font-family: var(--font-mono);
+    color: var(--graphite-text);
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--graphite-line);
+    background: var(--graphite-raised);
+    font-size: 12px;
+  }
+
+  .head :global(.term-pet svg) {
+    width: 20px;
+    height: 20px;
+  }
+
+  .word {
+    color: var(--orange-hand);
+    font-weight: 600;
+  }
+
+  .path,
+  .note {
+    color: var(--graphite-muted);
+  }
+
+  .note {
+    display: none;
+    margin-left: auto;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 14px 12px;
+  }
+
+  .line {
+    display: flex;
+    gap: 8px;
+    font-size: 13px;
+  }
+
+  .line[hidden],
+  .jumps[hidden] {
+    display: none;
+  }
+
+  .prompt {
+    color: var(--orange);
+    font-weight: 600;
+  }
+
+  .busy {
+    align-items: center;
+    color: var(--orange);
+  }
+
+  .spin::before {
+    content: '✻';
+    animation: spin 0.8s steps(1) infinite;
+  }
+
+  .status {
+    color: var(--graphite-status);
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+
+  .answer {
+    line-height: 1.6;
+  }
+
+  .bullet {
+    color: var(--graphite-link);
+  }
+
+  .answer-text {
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    white-space: pre-line;
+  }
+
+  .answer-text :global(a) {
+    color: var(--graphite-link);
+  }
+
+  .answer-text :global(strong) {
+    font-weight: 600;
+    color: var(--on-accent);
+  }
+
+  .caret {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    margin-left: 2px;
+    vertical-align: -2px;
+    background: var(--graphite-text);
+    animation: caret 1s steps(1) infinite;
+  }
+
+  .caret[hidden] {
+    display: none;
+  }
+
+  .jumps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-left: 4px;
+    font-size: 12px;
+    color: var(--graphite-muted);
+  }
+
+  [data-jump-links] {
+    display: contents;
+  }
+
+  /* :global because answers add these links from the script, outside Astro's scoped styles. */
+  .jumps :global(a) {
+    color: var(--graphite-link);
+    text-decoration: none;
+  }
+
+  .jumps :global(a) {
+    position: relative;
+  }
+
+  /* 44px tap area around small inline links. */
+  .jumps :global(a)::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: 44px;
+    transform: translate(-50%, -50%);
+  }
+
+  .jumps :global(a:hover) {
+    color: var(--on-accent);
+  }
+
+  .input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px dashed var(--graphite-dash);
+  }
+
+  .input input {
+    flex: 1;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 0;
+    border: 0;
+    background: transparent;
+    color: var(--on-accent);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    caret-color: var(--orange);
+  }
+
+  .input input:focus {
+    outline: none;
+  }
+
+  .input input:focus-visible {
+    outline: 2px solid var(--graphite-link);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+
+  .input:focus-within {
+    border-top-color: var(--graphite-muted);
+  }
+
+  .input input::placeholder {
+    color: var(--graphite-muted);
+  }
+
+  .send {
+    flex: none;
+    min-height: 44px;
+    padding: 8px 10px;
+    border: 1px solid var(--graphite-key-line);
+    border-radius: var(--radius-sm);
+    background: var(--graphite-key);
+    color: var(--graphite-key-text);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  .send-long {
+    display: none;
+  }
+
+  /* Suggested questions: swipeable row on phone, wrapping row with "try" on desktop. */
+  .try {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    font-family: var(--font-mono);
+  }
+
+  .try-label {
+    display: none;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .chips {
+    display: flex;
+    gap: 8px;
+    margin: 0 calc(-1 * var(--gutter));
+    padding: 0 var(--gutter);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .chip {
+    flex: none;
+    min-height: 44px;
+    padding: 9px 11px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .chip:hover {
+    background: var(--graphite-hover);
+    border-color: var(--graphite-hover);
+    color: var(--on-accent);
+  }
+
+  /* Floating pill: appears once the terminal is scrolled out of view. */
+  .ask-pill {
+    position: fixed;
+    z-index: 30;
+    right: var(--gutter);
+    bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 12px 18px 12px 12px;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--graphite);
+    color: var(--on-accent);
+    box-shadow: var(--shadow-pill);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(8px);
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+  }
+
+  .ask-pill.shown {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
+  }
+
+  @media (min-width: 720px) {
+    .ask-pill {
+      right: 24px;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .head {
+      gap: 10px;
+      padding: 10px 16px;
+    }
+
+    .head :global(.term-pet svg) {
+      width: 24px;
+      height: 24px;
+    }
+
+    .note {
+      display: inline;
+    }
+
+    .body {
+      gap: 12px;
+      min-height: 168px;
+      padding: 18px 20px 20px;
+    }
+
+    .line {
+      gap: 10px;
+      font-size: 14px;
+    }
+
+    .answer-text {
+      font-size: 15.5px;
+    }
+
+    .jumps {
+      font-size: 13px;
+    }
+
+    .input {
+      gap: 10px;
+      padding-top: 10px;
+    }
+
+    .input input {
+      min-height: 0;
+      padding: 6px 0;
+      font-size: 15px;
+    }
+
+    .send {
+      min-height: 0;
+      font-size: 12px;
+    }
+
+    .send-long {
+      display: inline;
+    }
+
+    .send-short {
+      display: none;
+    }
+
+    .try {
+      margin-top: 12px;
+    }
+
+    .try-label {
+      display: inline;
+    }
+
+    .chips {
+      flex-wrap: wrap;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+    }
+
+    .chip {
+      min-height: 0;
+      padding: 7px 11px;
+      font-size: 13px;
+    }
+  }
+
+  @keyframes spin {
+    0% { content: '·'; }
+    25% { content: '✢'; }
+    50% { content: '✶'; }
+    75% { content: '✻'; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes caret {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+</style>
+
+<script>
+  import { askAgent, wakeAgent } from '../lib/agent';
+  import { fallbackSections, matchIntent, sectionsFor, thinkingStatus } from '../lib/ask';
+  import { renderMarkdown, toPlain } from '../lib/markdown';
+
+  const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
+  const terminal = $('[data-terminal]');
+  const pet = terminal.querySelector<HTMLElement>('[data-pet]')!;
+  const questionText = $('[data-question-text]');
+  const busy = $('[data-busy]');
+  const status = $('[data-status]');
+  const answerLine = $('[data-answer]');
+  const answerText = $('[data-answer-text]');
+  const caret = $('[data-caret]');
+  const jumps = $('[data-jumps]');
+  const jumpLinks = $('[data-jump-links]');
+  const live = $('[data-live]');
+  const form = $<HTMLFormElement>('[data-form]');
+  const input = $<HTMLInputElement>('[data-input]');
+  const pill = $<HTMLButtonElement>('[data-ask-pill]');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  // Wake the backend while the visitor reads, so the first answer doesn't wait for a cold start.
+  wakeAgent();
+
+  let run = 0;
+  let typer: number | undefined;
+  let rest: number | undefined;
+  let controller: AbortController | undefined;
+  const slowTimers: number[] = [];
+
+  const setPet = (state: 'idle' | 'busy' | 'done') => {
+    pet.dataset.state = state;
+    window.clearTimeout(rest);
+    // After smiling for a bit, go back to blinking.
+    if (state === 'done') rest = window.setTimeout(() => (pet.dataset.state = 'idle'), 4000);
+  };
+
+  const renderJumps = (sections: string[]) => {
+    jumpLinks.replaceChildren(
+      ...sections.map((id) => {
+        const a = document.createElement('a');
+        a.href = `#${id}`;
+        a.dataset.jump = '';
+        a.textContent = `${id} ↓`;
+        return a;
+      }),
+    );
+  };
+
+  const finish = (markdown: string, sections: string[]) => {
+    renderMarkdown(answerText, markdown);
+    caret.hidden = true;
+    renderJumps(sections);
+    jumps.hidden = sections.length === 0;
+    live.textContent = toPlain(markdown);
+  };
+
+  async function ask(question: string) {
+    const id = ++run;
+    window.clearInterval(typer);
+    slowTimers.splice(0).forEach((t) => window.clearTimeout(t));
+    controller?.abort();
+    controller = new AbortController();
+    input.value = '';
+
+    questionText.textContent = question;
+    status.textContent = `${thinkingStatus[matchIntent(question)]}…`;
+    busy.hidden = false;
+    answerLine.hidden = true;
+    jumps.hidden = true;
+    live.textContent = '';
+    setPet('busy');
+
+    // Long waits are usually a cold start; say so instead of looking stuck.
+    slowTimers.push(
+      window.setTimeout(() => (status.textContent = 'waking up the answer service…'), 5000),
+      window.setTimeout(() => (status.textContent = 'still thinking, almost there…'), 20000),
+    );
+    const timeout = window.setTimeout(() => controller?.abort(), 90000);
+
+    const res = await askAgent(question, controller.signal);
+    window.clearTimeout(timeout);
+    slowTimers.splice(0).forEach((t) => window.clearTimeout(t));
+    if (id !== run) return; // a newer question replaced this one
+
+    const markdown = res.ok ? res.text : res.message;
+    const sections = res.ok ? sectionsFor(question, toPlain(res.text)) : res.kind === 'invalid' ? [] : fallbackSections(question);
+
+    busy.hidden = true;
+    answerLine.hidden = false;
+    setPet('done');
+
+    if (reduceMotion.matches) {
+      finish(markdown, sections);
+      return;
+    }
+
+    const plain = toPlain(markdown);
+    let shown = 0;
+    answerText.textContent = '';
+    caret.hidden = false;
+    typer = window.setInterval(() => {
+      shown += 3;
+      if (shown >= plain.length) {
+        window.clearInterval(typer);
+        finish(markdown, sections);
+      } else {
+        answerText.textContent = plain.slice(0, shown);
+      }
+    }, 22);
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const q = input.value.trim();
+    if (q) ask(q);
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('[data-suggest]').forEach((btn) => {
+    btn.addEventListener('click', () => ask(btn.dataset.suggest!));
+  });
+
+  // Floating "Ask me" pill once the terminal has scrolled off the top.
+  new IntersectionObserver(([entry]) => {
+    const show = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+    pill.classList.toggle('shown', show);
+    pill.setAttribute('aria-hidden', String(!show));
+    pill.tabIndex = show ? 0 : -1;
+  }).observe(terminal);
+
+  pill.addEventListener('click', () => {
+    terminal.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'center' });
+    input.focus({ preventScroll: true });
+  });
+
+  // Start blinking a few seconds after load (the example answer is shown smiling).
+  setPet('done');
+</script>

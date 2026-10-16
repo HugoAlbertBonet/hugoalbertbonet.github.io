@@ -1,0 +1,205 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import Award from './Award.astro';
+import { education, initialOf } from '../lib/content';
+
+// Phone shows the first two degrees, the rest behind "+ ... · show all".
+const PHONE_SHOWN = 2;
+const hidden = education.slice(PHONE_SHOWN);
+---
+
+<section id="education" data-more>
+  <SectionHeader title="Education" />
+
+  <div class="list">
+    {
+      education.map((d, i) => (
+        <article class:list={['degree', { extra: i >= PHONE_SHOWN }]} tabindex={i === PHONE_SHOWN ? -1 : undefined}>
+          <span class="dates">
+            {d.start} – {d.end}
+          </span>
+          <span class="logo" aria-hidden="true">{d.logo ? <img src={d.logo} alt="" /> : initialOf(d.school)}</span>
+          <div class="main">
+            <div class="head">
+              <div class="title-row">
+                <h3 class="name">{d.degree}</h3>
+                {d.current && <span class="badge">Finishing {d.end}</span>}
+              </div>
+              <span class="school">
+                {d.school} · {d.city}
+              </span>
+            </div>
+            <p class="highlight">{d.highlight}</p>
+            {d.awards.length > 0 && (
+              <div class="awards">
+                {d.awards.map((a) => (
+                  <Award>{a}</Award>
+                ))}
+              </div>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  {
+    hidden.length > 0 && (
+      <button type="button" class="more-btn" data-more-toggle>
+        + {hidden.map((d) => d.degree).join(', ')} · show all
+      </button>
+    )
+  }
+</section>
+
+<script>
+  import '../scripts/showMore';
+</script>
+
+<style>
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Phone: logo + name on top, then dates, highlight, awards. */
+  .degree {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    grid-template-areas:
+      'logo main'
+      'dates dates';
+    gap: 10px 12px;
+    padding: 18px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+  }
+
+  .degree:focus {
+    outline: none;
+  }
+
+  .dates {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .logo {
+    grid-area: logo;
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    font-size: 16px;
+  }
+
+  .main {
+    display: contents;
+  }
+
+  .head {
+    grid-area: main;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .title-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+  }
+
+  .name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .school {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .highlight {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .awards {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dates {
+    grid-area: dates;
+  }
+
+  /* Desktop: dates | logo | content. */
+  @media (min-width: 720px) {
+    section {
+      gap: 20px;
+    }
+
+    .degree {
+      grid-template-columns: 150px 52px minmax(0, 1fr);
+      grid-template-areas: none;
+      align-items: start;
+      gap: 20px;
+      padding: 24px 28px;
+      border-radius: var(--radius-card);
+    }
+
+    .dates {
+      grid-area: auto;
+      padding-top: 4px;
+      font-size: 13px;
+    }
+
+    .logo {
+      grid-area: auto;
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-md);
+      font-size: 18px;
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .head {
+      grid-area: auto;
+      align-self: stretch;
+    }
+
+    .name {
+      font-size: 22px;
+    }
+
+    .school,
+    .highlight {
+      font-size: 15px;
+    }
+  }
+</style>

@@ -1,0 +1,258 @@
+---
+// "Off the clock" tile: handwritten notes and photo facts, rotating every 6s. Pauses on hover and focus.
+import { offTheClock } from '../lib/content';
+
+const kindLabel = { note: 'note', fact: 'fun fact' } as const;
+---
+
+<div class="tile off" data-off>
+  <div class="top">
+    <span class="tile-label">Off the clock</span>
+    <span class="kind" data-off-kind>{offTheClock[0] && kindLabel[offTheClock[0].kind]}</span>
+  </div>
+
+  <div class="items">
+    {
+      offTheClock.map((item, i) => (
+        <div class:list={['item', item.kind]} data-kind={kindLabel[item.kind]} hidden={i !== 0}>
+          {item.kind === 'note' ? (
+            <p class="note">{item.text}</p>
+          ) : (
+            <div class="fact">
+              {item.photo && <img class="photo" src={item.photo} alt="" loading="lazy" />}
+              <p>{item.text}</p>
+            </div>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="controls">
+    <div class="dots">
+      {
+        offTheClock.map((_, i) => (
+          <button type="button" class="dot" aria-label={`Show item ${i + 1}`} aria-current={i === 0 ? 'true' : undefined} data-dot={i} />
+        ))
+      }
+    </div>
+    <button type="button" class="next" aria-label="Next note" data-next>→</button>
+  </div>
+</div>
+
+<style>
+  .off {
+    gap: 10px;
+    padding: 16px;
+    background: var(--orange-soft);
+    border-color: var(--orange-soft-line);
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .top .tile-label {
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--orange-text);
+  }
+
+  .kind {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--orange-kind);
+  }
+
+  .item {
+    animation: offin 0.4s ease-out;
+  }
+
+  .item[hidden] {
+    display: none;
+  }
+
+  .note {
+    margin: 0;
+    font-family: var(--font-hand);
+    font-size: 22px;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+
+  .fact {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .fact p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  .photo {
+    flex: none;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    transform: rotate(-3deg);
+  }
+
+
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .dots {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+
+  /* 6px dot inside a larger tap target. */
+  .dot {
+    position: relative;
+    width: 6px;
+    height: 6px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--orange-dot);
+  }
+
+  .dot::after {
+    content: '';
+    position: absolute;
+    inset: -9px -3px;
+  }
+
+  .dot[aria-current='true'] {
+    width: 16px;
+    background: var(--orange);
+  }
+
+  .next {
+    display: none;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--orange-text);
+    font-size: 15px;
+  }
+
+  @media (min-width: 960px) {
+    .off {
+      gap: 8px;
+      padding: 18px 18px 14px 22px;
+    }
+
+    /* Fixed-height tile: text clamps so the dots and arrow stay in place. */
+    .items {
+      flex: 1 1 0;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .note,
+    .fact p {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+    }
+
+    .fact p {
+      -webkit-line-clamp: 4;
+    }
+
+    .controls {
+      flex: none;
+    }
+
+    .top .tile-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+
+    .kind,
+    .next {
+      display: inline-block;
+    }
+
+    .note {
+      font-size: 25px;
+      line-height: 1.12;
+    }
+
+    .fact p {
+      font-size: 13.5px;
+    }
+
+    .photo {
+      width: 58px;
+      height: 58px;
+    }
+  }
+
+  @keyframes offin {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: none; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-off]').forEach((root) => {
+    const items = [...root.querySelectorAll<HTMLElement>('.item')];
+    const dots = [...root.querySelectorAll<HTMLButtonElement>('[data-dot]')];
+    const kind = root.querySelector<HTMLElement>('[data-off-kind]')!;
+    if (items.length < 2) return;
+    let current = 0;
+    let hold = false;
+
+    const show = (i: number) => {
+      current = (i + items.length) % items.length;
+      items.forEach((el, j) => (el.hidden = j !== current));
+      dots.forEach((d, j) => (j === current ? d.setAttribute('aria-current', 'true') : d.removeAttribute('aria-current')));
+      kind.textContent = items[current].dataset.kind ?? '';
+    };
+
+    // Once the visitor picks an item themselves, stop rotating for good.
+    let stopped = false;
+    root.querySelector('[data-next]')?.addEventListener('click', () => {
+      stopped = true;
+      show(current + 1);
+    });
+    dots.forEach((d, j) =>
+      d.addEventListener('click', () => {
+        stopped = true;
+        show(j);
+      }),
+    );
+
+    // Pause while pointed at or focused, so it never moves under the reader.
+    root.addEventListener('mouseenter', () => (hold = true));
+    root.addEventListener('mouseleave', () => (hold = false));
+    root.addEventListener('focusin', () => (hold = true));
+    root.addEventListener('focusout', () => (hold = false));
+
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      window.setInterval(() => {
+        if (!hold && !stopped && !document.hidden) show(current + 1);
+      }, 6000);
+    }
+  });
+</script>
